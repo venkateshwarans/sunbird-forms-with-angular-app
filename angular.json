@@ -7,7 +7,7 @@
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "app",
+      "prefix": "sb",
       "schematics": {},
       "architect": {
         "build": {
@@ -110,6 +110,46 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "common-form-elements": {
+      "root": "projects/common-form-elements",
+      "sourceRoot": "projects/common-form-elements/src",
+      "projectType": "library",
+      "prefix": "sb",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/common-form-elements/tsconfig.lib.json",
+            "project": "projects/common-form-elements/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/common-form-elements/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/common-form-elements/src/test.ts",
+            "tsConfig": "projects/common-form-elements/tsconfig.spec.json",
+            "karmaConfig": "projects/common-form-elements/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/common-form-elements/tsconfig.lib.json",
+              "projects/common-form-elements/tsconfig.spec.json"
+            ],
             "exclude": [
               "**/node_modules/**"
             ]

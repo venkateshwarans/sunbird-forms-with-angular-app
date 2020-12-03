@@ -1,0 +1,11 @@
+<select
+              [formControl]="formControlRef"
+              class="sb-dropdown-select" id="sb-dropdown"
+              name="sb-dropdown">
+              <!-- <option [defaultSelected]="!default" [ngValue]="null" disabled>{{placeHolder}}
+              </option> -->
+              {{options | json}}
+              <ng-container>
+                <option *ngFor="let option of options" [ngValue]="option.value">{{option.label}}</option>
+              </ng-container>
+</select>
