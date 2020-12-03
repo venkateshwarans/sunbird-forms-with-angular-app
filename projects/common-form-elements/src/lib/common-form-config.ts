@@ -3,6 +3,7 @@ import {AsyncValidatorFn, FormControl} from '@angular/forms';
 
 export enum FieldConfigInputType {
   INPUT = 'input',
+  TEXT = 'text',
   CHECKBOX = 'checkbox',
   SELECT = 'select',
   LABEL = 'label',

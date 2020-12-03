@@ -2,18 +2,27 @@
 
   <ng-container *ngFor="let field of config; let index = i">
 
-    <div *ngIf="FieldConfigInputType.SELECT || field.type === FieldConfigInputType.NESTED_SELECT">
-      <sb-dropdown [context]="field.context ? formGroup.get(field.context) : null"
-      [formControlRef]="formGroup.get(field.code)"
-      [options]="field.templateOptions?.options"
-      [disabled]="field.templateOptions?.disabled">
-    </sb-dropdown>
-  </div>
+    <div *ngIf="field.inputType === FieldConfigInputType.TEXT">
+      <sb-textbox [formControlRef]="formGroup.get(field.code)" [asyncValidation]="field.asyncValidation" [label]="field.label"
+      [placeholder]="field.placeHolder" [validations]="field.validations" [prefix]="field.templateOptions?.prefix"
+      [labelHtml]="field.templateOptions?.labelHtml">
+      </sb-textbox>
+    </div>
 
-  <sb-textbox [formControlRef]="formGroup.get(field.code)" [asyncValidation]="field.asyncValidation" [label]="field.templateOptions.label"
-  [placeholder]="field.templateOptions.placeHolder" [validations]="field.validations" [prefix]="field.templateOptions.prefix"
-  [labelHtml]="field.templateOptions.labelHtml">
-  </sb-textbox>
+    <div *ngIf="field.inputType === FieldConfigInputType.TEXTAREA">
+      <sb-textarea [config]="field" [formControlRef]="formGroup.get(field.code)" [label]="field.label"
+        [placeholder]="field.placeHolder">
+      </sb-textarea>
+    </div>
+
+    <div *ngIf="field.inputType === FieldConfigInputType.SELECT">
+      <sb-dropdown [context]="field.context ? formGroup.get(field.context) : null"
+        [formControlRef]="formGroup.get(field.code)"
+        [options]="field.templateOptions?.options"
+        [disabled]="field.templateOptions?.disabled">
+      </sb-dropdown>
+    </div>
+
   </ng-container>
 </div>
 

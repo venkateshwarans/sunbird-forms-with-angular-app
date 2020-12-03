@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit,
   Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
-
+  import {AsyncValidatorFactory, FieldConfig, FieldConfigInputType, FieldConfigValidationType} from '../common-form-config';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subject, Subscription} from 'rxjs';
 import {distinctUntilChanged, map, scan, tap} from 'rxjs/operators';
@@ -11,8 +11,11 @@ import {distinctUntilChanged, map, scan, tap} from 'rxjs/operators';
 })
 export class FormComponent implements OnInit {
   @Input() config;
+  @Output() initialize = new EventEmitter();
 
   formGroup: FormGroup;
+  FieldConfigInputType = FieldConfigInputType;
+
   constructor(
     private formBuilder: FormBuilder
   ) { }
@@ -27,6 +30,13 @@ export class FormComponent implements OnInit {
     });
 
     this.formGroup = this.formBuilder.group(formGroupData);
+    // this.initialize.emit(this.formGroup);
+    this.formGroup.valueChanges.pipe(
+      tap((data) => {
+        this.initialize.emit(data);
+        console.log(data);
+      })
+    ).subscribe();
   }
 
 
