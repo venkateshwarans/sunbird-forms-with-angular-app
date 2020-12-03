@@ -1,9 +1,19 @@
 <div [formGroup]="formGroup">
+
   <ng-container *ngFor="let field of config; let index = i">
-    <sb-dropdown [context]="field.context ? formGroup.get(field.context) : null"
-    [formControlRef]="formGroup.get(field.code)"
-    [options]="field.templateOptions?.options"
-    [disabled]="field.templateOptions?.disabled">
+
+    <div *ngIf="FieldConfigInputType.SELECT || field.type === FieldConfigInputType.NESTED_SELECT">
+      <sb-dropdown [context]="field.context ? formGroup.get(field.context) : null"
+      [formControlRef]="formGroup.get(field.code)"
+      [options]="field.templateOptions?.options"
+      [disabled]="field.templateOptions?.disabled">
     </sb-dropdown>
+  </div>
+
+  <sb-textbox [formControlRef]="formGroup.get(field.code)" [asyncValidation]="field.asyncValidation" [label]="field.templateOptions.label"
+  [placeholder]="field.templateOptions.placeHolder" [validations]="field.validations" [prefix]="field.templateOptions.prefix"
+  [labelHtml]="field.templateOptions.labelHtml">
+  </sb-textbox>
   </ng-container>
 </div>
+
