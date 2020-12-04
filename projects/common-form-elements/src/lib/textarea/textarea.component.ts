@@ -21,7 +21,8 @@ export class TextareaComponent implements OnInit {
   }
 
   ngOnInit() {
-    const maxLengthValidation = this.config.validations && this.config.validations.find((validation) => validation.type === FieldConfigValidationType.MAXLENGTH);
+    const maxLengthValidation = this.config.validations &&
+    this.config.validations.find((validation) => validation.type === FieldConfigValidationType.MAXLENGTH);
 
     if (maxLengthValidation) {
       this.remainderValidLength$ = this.formControlRef.valueChanges.pipe(

@@ -26,3 +26,10 @@
   </ng-container>
 </div>
 
+
+<div class="dynamic-form" [formGroup]="formGroup">
+  <ng-container *ngFor="let field of config;" libDynamicField [field]="field" [formGroup]="formGroup" [label]="field.label" [formControlRef]="formGroup.get(field.code)">
+    {{field | json}}
+  </ng-container>
+</div>
+
