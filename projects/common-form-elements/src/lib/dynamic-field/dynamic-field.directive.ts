@@ -28,6 +28,8 @@ export class DynamicFieldDirective implements OnInit {
   @Input() formGroup: FormGroup;
   @Input() formControlRef?: FormControl;
   @Input() label: String;
+  @Input() options?: any = [];
+  @Input() context?: FormControl;
 
 
   componentRef: any;
@@ -48,6 +50,17 @@ export class DynamicFieldDirective implements OnInit {
     this.componentRef.instance.formGroup = this.formGroup;
     this.componentRef.instance.formControlRef = this.formControlRef;
     this.componentRef.instance.label = this.label;
+    this.componentRef.instance.options = this.options;
+    this.componentRef.instance.context = this.context;
+
+    // this.componentRef.instance = {
+    //   field : this.field,
+    //   formGroup : this.formGroup,
+    //   formControlRef : this.formControlRef,
+    //   label : this.label,
+    //   options : this.options,
+    //   context : this.context
+    // };
   }
 
 

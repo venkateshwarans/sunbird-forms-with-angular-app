@@ -13,7 +13,7 @@ export class TextareaComponent implements OnInit {
   @Input() label: String;
   @Input() placeholder: String;
   @Input() formControlRef: FormControl;
-  @Input() config: FieldConfig<String>;
+  @Input() field: FieldConfig<String>;
 
   remainderValidLength$?: Observable<number>;
 
@@ -21,8 +21,8 @@ export class TextareaComponent implements OnInit {
   }
 
   ngOnInit() {
-    const maxLengthValidation = this.config.validations &&
-    this.config.validations.find((validation) => validation.type === FieldConfigValidationType.MAXLENGTH);
+    const maxLengthValidation = this.field.validations &&
+    this.field.validations.find((validation) => validation.type === FieldConfigValidationType.MAXLENGTH);
 
     if (maxLengthValidation) {
       this.remainderValidLength$ = this.formControlRef.valueChanges.pipe(
