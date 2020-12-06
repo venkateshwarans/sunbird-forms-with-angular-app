@@ -98,24 +98,25 @@ export class AppComponent {
               'value': '1000'
           }
       ]
-  }, {
+  },
+ {
     'code': 'board',
     'type': 'select',
     'label': 'Board',
     'inputType': 'select',
+    'options': [{
+      'value': 'andhra',
+      'label': 'andhra'
+    },
+    {
+      'value': 'karnataka',
+      'label': 'karnataka'
+    }
+    ],
     'templateOptions': {
       'placeHolder': 'Select Board',
       'multiple': false,
       'hidden': false,
-      'options': [{
-          'value': 'andhra',
-          'label': 'andhra'
-        },
-        {
-          'value': 'karnataka',
-          'label': 'karnataka'
-        }
-      ]
     },
     'validations': [{
       'type': 'required'
@@ -126,34 +127,59 @@ export class AppComponent {
     'code': 'medium',
     'label': 'Medium',
     'context': 'board',
+    'options': {
+      'andhra': [{
+          'value': 'andhra1',
+          'label': 'andhra1'
+        },
+        {
+          'value': 'andhra2',
+          'label': 'andhra2'
+        }
+      ],
+      'karnataka': [{
+          'value': 'karnataka1',
+          'label': 'karnataka1'
+        },
+        {
+          'value': 'karnataka2',
+          'label': 'karnataka2'
+        }
+      ],
+    },
     'templateOptions': {
       'placeHolder': 'Select Category',
       'multiple': false,
-      'options': {
-        'andhra': [{
-            'value': 'andhra1',
-            'label': 'andhra1'
-          },
-          {
-            'value': 'andhra2',
-            'label': 'andhra2'
-          }
-        ],
-        'karnataka': [{
-            'value': 'karnataka1',
-            'label': 'karnataka1'
-          },
-          {
-            'value': 'karnataka2',
-            'label': 'karnataka2'
-          }
-        ],
-      }
     },
     'validations': [{
       'type': 'required'
     }]
-  }];
+  }, {
+    'code': 'subject',
+    'visible': true,
+    'context': 'medium',
+    'editable': true,
+    'dataType': 'text',
+    'renderingHints': {},
+    'name': 'subject',
+    'index': 2,
+    'description': 'Subject',
+    'inputType': 'select',
+    'label': 'Subject',
+    'placeholder': 'Subject',
+    'required': false,
+    'options': [
+      'subject1', 'subject2', 'subject3', 'subject4',
+    ],
+    'validation': [
+        {
+            'type': 'max',
+            'message': 'Input is Exceded',
+            'value': '1000'
+        }
+    ]
+  }
+];
 
 
     output(event) {

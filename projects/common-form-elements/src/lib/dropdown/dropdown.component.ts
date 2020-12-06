@@ -52,6 +52,7 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
     if (this.context) {
       this.contextValueChangesSubscription = this.context.valueChanges.pipe(
         tap(() => {
+          console.log(this.formControlRef);
           this.formControlRef.patchValue(null);
         })
       ).subscribe();
@@ -59,6 +60,7 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.contextValueChangesSubscription.unsubscribe();
   }
 
   isOptionsArray(options: any) {

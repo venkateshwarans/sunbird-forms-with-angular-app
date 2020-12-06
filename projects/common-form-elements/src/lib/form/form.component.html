@@ -32,7 +32,7 @@
 
 <div class="dynamic-form" [formGroup]="formGroup">
   <ng-container *ngFor="let field of config;" libDynamicField [context]="field.context ? formGroup.get(field.context) : null"
-  [options]="field.templateOptions?.options" [field]="field" [formGroup]="formGroup" [label]="field.label" [formControlRef]="formGroup.get(field.code)">
+  [options]="field.options" [field]="field" [formGroup]="formGroup" [label]="field.label" [formControlRef]="formGroup.get(field.code)">
   </ng-container>
 </div>
 

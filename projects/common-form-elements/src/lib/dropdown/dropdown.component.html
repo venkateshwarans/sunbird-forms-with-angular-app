@@ -10,7 +10,7 @@
         <option [defaultSelected]="!default" [ngValue]="null" disabled>{{placeHolder}}
         </option>
         <ng-container *ngIf="isOptionsArray(options)">
-          <option *ngFor="let option of options" [ngValue]="option.value">{{option.label}}</option>
+          <option *ngFor="let option of options" [ngValue]="option.value || option">{{option.label || option}}</option>
         </ng-container>
 
         <ng-container *ngIf="isOptionsClosure(options)">
