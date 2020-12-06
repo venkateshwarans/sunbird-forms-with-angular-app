@@ -30,6 +30,7 @@ export class DynamicFieldDirective implements OnInit {
   @Input() label: String;
   @Input() options?: any = [];
   @Input() context?: FormControl;
+  @Input() contextAssociation?: any = [];
 
 
   componentRef: any;
@@ -45,13 +46,12 @@ export class DynamicFieldDirective implements OnInit {
     const factory = this.resolver.resolveComponentFactory(componentMapper[this.field.inputType]);
     this.componentRef = this.container.createComponent(factory);
     this.componentRef.instance.field = this.field;
-    console.log(this.field);
-    console.log(this.formGroup);
     this.componentRef.instance.formGroup = this.formGroup;
     this.componentRef.instance.formControlRef = this.formControlRef;
     this.componentRef.instance.label = this.label;
     this.componentRef.instance.options = this.options;
     this.componentRef.instance.context = this.context;
+    this.componentRef.instance.contextAssociation = this.contextAssociation;
 
     // this.componentRef.instance = {
     //   field : this.field,

@@ -4,6 +4,8 @@ import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, On
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subject, Subscription} from 'rxjs';
 import {distinctUntilChanged, map, scan, tap} from 'rxjs/operators';
+import * as _ from 'lodash-es';
+
 @Component({
   selector: 'sb-form',
   templateUrl: './form.component.html',
@@ -34,7 +36,6 @@ export class FormComponent implements OnInit {
     this.formGroup.valueChanges.pipe(
       tap((data) => {
         this.initialize.emit(data);
-        console.log(data);
       })
     ).subscribe();
   }
@@ -76,6 +77,14 @@ export class FormComponent implements OnInit {
     formValueList.push(Validators.compose(validationList));
 
     return formValueList;
+  }
+
+
+  fetchContextTerms(config: FieldConfig<any>, context) {
+    console.log('Context association for', context );
+
+    console.log(_.find(config, {'code': context}));
+    return _.get(_.find(config, {'code': context}), 'terms');
   }
 
 }

@@ -44,6 +44,7 @@ export interface FieldConfig<T> {
   code: string;
   type: FieldConfigInputType;
   fieldName?: string;
+  association?: boolean;
   default?: any;
   context?: string;
   children?: { [key: string]: FieldConfig<T>[] } | FieldConfig<T>[];

@@ -3,6 +3,7 @@ import {FormControl} from '@angular/forms';
 import {Observable, Subject, Subscription} from 'rxjs';
 import {FieldConfig, FieldConfigOption, FieldConfigOptionsBuilder} from '../common-form-config';
 import {tap} from 'rxjs/operators';
+import * as _ from 'lodash-es';
 import {ValueComparator} from '../utilities/value-comparator';
 @Component({
   selector: 'sb-dropdown',
@@ -18,6 +19,7 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
   @Input() placeHolder?: string;
   @Input() isMultiple?: boolean;
   @Input() context?: FormControl;
+  @Input() contextAssociation?: any;
   @Input() formControlRef?: FormControl;
   @Input() default?: any;
   @Input() contextData: any;
@@ -35,7 +37,6 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.options) {
       this.options = [];
     }
-    console.log(this.options);
     if (this.isOptionsClosure(this.options)) {
       this.options$ = (this.options as FieldConfigOptionsBuilder<any>)(
         this.formControlRef,
@@ -47,12 +48,9 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(this.field);
-    console.log(this.options);
     if (this.context) {
       this.contextValueChangesSubscription = this.context.valueChanges.pipe(
         tap(() => {
-          console.log(this.formControlRef);
           this.formControlRef.patchValue(null);
         })
       ).subscribe();
@@ -83,5 +81,15 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
     emitPayload['selectedLabel'] = selectedObject.label;
     emitPayload['selectedValue'] = selectedObject.value;
     this.onChangeFilter.emit(emitPayload);
+  }
+
+  fetchAssociations(options, contextValue) {
+    const filteredTerm = _.find(this.contextAssociation, {identifier: contextValue});
+    return _.filter(filteredTerm.associations, association => {
+      return association.category === this.field.code;
+    });
+    // return options.filter(option => {
+    //   return option.association === contextValue;
+    // });
   }
 }

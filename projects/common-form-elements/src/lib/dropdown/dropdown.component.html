@@ -9,16 +9,21 @@
               name="sb-dropdown">
         <option [defaultSelected]="!default" [ngValue]="null" disabled>{{placeHolder}}
         </option>
-        <ng-container *ngIf="isOptionsArray(options)">
-          <option *ngFor="let option of options" [ngValue]="option.value || option">{{option.label || option}}</option>
+        <ng-container *ngIf="isOptionsArray(options) && !field.association">
+          <option *ngFor="let option of options" [ngValue]="option.identifier || option">{{option.name || option}}</option>
         </ng-container>
 
-        <ng-container *ngIf="isOptionsClosure(options)">
+        <!-- <ng-container *ngIf="isOptionsClosure(options)">
           <option *ngFor="let option of options$ | async" [ngValue]="option.value">{{option.label}}</option>
+        </ng-container> -->
+
+        <ng-container *ngIf="isOptionsMap(options) && context && context.value && !field.association">
+          <option *ngFor="let option of options[context.value]" [ngValue]="option.value">{{option.label}}</option>
         </ng-container>
 
-        <ng-container *ngIf="isOptionsMap(options) && context && context.value">
-          <option *ngFor="let option of options[context.value]" [ngValue]="option.value">{{option.label}}</option>
+        <hr>
+        <ng-container *ngIf="context && context.value && field.association">
+          <option *ngFor="let option of fetchAssociations(options, context.value)" [ngValue]="option.identifier">{{option.name}}</option>
         </ng-container>
       </select>
     </div>
