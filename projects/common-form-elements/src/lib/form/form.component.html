@@ -30,8 +30,9 @@
 
 
 <div class="dynamic-form" [formGroup]="formGroup">
-  <ng-container *ngFor="let field of config;" libDynamicField [context]="field.context ? formGroup.get(field.context) : null"
-  [contextAssociation]="fetchContextTerms(config, field.context)"
+  <ng-container *ngFor="let field of config;" libDynamicField
+  [depends]="field.depends ? getAllDependsFormControl(field.code) :  null" [dependencyTerms]="field.depends ? fetchDependencyTerms(field.code) : []"
+  [context]="field.context ? formGroup.get(field.context) : null" [contextTerms]="fetchContextTerms(config, field.context)"
   [options]="field.terms" [field]="field" [formGroup]="formGroup" [label]="field.label" [formControlRef]="formGroup.get(field.code)">
   </ng-container>
 </div>

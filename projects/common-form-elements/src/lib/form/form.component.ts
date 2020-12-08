@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit,
   Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
   import {AsyncValidatorFactory, FieldConfig, FieldConfigInputType, FieldConfigValidationType} from '../common-form-config';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject, Subscription} from 'rxjs';
 import {distinctUntilChanged, map, scan, tap} from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -17,6 +17,7 @@ export class FormComponent implements OnInit {
 
   formGroup: FormGroup;
   FieldConfigInputType = FieldConfigInputType;
+  fieldDependency: {};
 
   constructor(
     private formBuilder: FormBuilder
@@ -24,13 +25,18 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     const formGroupData = {};
+    const dependency = [];
     this.config.forEach((element: any, index) => {
       // if (element.type !== FieldConfigInputType.LABEL) {
         // }
-      const formValueList = this.prepareFormValidationData(element, index);
+    const formValueList = this.prepareFormValidationData(element, index);
+      if (!_.isEmpty(element.depends)) {
+        dependency.push({code: element.code, depends: element.depends});
+      }
       formGroupData[element.code] = formValueList;
     });
 
+    this.mapDependency(dependency);
     this.formGroup = this.formBuilder.group(formGroupData);
     // this.initialize.emit(this.formGroup);
     this.formGroup.valueChanges.pipe(
@@ -79,12 +85,43 @@ export class FormComponent implements OnInit {
     return formValueList;
   }
 
+  mapDependency(dependency) {
+    const configCode = _.map(this.config, 'code');
+    const fieldDependency = {};
+    _.forEach(configCode, code => {
+        _.forEach(this.config, field => {
+            if (_.includes(field.depends, code)) {
+                if (_.has(fieldDependency, code)) {
+                  fieldDependency[code].push(field.code);
+                } else {
+                  fieldDependency[code] = [];
+                  fieldDependency[code].push(field.code);
+                }
+            }
+        });
+    });
+    this.fieldDependency = fieldDependency;
+  }
+
 
   fetchContextTerms(config: FieldConfig<any>, context) {
-    console.log('Context association for', context );
+    return _.get(_.find(config, {'code': context}), 'terms') || null;
+  }
 
-    console.log(_.find(config, {'code': context}));
-    return _.get(_.find(config, {'code': context}), 'terms');
+  getAllDependsFormControl(code) {
+    const depends = _.get(this.fieldDependency, code);
+    const fieldDepends =  _.map(depends, depend => {
+      return this.formGroup.get(depend);
+    });
+    return _.compact(fieldDepends);
+  }
+
+  fetchDependencyTerms(code) {
+    const depends = _.get(this.fieldDependency, code);
+    const dependsTerms = _.map(_.filter(this.config, c => {
+      return _.includes(depends, c.code);
+    }), 'terms');
+    return _.flatten(dependsTerms);
   }
 
 }

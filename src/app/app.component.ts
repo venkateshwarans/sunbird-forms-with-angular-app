@@ -232,7 +232,7 @@ export class AppComponent {
 
   config = formConfig;
     output(event) {
-        console.log(event);
+        // console.log(event);
     }
 
 

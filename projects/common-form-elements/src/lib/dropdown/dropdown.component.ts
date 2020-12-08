@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, EventEmitter} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {Observable, Subject, Subscription} from 'rxjs';
+import {FormControl, FormGroup} from '@angular/forms';
+import {Observable, Subject, Subscription, combineLatest, merge} from 'rxjs';
 import {FieldConfig, FieldConfigOption, FieldConfigOptionsBuilder} from '../common-form-config';
 import {tap} from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -19,17 +19,24 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
   @Input() placeHolder?: string;
   @Input() isMultiple?: boolean;
   @Input() context?: FormControl;
-  @Input() contextAssociation?: any;
+  @Input() contextTerms?: any;
   @Input() formControlRef?: FormControl;
+  @Input() formGroup?: FormGroup;
   @Input() default?: any;
   @Input() contextData: any;
   @Input() dataLoadStatusDelegate: Subject<'LOADING' | 'LOADED'>;
   @Input() type?: string;
   @Input() styleClass?: string;
   @Output() onChangeFilter: EventEmitter<any> = new EventEmitter();
+
+  @Input() depends?: FormControl[];
+  @Input() dependencyTerms?: any = [];
+
   options$?: Observable<FieldConfigOption<any>[]>;
   contextValueChangesSubscription?: Subscription;
   selectedType: any;
+  tempAssociation: any;
+  latestParentValue: string;
   constructor() {
   }
 
@@ -48,17 +55,37 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.context) {
-      this.contextValueChangesSubscription = this.context.valueChanges.pipe(
-        tap(() => {
-          this.formControlRef.patchValue(null);
-        })
+    // if (this.context) {
+      // this.contextValueChangesSubscription = this.context.valueChanges.pipe(
+      //   tap(() => {
+      //     this.formControlRef.patchValue(null);
+      //   })
+      // ).subscribe();
+    // }
+
+    if (!_.isEmpty(this.field.depends)) {
+      this.formControlRef.valueChanges.pipe(
+          tap(() => {
+            _.forEach(this.field.depends, depend => {
+              if (!_.isEmpty(this.formGroup.get(depend))) {
+                this.formGroup.get(depend).patchValue(null);
+              }
+            });
+          })
+      ).subscribe();
+    }
+    if (!_.isEmpty(this.depends)) {
+     this.contextValueChangesSubscription =  merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
+      tap((value: any) => {
+        this.latestParentValue = value;
+        console.log(this.latestParentValue);
+      })
       ).subscribe();
     }
   }
 
   ngOnDestroy(): void {
-    this.contextValueChangesSubscription.unsubscribe();
+    // this.contextValueChangesSubscription.unsubscribe();
   }
 
   isOptionsArray(options: any) {
@@ -83,13 +110,28 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
     this.onChangeFilter.emit(emitPayload);
   }
 
-  fetchAssociations(options, contextValue) {
-    const filteredTerm = _.find(this.contextAssociation, {identifier: contextValue});
-    return _.filter(filteredTerm.associations, association => {
-      return association.category === this.field.code;
-    });
-    // return options.filter(option => {
-    //   return option.association === contextValue;
-    // });
+  fetchAssociations() {
+    // && this.context.value && this.field.association
+    if (!_.isEmpty(this.depends)) {
+      const filteredTerm = _.find(this.dependencyTerms, terms => {
+        console.log(this.getParentValue());
+        return _.includes(this.getParentValue(), terms.identifier);
+      });
+      if (filteredTerm) {
+        this.tempAssociation =  _.filter(filteredTerm.associations, association => {
+          return association.category === this.field.code;
+        });
+        return this.tempAssociation;
+      } else  {
+        return this.options;
+      }
+    } else {
+      return this.options;
+    }
+  }
+
+
+  getParentValue() {
+    return this.latestParentValue || _.compact(_.map(this.depends, 'value'));
   }
 }

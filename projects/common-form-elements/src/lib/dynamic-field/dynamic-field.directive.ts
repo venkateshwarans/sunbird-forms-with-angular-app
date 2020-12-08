@@ -30,7 +30,9 @@ export class DynamicFieldDirective implements OnInit {
   @Input() label: String;
   @Input() options?: any = [];
   @Input() context?: FormControl;
-  @Input() contextAssociation?: any = [];
+  @Input() contextTerms?: any = [];
+  @Input() depends?: FormControl[];
+  @Input() dependencyTerms?: any = [];
 
 
   componentRef: any;
@@ -51,7 +53,9 @@ export class DynamicFieldDirective implements OnInit {
     this.componentRef.instance.label = this.label;
     this.componentRef.instance.options = this.options;
     this.componentRef.instance.context = this.context;
-    this.componentRef.instance.contextAssociation = this.contextAssociation;
+    this.componentRef.instance.contextTerms = this.contextTerms;
+    this.componentRef.instance.depends = this.depends;
+    this.componentRef.instance.dependencyTerms = this.dependencyTerms;
 
     // this.componentRef.instance = {
     //   field : this.field,
