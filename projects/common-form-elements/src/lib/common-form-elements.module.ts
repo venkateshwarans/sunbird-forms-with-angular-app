@@ -12,6 +12,7 @@ import { DropdownIconComponent } from './icon/dropdown/dropdownIcon.component';
 import { EmptyCircleComponent } from './icon/empty-circle/empty-circle.component';
 import { GreenTickComponent } from './icon/green-tick/green-tick.component';
 import { RedExclamationComponent } from './icon/red-exclamation/red-exclamation.component';
+import { FileComponent } from './file/file.component';
 
 @NgModule({
   imports: [
@@ -20,11 +21,12 @@ import { RedExclamationComponent } from './icon/red-exclamation/red-exclamation.
     FormsModule,
   ],
   entryComponents: [TextareaComponent, TextboxComponent, DropdownComponent,
-    CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent],
+    CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent,
+    FileComponent],
   declarations: [CommonFormElementsComponent, FormComponent,
     TextboxComponent, TextareaComponent,CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent,
-    RedExclamationComponent, DropdownComponent, DynamicFieldDirective],
+    RedExclamationComponent, DropdownComponent, DynamicFieldDirective, FileComponent],
   exports: [CommonFormElementsComponent, FormComponent, TextboxComponent, TextareaComponent, DropdownComponent, DynamicFieldDirective,
-    CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent]
+    CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent, FileComponent ]
 })
 export class CommonFormElementsModule { }

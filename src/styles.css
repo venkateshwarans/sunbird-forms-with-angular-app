@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+
+.grid {
+  display: grid;
+  gap: 15px;
+
+}
+.three-column-grid {
+  grid-template-columns: 0.5fr 2fr 2fr;
+}
+.two-and-half-column-grid {
+  grid-template-columns: 0.5fr 2fr;
+}
+.two-column-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.col-span-2	{grid-column: span 2 / span 2;}

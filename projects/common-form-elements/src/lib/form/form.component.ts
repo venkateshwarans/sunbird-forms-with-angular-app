@@ -14,6 +14,7 @@ import * as _ from 'lodash-es';
 export class FormComponent implements OnInit {
   @Input() config;
   @Output() initialize = new EventEmitter();
+  _: any = _;
 
   formGroup: FormGroup;
   FieldConfigInputType = FieldConfigInputType;
@@ -122,6 +123,23 @@ export class FormComponent implements OnInit {
       return _.includes(depends, c.code);
     }), 'terms');
     return _.flatten(dependsTerms);
+  }
+
+  getAppIcon(config, val) {
+    if (val) {
+      return config.filter(field => {
+        return field.code === 'appicon';
+      });
+    } else {
+       return config.filter(field => {
+        return field.code !== 'appicon';
+      });
+    }
+  }
+
+  groupBySection(config) {
+    const fields = this.getAppIcon(config, false);
+    return _.groupBy(fields, 'section.index');
   }
 
 }
