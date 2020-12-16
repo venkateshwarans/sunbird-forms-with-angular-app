@@ -40,6 +40,12 @@ export interface FieldConfigAsyncValidation {
   trigger?: string;
   asyncValidatorFactory?: AsyncValidatorFactory;
 }
+
+
+export interface SectionConfig<T> {
+  name: string;
+  fields: FieldConfig<T>[];
+}
 export interface FieldConfig<T> {
   code: string;
   type: FieldConfigInputType;

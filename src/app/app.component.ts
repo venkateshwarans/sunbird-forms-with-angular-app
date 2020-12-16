@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {switchMap, tap} from 'rxjs/operators';
 import {of} from 'rxjs';
 
-import { formConfig } from './formConfig';
+import { formConfig, formConfigWithClass, formConfigWithSection } from './formConfig';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -230,7 +230,7 @@ export class AppComponent {
 // 'subject2', 'subject3', 'subject4',
 
 
-  config = formConfig;
+  config = formConfigWithSection;
     output(event) {
         // console.log(event);
     }

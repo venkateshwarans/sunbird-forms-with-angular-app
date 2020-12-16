@@ -27,14 +27,25 @@ export class FormComponent implements OnInit {
   ngOnInit() {
     const formGroupData = {};
     const dependency = [];
-    this.config.forEach((element: any, index) => {
-      // if (element.type !== FieldConfigInputType.LABEL) {
-        // }
-    const formValueList = this.prepareFormValidationData(element, index);
+
+    // this.config.forEach((element: any, index) => {
+    //   // if (element.type !== FieldConfigInputType.LABEL) {
+    //     // }
+    // const formValueList = this.prepareFormValidationData(element, index);
+    //   if (!_.isEmpty(element.depends)) {
+    //     dependency.push({code: element.code, depends: element.depends});
+    //   }
+    //   formGroupData[element.code] = formValueList;
+    // });
+
+    this.config.forEach((sections) => {
+      sections.fields.forEach((element: any, index) => {
+        const formValueList = this.prepareFormValidationData(element, index);
       if (!_.isEmpty(element.depends)) {
         dependency.push({code: element.code, depends: element.depends});
       }
       formGroupData[element.code] = formValueList;
+      });
     });
 
     this.mapDependency(dependency);
