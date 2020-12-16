@@ -231,9 +231,12 @@ export class AppComponent {
 
 
   config = formConfigWithSection;
-    output(event) {
-        // console.log(event);
-    }
+
+
+  output(event) {
+      // console.log(event);
+  }
 
 
 }
+

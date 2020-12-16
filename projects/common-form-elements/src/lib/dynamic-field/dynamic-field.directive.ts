@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, ComponentRef, Directive, Input, OnInit, ViewContainerRef, Renderer2} from '@angular/core';
+import { ComponentFactoryResolver, ComponentRef, Directive, Input, OnInit, ViewContainerRef, Renderer2, ElementRef} from '@angular/core';
 
 import { FormGroup, FormControl } from '@angular/forms';
 import { FieldConfig } from '../interfaces/field.interface';
@@ -51,13 +51,15 @@ export class DynamicFieldDirective implements OnInit {
   constructor(
     private resolver: ComponentFactoryResolver,
     private container: ViewContainerRef,
-    private renderer2: Renderer2
+    private renderer2: Renderer2,
+    private elementRef: ElementRef
 
   ) { }
 
   ngOnInit() {
     const factory = this.resolver.resolveComponentFactory(componentMapper[this.field.inputType]);
     this.componentRef = this.container.createComponent(factory);
+    // this.renderer2.appendChild(this.elementRef.nativeElement, this.componentRef.location.nativeElement);
     if (this.field.renderingHints && this.field.renderingHints.class) {
       this.setClassListOnElement(this.field.renderingHints.class);
     }
