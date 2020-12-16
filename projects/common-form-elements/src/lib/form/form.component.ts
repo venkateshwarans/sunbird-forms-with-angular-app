@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit,
-  Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+  Output, QueryList, SimpleChanges, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
   import {AsyncValidatorFactory, FieldConfig, FieldConfigInputType, FieldConfigValidationType} from '../common-form-config';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject, Subscription} from 'rxjs';
@@ -12,6 +12,7 @@ import * as _ from 'lodash-es';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
+  @ViewChild('appIcon', {read: ViewContainerRef}) appIcon: ViewContainerRef;
   @Input() config;
   @Output() initialize = new EventEmitter();
   _: any = _;

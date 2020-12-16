@@ -27,8 +27,7 @@
 </div> -->
 
 
-
-<div class="dynamic-form" [formGroup]="formGroup">
+<div class="dynamic-form grid" [formGroup]="formGroup">
   <!-- <div class="try">
     <ng-content select="sb-file"></ng-content>
   </div> -->
@@ -39,25 +38,13 @@
     [options]="field.terms" [field]="field" [formGroup]="formGroup" [label]="field.label" [formControlRef]="formGroup.get(field.code)">
     </ng-container> -->
   <!-- </div> -->
-
+      <ng-container #appIcon></ng-container>
   <!-- <div class="second-column grid two-column-grid"> -->
-
-    <ng-container *ngIf="!_.isEmpty(_.keys(groupBySection(config)))">
-      <div *ngFor="let section of _.keys(groupBySection(config))" class="grid two-and-half-column-grid">
-        <ng-container *ngFor="let field of groupBySection(config)[section]" libDynamicField
+    <ng-container *ngFor="let field of config" libDynamicField
         [depends]="field.depends ? getAllDependsFormControl(field.code) :  null" [dependencyTerms]="field.depends ? fetchDependencyTerms(field.code) : []"
         [context]="field.context ? formGroup.get(field.context) : null" [contextTerms]="fetchContextTerms(config, field.context)"
         [options]="field.terms" [field]="field" [formGroup]="formGroup" [label]="field.label" [formControlRef]="formGroup.get(field.code)">
-      </ng-container>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="_.isEmpty(_.keys(groupBySection(config)))">
-    <ng-container *ngFor="let field of (config)" libDynamicField
-      [depends]="field.depends ? getAllDependsFormControl(field.code) :  null" [dependencyTerms]="field.depends ? fetchDependencyTerms(field.code) : []"
-      [context]="field.context ? formGroup.get(field.context) : null" [contextTerms]="fetchContextTerms(config, field.context)"
-      [options]="field.terms" [field]="field" [formGroup]="formGroup" [label]="field.label" [formControlRef]="formGroup.get(field.code)">
     </ng-container>
-  </ng-container>
   <!-- </div> -->
 </div>
 
