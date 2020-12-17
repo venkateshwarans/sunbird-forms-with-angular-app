@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit,
   Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
-  import {AsyncValidatorFactory, FieldConfig, FieldConfigInputType, FieldConfigValidationType} from '../common-form-config';
+  import {AsyncValidatorFactory, FieldConfig, FieldConfigInputType, FieldConfigValidationType, SectionConfig} from '../common-form-config';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject, Subscription} from 'rxjs';
 import {distinctUntilChanged, map, scan, tap} from 'rxjs/operators';
@@ -19,6 +19,8 @@ export class FormComponent implements OnInit {
   formGroup: FormGroup;
   FieldConfigInputType = FieldConfigInputType;
   fieldDependency: {};
+  isSection = false;
+  flattenSectionFields;
 
   constructor(
     private formBuilder: FormBuilder
@@ -38,16 +40,38 @@ export class FormComponent implements OnInit {
     //   formGroupData[element.code] = formValueList;
     // });
 
-    this.config.forEach((sections) => {
-      sections.fields.forEach((element: any, index) => {
-        const formValueList = this.prepareFormValidationData(element, index);
-      if (!_.isEmpty(element.depends)) {
-        dependency.push({code: element.code, depends: element.depends});
-      }
-      formGroupData[element.code] = formValueList;
+    this.isSection = !_.isEmpty(_.find(this.config, 'fields'));
+    if (this.isSection) {
+      this.config.forEach((sections) => {
+          sections.fields.forEach((element: any, index) => {
+            const formValueList = this.prepareFormValidationData(element, index);
+          if (!_.isEmpty(element.depends)) {
+            dependency.push({code: element.code, depends: element.depends});
+          }
+          formGroupData[element.code] = formValueList;
+          });
       });
-    });
+    } else {
+      let defaultSection: any = [];
+      defaultSection = [
+        {
+          'name': '',
+          'fields': _.cloneDeep(this.config)
+        }
+      ];
 
+      this.config = _.cloneDeep(defaultSection);
+      defaultSection.forEach((sections) => {
+        sections.fields.forEach((element: any, index) => {
+          const formValueList = this.prepareFormValidationData(element, index);
+        if (!_.isEmpty(element.depends)) {
+          dependency.push({code: element.code, depends: element.depends});
+        }
+        formGroupData[element.code] = formValueList;
+        });
+    });
+    }
+    this.flattenSectionFields = this.getFlattenedSectionFields();
     this.mapDependency(dependency);
     this.formGroup = this.formBuilder.group(formGroupData);
     // this.initialize.emit(this.formGroup);
@@ -98,10 +122,11 @@ export class FormComponent implements OnInit {
   }
 
   mapDependency(dependency) {
-    const configCode = _.map(this.config, 'code');
+    const configCode = _.map(this.flattenSectionFields, 'code');
     const fieldDependency = {};
     _.forEach(configCode, code => {
-        _.forEach(this.config, field => {
+        _.forEach(this.config, config => {
+          _.forEach(config.fields, field => {
             if (_.includes(field.depends, code)) {
                 if (_.has(fieldDependency, code)) {
                   fieldDependency[code].push(field.code);
@@ -110,6 +135,7 @@ export class FormComponent implements OnInit {
                   fieldDependency[code].push(field.code);
                 }
             }
+          })
         });
     });
     this.fieldDependency = fieldDependency;
@@ -130,7 +156,7 @@ export class FormComponent implements OnInit {
 
   fetchDependencyTerms(code) {
     const depends = _.get(this.fieldDependency, code);
-    const dependsTerms = _.map(_.filter(this.config, c => {
+    const dependsTerms = _.map(_.filter(this.flattenSectionFields, c => {
       return _.includes(depends, c.code);
     }), 'terms');
     return _.flatten(dependsTerms);
@@ -151,6 +177,10 @@ export class FormComponent implements OnInit {
   groupBySection(config) {
     const fields = this.getAppIcon(config, false);
     return _.groupBy(fields, 'section.index');
+  }
+
+  getFlattenedSectionFields() {
+    return _.flatten(_.map(this.config, 'fields'));
   }
 
 }

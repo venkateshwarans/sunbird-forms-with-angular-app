@@ -78,7 +78,6 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
      this.contextValueChangesSubscription =  merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
       tap((value: any) => {
         this.latestParentValue = value;
-        console.log(this.latestParentValue);
       })
       ).subscribe();
     }
@@ -114,7 +113,6 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
     // && this.context.value && this.field.association
     if (!_.isEmpty(this.depends)) {
       const filteredTerm = _.find(this.dependencyTerms, terms => {
-        console.log(this.getParentValue());
         return _.includes(this.getParentValue(), terms.identifier);
       });
       if (filteredTerm) {
