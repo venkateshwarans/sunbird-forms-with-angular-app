@@ -33,7 +33,7 @@
       <ng-container *ngFor="let field of section['fields']" libDynamicField
       [depends]="field.depends ? getAllDependsFormControl(field.code) :  null" [dependencyTerms]="field.depends ? fetchDependencyTerms(field.code) : []"
       [context]="field.context ? formGroup.get(field.context) : null" [contextTerms]="fetchContextTerms(config, field.context)"
-      [options]="field.terms" [field]="field" [formGroup]="formGroup" [label]="field.label" [formControlRef]="formGroup.get(field.code)">
+      [options]="field.terms" [field]="field" [formGroup]="formGroup" [default]="field.default || ''" [label]="field.label" [formControlRef]="formGroup.get(field.code)">
     </ng-container>
   </div>
 </div>

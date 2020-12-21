@@ -43,7 +43,7 @@ export class DynamicFieldDirective implements OnInit {
   @Input() contextTerms?: any = [];
   @Input() depends?: FormControl[];
   @Input() dependencyTerms?: any = [];
-
+  @Input() default: any;
 
   componentRef: any;
 
@@ -72,6 +72,7 @@ export class DynamicFieldDirective implements OnInit {
     this.componentRef.instance.contextTerms = this.contextTerms;
     this.componentRef.instance.depends = this.depends;
     this.componentRef.instance.dependencyTerms = this.dependencyTerms;
+    this.componentRef.instance.default = this.default;
 
     // this.componentRef.instance = {
     //   field : this.field,

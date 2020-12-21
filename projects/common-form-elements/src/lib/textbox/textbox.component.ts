@@ -15,12 +15,14 @@ export class TextboxComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() validations?: any;
   @Input() formControlRef?: FormControl;
   @Input() prefix?: String;
+  @Input() default: String;
   @ViewChild('validationTrigger') validationTrigger: ElementRef;
 
   constructor() {
   }
 
   ngOnInit() {
+    console.log('default ', this.default);
   }
 
   ngOnChanges() {
