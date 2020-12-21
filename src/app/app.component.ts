@@ -230,11 +230,11 @@ export class AppComponent {
 // 'subject2', 'subject3', 'subject4',
 
 
-  config = formConfigWithSection;
+  config = formConfig;
 
 
   output(event) {
-      // console.log(event);
+      console.log(event);
   }
 
 

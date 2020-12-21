@@ -11,6 +11,7 @@ export const formConfig = [
     'renderingHints': {},
     'required': true,
     'visible': true,
+    'default': 'Test Name',
     'validation': [{
       'type': 'max',
       'value': '120',
@@ -46,6 +47,32 @@ export const formConfig = [
     'name': 'Collection Type',
     'placeholder': '',
     'required': true,
+    'visible': true
+  },
+  {
+    'code': 'additionalCategories',
+    'dataType': 'list',
+    'description': 'Additonal Category of the Content',
+    'editable': true,
+    'index': 5,
+    'inputType': 'multiselect',
+    'label': 'Additional Category',
+    'name': 'Additional Category',
+    'placeholder': 'Select Additional Category',
+    'renderingHints': {
+
+    },
+    'range': [
+      {
+          'value': 'andhra',
+          'label': 'andhra'
+      },
+      {
+          'value': 'karnataka',
+          'label': 'karnataka'
+      }
+  ],
+    'required': false,
     'visible': true
   },
   {
@@ -793,7 +820,21 @@ export const formConfigWithClass = [
       'renderingHints': {
 
       },
-      'range': ['Textbook', 'Lesson Plan'],
+      'range': [
+        'Classroom Teaching Video',
+        'Concept Map',
+        'Curiosity Question Set',
+        'Textbook',
+        'Experiential Resource',
+        'Explanation Video',
+        'Focus Spot',
+        'Learning Outcome Definition',
+        'Marking Scheme Rubric',
+        'Pedagogy Flow',
+        'Lesson Plan',
+        'Previous Board Exam Papers',
+        'TV Lesson'
+      ],
       'required': false,
       'visible': true,
       'section': {
@@ -1199,7 +1240,16 @@ export const formConfigWithSection = [
         'renderingHints': {
 
         },
-        'range': ['Textbook', 'Lesson Plan'],
+        'range': [
+          {
+              'value': 'andhra',
+              'label': 'andhra'
+          },
+          {
+              'value': 'karnataka',
+              'label': 'karnataka'
+          }
+      ],
         'required': false,
         'visible': true
       },
@@ -1329,7 +1379,7 @@ export const formConfigWithSection = [
         'label': 'license',
         'placeholder': 'license',
         'required': true
-      },{
+      }, {
         'code': 'licenseterms',
         'visible': true,
         'editable': true,

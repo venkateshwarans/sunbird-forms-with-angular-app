@@ -81,6 +81,9 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
       })
       ).subscribe();
     }
+    if (this.field && this.field.range) {
+      this.options = this.field.range;
+    }
   }
 
   ngOnDestroy(): void {
@@ -98,6 +101,10 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
 
   isOptionsMap(input: any) {
     return !Array.isArray(input) && typeof input === 'object';
+  }
+
+  isOptionsArrayMap(input: any) {
+    return Array.isArray(input) && typeof input[0] === 'object';
   }
 
   onChangeFacet($event) {
