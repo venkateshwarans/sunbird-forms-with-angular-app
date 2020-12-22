@@ -41,13 +41,14 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log('Is it going to ngonchanges');
     if (!this.options) {
       this.options = [];
     }
     if (this.isOptionsClosure(this.options)) {
       this.options$ = (this.options as FieldConfigOptionsBuilder<any>)(
         this.formControlRef,
-        this.context,
+        this.depends,
         () => this.dataLoadStatusDelegate.next('LOADING'),
         () => this.dataLoadStatusDelegate.next('LOADED')
       ) as any;
@@ -78,16 +79,25 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
      this.contextValueChangesSubscription =  merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
       tap((value: any) => {
         this.latestParentValue = value;
+        console.log(this.options$.subscribe(console.log));
       })
       ).subscribe();
     }
+
     if (this.field && this.field.range) {
       this.options = this.field.range;
     }
+
+    if (this.isOptionsClosure(this.options)) {
+      // tslint:disable-next-line:max-line-length
+      this.options$ = (this.options as FieldConfigOptionsBuilder<any>)(this.formControlRef, this.depends, () => this.dataLoadStatusDelegate.next('LOADING'), () => this.dataLoadStatusDelegate.next('LOADED')) as any;
+
+    }
+
   }
 
   ngOnDestroy(): void {
-    // this.contextValueChangesSubscription.unsubscribe();
+    this.contextValueChangesSubscription.unsubscribe();
   }
 
   isOptionsArray(options: any) {

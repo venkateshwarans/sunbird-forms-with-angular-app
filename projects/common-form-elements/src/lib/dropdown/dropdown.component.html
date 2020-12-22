@@ -10,23 +10,24 @@
         <option [defaultSelected]="!default" [ngValue]="null" disabled>{{placeHolder}}
         </option>
         <ng-container *ngIf="field.range && isOptionsArrayMap(field.range) && !field.association">
-          <option *ngFor="let option of field.range" [ngValue]="option.value">{{option.label}}</option>
-        </ng-container> 
+          <option class="optionsArrayMap" *ngFor="let option of field.range" [ngValue]="option.value">{{option.label}}</option>
+        </ng-container>
         <ng-container *ngIf="field.range && isOptionsArray(field.range) && !isOptionsArrayMap(field.range) && !field.association">
-          <option *ngFor="let option of field.range" [ngValue]="option || option">{{option.name || option}}</option>
+          <option class="optionsArray" *ngFor="let option of field.range" [ngValue]="option || option">{{option.name || option}}</option>
         </ng-container>
 
-        <!-- <ng-container *ngIf="isOptionsClosure(options)">
-          <option *ngFor="let option of options$ | async" [ngValue]="option.value">{{option.label}}</option>
-        </ng-container> -->
+        <ng-container *ngIf="field.range && isOptionsClosure(field.range)">
+          <option class="closure" *ngFor="let option of options$ | async" [ngValue]="option.value">{{option.label}}</option>
+        </ng-container>
 
         <!-- <ng-container *ngIf="isOptionsMap(options) && context && context.value && !field.association">
           <option *ngFor="let option of options[context.value]" [ngValue]="option.value">{{option.label}}</option>
         </ng-container> -->
 
         <ng-container *ngIf="!field.range && field.terms">
-          <option *ngFor="let option of fetchAssociations()" [ngValue]="option.identifier">{{option.name}}</option>
+          <option class="optionsLast" *ngFor="let option of fetchAssociations()" [ngValue]="option.identifier">{{option.name}}</option>
         </ng-container>
+
       </select>
     </div>
   </ng-container>

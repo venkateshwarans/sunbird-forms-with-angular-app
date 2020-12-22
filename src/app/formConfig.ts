@@ -1,3 +1,7 @@
+import {tap, switchMap} from 'rxjs/operators';
+import {of, merge} from 'rxjs';
+import { map } from 'lodash-es';
+
 export const formConfig = [
   {
     'code': 'name',
@@ -35,45 +39,6 @@ export const formConfig = [
       'value': '1000',
       'message': 'Input is Exceded'
     }]
-  },
-  {
-    'code': 'primaryCategory',
-    'dataType': 'text',
-    'description': 'Collection Type',
-    'editable': false,
-    'index': 0,
-    'inputType': 'text',
-    'label': 'Collection Type',
-    'name': 'Collection Type',
-    'placeholder': '',
-    'required': true,
-    'visible': true
-  },
-  {
-    'code': 'additionalCategories',
-    'dataType': 'list',
-    'description': 'Additonal Category of the Content',
-    'editable': true,
-    'index': 5,
-    'inputType': 'multiselect',
-    'label': 'Additional Category',
-    'name': 'Additional Category',
-    'placeholder': 'Select Additional Category',
-    'renderingHints': {
-
-    },
-    'range': [
-      {
-          'value': 'andhra',
-          'label': 'andhra'
-      },
-      {
-          'value': 'karnataka',
-          'label': 'karnataka'
-      }
-  ],
-    'required': false,
-    'visible': true
   },
   {
     'code': 'board',
@@ -702,7 +667,78 @@ export const formConfig = [
       'message': 'Input is Exceeded',
       'value': '1000'
     }]
-  }
+  },
+  {
+    'code': 'primaryCategory',
+    'dataType': 'text',
+    'description': 'Collection Type',
+    'depends': [
+      'additionalCategories'
+    ],
+    'editable': false,
+    'index': 0,
+    'inputType': 'select',
+    'label': 'Collection Type',
+    'name': 'Collection Type',
+    'placeholder': '',
+    'required': true,
+    'visible': true,
+    'range': [
+      {
+          'value': 'andhra',
+          'label': 'andhra'
+      },
+      {
+          'value': 'karnataka',
+          'label': 'karnataka'
+      }
+  ],
+  },
+  {
+    'code': 'additionalCategories',
+    'dataType': 'text',
+    'description': 'Additonal Category of the Content',
+    'editable': true,
+    'index': 5,
+    'inputType': 'select',
+    'label': 'Additional Category',
+    'name': 'Additional Category',
+    'placeholder': 'Select Additional Category',
+    'renderingHints': {
+
+    },
+    'range': (_, depends) => {
+      return merge(...map(depends, depend => depend.valueChanges)).pipe(
+          switchMap((value) => {
+              if (value === 'andhra') {
+                  return of([
+                      {
+                          label: 'andhra1',
+                          value: 'andhra1'
+                      },
+                      {
+                          label: 'andhra2',
+                          value: 'andhra2'
+                      }
+                  ]);
+              } else if (value === 'karnataka') {
+                return of([
+                    {
+                        label: 'karnataka1',
+                        value: 'karnataka1'
+                    },
+                    {
+                        label: 'karnataka2',
+                        value: 'karnataka2'
+                    }
+                  ]);
+                }
+              })
+            )
+        },
+    'required': false,
+    'visible': true
+  },
 ];
 
 

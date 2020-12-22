@@ -151,7 +151,7 @@ export class FormComponent implements OnInit {
     const fieldDepends =  _.map(depends, depend => {
       return this.formGroup.get(depend);
     });
-    return _.compact(fieldDepends);
+    return _.compact(fieldDepends) || null;
   }
 
   fetchDependencyTerms(code) {

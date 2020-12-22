@@ -22,8 +22,9 @@ export enum FieldConfigValidationType {
 }
 
 export type FieldConfigOptionsBuilder<T> =
-  (control: FormControl, context?: FormControl, notifyLoading?: () => void,
+  (control: FormControl, depends?: FormControl[], notifyLoading?: () => void,
     notifyLoaded?: () => void) => Observable<FieldConfigOption<T>[]> | Promise<FieldConfigOption<T>[]>;
+
 export type AsyncValidatorFactory = (marker: string, trigger: HTMLElement) => AsyncValidatorFn;
 
 export interface FieldConfigOption<T> {
