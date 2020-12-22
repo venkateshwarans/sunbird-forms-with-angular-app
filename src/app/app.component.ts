@@ -233,10 +233,12 @@ export class AppComponent {
 
 
   config = map(formConfig, field => {
-    if (field.code === 'additionalCategories')
-      {
+    if (field.code === 'additionalCategories') {
         field.range = this.onChange;
-      }
+    }
+    if (field.code === 'licenseTerms') {
+      field.range = this.loadLicenseTerms;
+    }
       return field;
   });
 
@@ -245,8 +247,10 @@ export class AppComponent {
       console.log(event);
   }
 
-  onChange(control, depends, loading, loaded, ) {
+  onChange(control, depends, loading, loaded) {
+
     const response = merge(...map(depends, depend => depend.valueChanges)).pipe(
+
       switchMap((value) => {
         if (value === 'andhra') {
           return of([{
@@ -271,9 +275,21 @@ export class AppComponent {
         }
       })
     );
+
+
     return response;
   }
 
+  loadLicenseTerms (control, depends, loading, loaded) {
+    return from(fetch('https://api.jsonbin.io/b/5fe1970847ed0861b36a715c', {
+      headers: {
+        'secret-key': '$2b$10$0Z5ZDRd9x3Y8dDRsO4fKJO.GbDf/QCamiaNtBmD51lPoBMNUP6F7a'
+      }
+    })).pipe(switchMap(res => {
+      loaded();
+      return res.json();
+    }));
+  }
 
 }
 

@@ -711,6 +711,23 @@ export const formConfig = [
     'required': false,
     'visible': true
   },
+  {
+    'code': 'licenseTerms',
+    'dataType': 'text',
+    'description': 'licenseTerms',
+    'editable': true,
+    'index': 5,
+    'inputType': 'select',
+    'label': 'licenseTerms',
+    'name': 'licenseTerms',
+    'placeholder': 'Select licenseTerms',
+    'renderingHints': {
+
+    },
+    'range': '',
+    'required': false,
+    'visible': true
+  },
 ];
 
 

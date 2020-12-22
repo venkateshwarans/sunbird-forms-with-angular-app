@@ -84,6 +84,10 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
       this.options = this.field.range;
     }
 
+    if(this.field && this.field.range && !this.depends) {
+      this.options$ = (this.options)()
+    }
+
     if (!_.isEmpty(this.depends) && !this.isOptionsClosure(this.options)) {
      this.contextValueChangesSubscription =  merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
       tap((value: any) => {
