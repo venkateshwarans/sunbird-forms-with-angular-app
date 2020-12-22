@@ -1,5 +1,5 @@
 import {tap, switchMap} from 'rxjs/operators';
-import {of, merge} from 'rxjs';
+import {of, merge, from} from 'rxjs';
 import { map } from 'lodash-es';
 
 export const formConfig = [
@@ -707,35 +707,7 @@ export const formConfig = [
     'renderingHints': {
 
     },
-    'range': (_, depends) => {
-      return merge(...map(depends, depend => depend.valueChanges)).pipe(
-          switchMap((value) => {
-              if (value === 'andhra') {
-                  return of([
-                      {
-                          label: 'andhra1',
-                          value: 'andhra1'
-                      },
-                      {
-                          label: 'andhra2',
-                          value: 'andhra2'
-                      }
-                  ]);
-              } else if (value === 'karnataka') {
-                return of([
-                    {
-                        label: 'karnataka1',
-                        value: 'karnataka1'
-                    },
-                    {
-                        label: 'karnataka2',
-                        value: 'karnataka2'
-                    }
-                  ]);
-                }
-              })
-            )
-        },
+    'range': '',
     'required': false,
     'visible': true
   },

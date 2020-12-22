@@ -6,6 +6,8 @@ import { FieldConfig } from '../interfaces/field.interface';
 // import { ButtonComponent } from '../button/button.component';
 // import { SelectComponent } from '../select/select.component';
 import * as _ from 'lodash-es';
+import {Subject} from 'rxjs';
+
 
 import { DropdownComponent } from '../dropdown/dropdown.component';
 import { TextboxComponent } from '../textbox/textbox.component';
@@ -44,6 +46,7 @@ export class DynamicFieldDirective implements OnInit {
   @Input() depends?: FormControl[];
   @Input() dependencyTerms?: any = [];
   @Input() default: any;
+  @Input() dataLoadStatusDelegate: Subject<'LOADING' | 'LOADED'>;
 
   componentRef: any;
 
@@ -73,6 +76,7 @@ export class DynamicFieldDirective implements OnInit {
     this.componentRef.instance.depends = this.depends;
     this.componentRef.instance.dependencyTerms = this.dependencyTerms;
     this.componentRef.instance.default = this.default;
+    this.componentRef.instance.dataLoadStatusDelegate = this.dataLoadStatusDelegate;
 
     // this.componentRef.instance = {
     //   field : this.field,

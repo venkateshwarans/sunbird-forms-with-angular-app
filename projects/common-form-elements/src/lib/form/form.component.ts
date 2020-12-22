@@ -14,6 +14,8 @@ import * as _ from 'lodash-es';
 export class FormComponent implements OnInit {
   @Input() config;
   @Output() initialize = new EventEmitter();
+  @Input() dataLoadStatusDelegate = new Subject<'LOADING' | 'LOADED'>();
+
   _: any = _;
 
   formGroup: FormGroup;

@@ -64,6 +64,10 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
       // ).subscribe();
     // }
 
+    this.dataLoadStatusDelegate.subscribe(
+      console.log
+    );
+
     if (!_.isEmpty(this.field.depends)) {
       this.formControlRef.valueChanges.pipe(
           tap(() => {
@@ -75,23 +79,24 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
           })
       ).subscribe();
     }
-    if (!_.isEmpty(this.depends)) {
-     this.contextValueChangesSubscription =  merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
-      tap((value: any) => {
-        this.latestParentValue = value;
-        console.log(this.options$.subscribe(console.log));
-      })
-      ).subscribe();
-    }
 
     if (this.field && this.field.range) {
       this.options = this.field.range;
     }
 
+    if (!_.isEmpty(this.depends) && !this.isOptionsClosure(this.options)) {
+     this.contextValueChangesSubscription =  merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
+      tap((value: any) => {
+        this.latestParentValue = value;
+      })
+      ).subscribe();
+    }
+
+
+
     if (this.isOptionsClosure(this.options)) {
       // tslint:disable-next-line:max-line-length
       this.options$ = (this.options as FieldConfigOptionsBuilder<any>)(this.formControlRef, this.depends, () => this.dataLoadStatusDelegate.next('LOADING'), () => this.dataLoadStatusDelegate.next('LOADED')) as any;
-
     }
 
   }
