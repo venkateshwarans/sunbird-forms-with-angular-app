@@ -27,7 +27,7 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "src/assets/semantic-ui-tree-picker.js"
+              "projects/common-form-elements/src/lib/utilities/semantic-ui-tree-picker.js"
             ]
           },
           "configurations": {

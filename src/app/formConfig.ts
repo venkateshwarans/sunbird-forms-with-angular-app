@@ -1513,7 +1513,10 @@ export const formConfigWithSection = [
         'inputType': 'topicselector',
         'label': 'Topics',
         'placeholder': 'Choose Topics',
-        'required': false
+        'required': false,
+        'range': [
+          'applee', 'orange', 'grapes'
+        ]
       }
     ]
   },

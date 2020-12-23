@@ -23,11 +23,12 @@ import { TopicpickerComponent } from './topicpicker/topicpicker.component';
   ],
   entryComponents: [TextareaComponent, TextboxComponent, DropdownComponent,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent,
-    FileComponent],
+    FileComponent, TopicpickerComponent],
   declarations: [CommonFormElementsComponent, FormComponent,
     TextboxComponent, TextareaComponent,CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent,
     RedExclamationComponent, DropdownComponent, DynamicFieldDirective, FileComponent, TopicpickerComponent],
   exports: [CommonFormElementsComponent, FormComponent, TextboxComponent, TextareaComponent, DropdownComponent, DynamicFieldDirective,
-    CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent, FileComponent ]
+    CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent, FileComponent,
+    TopicpickerComponent ]
 })
 export class CommonFormElementsModule { }

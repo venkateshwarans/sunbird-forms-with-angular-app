@@ -13,6 +13,7 @@ import { DropdownComponent } from '../dropdown/dropdown.component';
 import { TextboxComponent } from '../textbox/textbox.component';
 import { TextareaComponent } from '../textarea/textarea.component';
 import { FileComponent } from '../file/file.component';
+import { TopicpickerComponent } from '../topicpicker/topicpicker.component';
 
 
 const componentMapper = {
@@ -23,7 +24,7 @@ const componentMapper = {
   file: FileComponent,
   keywordsuggestion: TextboxComponent,
   dialcode: TextboxComponent,
-  topicselector: TextboxComponent,
+  topicselector: TopicpickerComponent,
   licenses: TextboxComponent,
   label: TextboxComponent,
   number: TextboxComponent,

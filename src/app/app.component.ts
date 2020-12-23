@@ -232,7 +232,7 @@ export class AppComponent {
 // 'subject2', 'subject3', 'subject4',
 
 
-  config = map(formConfig, field => {
+  config = map(formConfigWithClass, field => {
     if (field.code === 'additionalCategories') {
         field.range = this.onChange;
     }
