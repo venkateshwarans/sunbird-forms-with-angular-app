@@ -13,6 +13,7 @@ import { EmptyCircleComponent } from './icon/empty-circle/empty-circle.component
 import { GreenTickComponent } from './icon/green-tick/green-tick.component';
 import { RedExclamationComponent } from './icon/red-exclamation/red-exclamation.component';
 import { FileComponent } from './file/file.component';
+import { TopicpickerComponent } from './topicpicker/topicpicker.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,7 @@ import { FileComponent } from './file/file.component';
     FileComponent],
   declarations: [CommonFormElementsComponent, FormComponent,
     TextboxComponent, TextareaComponent,CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent,
-    RedExclamationComponent, DropdownComponent, DynamicFieldDirective, FileComponent],
+    RedExclamationComponent, DropdownComponent, DynamicFieldDirective, FileComponent, TopicpickerComponent],
   exports: [CommonFormElementsComponent, FormComponent, TextboxComponent, TextareaComponent, DropdownComponent, DynamicFieldDirective,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent, FileComponent ]
 })
