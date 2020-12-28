@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {switchMap, tap} from 'rxjs/operators';
 import {of} from 'rxjs';
+import * as _ from 'lodash-es';
 
 import { formConfig, formConfigWithClass, formConfigWithSection } from './formConfig';
 @Component({
@@ -230,13 +231,27 @@ export class AppComponent {
 // 'subject2', 'subject3', 'subject4',
 
 
-  config = formConfig;
+  config: any = formConfig;
 
 
   output(event) {
       console.log(event);
   }
-
+  switchConfig(number) {
+    switch (number) {
+      case 'one':
+        this.config = formConfig;
+        break;
+      case 'two':
+        this.config = formConfigWithClass;
+        break;
+      case 'three':
+        this.config = formConfigWithSection;
+        break;
+      default:
+        break;
+    }
+  }
 
 }
 

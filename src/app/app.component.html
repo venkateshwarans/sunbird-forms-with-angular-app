@@ -1,3 +1,7 @@
+<button (click)="switchConfig('one')">Form Config One</button>
+<button (click)="switchConfig('two')">Form Config Two</button>
+<button (click)="switchConfig('three')">Form Config Three</button>
+
 
 <div class="form-container">
   <sb-form [config]="config" (initialize)="output($event)"></sb-form>
