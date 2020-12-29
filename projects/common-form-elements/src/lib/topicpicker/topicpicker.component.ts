@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { LazzyLoadScriptService } from './../utilities/lazzy-load-script.service';
 import * as _ from 'lodash-es';
+import { FormControl } from '@angular/forms';
+import { FieldConfig } from 'common-form-elements/lib/common-form-config';
 
 declare var treePicker: any;
 declare var $: any;
@@ -23,10 +25,14 @@ interface JQuery {
 })
 export class TopicpickerComponent implements OnInit {
 
-  @Input() field: any;
   @Input() selectedTopics: any;
   @Input() topicPickerClass: string;
+  @Input() label: String;
+  @Input() placeholder: String;
+  @Input() formControlRef: FormControl;
+  @Input() field: FieldConfig<String>;
   @Output() topicChange = new EventEmitter();
+
 
   public selectedNodes: any;
   public placeHolder: string;
@@ -73,6 +79,11 @@ export class TopicpickerComponent implements OnInit {
           }));
           this.placeHolder = this.selectedTopics.length + ' topics selected';
           this.topicChange.emit(this.selectedTopics);
+          const topics = [];
+          _.forEach(this.selectedTopics, (value, index) => {
+            topics.push(value.name);
+          });
+          this.formControlRef.setValue(topics);
         },
         nodeName: 'topicSelector',
         minSearchQueryLength: 1

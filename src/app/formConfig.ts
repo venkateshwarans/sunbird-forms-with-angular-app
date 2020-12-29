@@ -73952,7 +73952,7 @@ export const formConfigWithSection = [
         },
         'index': 3,
         'description': 'Keywords for the content',
-        'inputType': 'keywordsuggestion',
+        'inputType': 'keywords',
         'label': 'keywords',
         'placeholder': 'Enter Keywords',
         'required': false
