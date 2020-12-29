@@ -23,10 +23,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "projects/common-form-elements/src/lib/utilities/semantic/semantic.min.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
+              "projects/common-form-elements/src/lib/utilities/dimmer.min.js",
+              "projects/common-form-elements/src/lib/utilities/transition.min.js",
+              "projects/common-form-elements/src/lib/utilities/modal.min.js",
               "projects/common-form-elements/src/lib/utilities/semantic-ui-tree-picker.js"
             ]
           },

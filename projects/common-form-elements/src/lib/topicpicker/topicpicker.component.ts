@@ -23,7 +23,7 @@ interface JQuery {
 })
 export class TopicpickerComponent implements OnInit {
 
-  @Input() formTopic: any;
+  @Input() field: any;
   @Input() selectedTopics: any;
   @Input() topicPickerClass: string;
   @Output() topicChange = new EventEmitter();
@@ -34,11 +34,12 @@ export class TopicpickerComponent implements OnInit {
   constructor(private lazzyLoadScriptService: LazzyLoadScriptService) { }
 
   ngOnInit() {
+    console.log('topicpicker.component');
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
-    this.initTopicPicker(this.formatTopics(this.formTopic.range));
+    this.initTopicPicker(this.formatTopics(this.field.range));
   }
 
   private formatTopics(topics, subTopic = false): Array<TopicTreeNode> {
@@ -51,8 +52,8 @@ export class TopicpickerComponent implements OnInit {
   }
 
   private initTopicPicker(data: Array<TopicTreeNode>) {
-    combineLatest(this.lazzyLoadScriptService.loadScript('fancytree-all-deps.js'),
-    this.lazzyLoadScriptService.loadScript('semanticModal.js')).subscribe(() => {
+    // combineLatest(this.lazzyLoadScriptService.loadScript('fancytree-all-deps.js'),
+    // this.lazzyLoadScriptService.loadScript('semanticModal.js')).subscribe(() => {
       $('.topic-picker-selector').treePicker({
         data: data,
         name: 'Topics',
@@ -78,7 +79,7 @@ export class TopicpickerComponent implements OnInit {
       });
       setTimeout(() =>
         document.getElementById('topicSelector').classList.add(this.topicPickerClass), 100);
-    });
+    // });
   }
 
 }
