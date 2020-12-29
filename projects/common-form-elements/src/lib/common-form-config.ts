@@ -54,6 +54,7 @@ export interface FieldConfig<T> {
   association?: boolean;
   depends?: string[];
   default?: any;
+  placeholder?: any;
   context?: string;
   children?: { [key: string]: FieldConfig<T>[] } | FieldConfig<T>[];
   range: any;

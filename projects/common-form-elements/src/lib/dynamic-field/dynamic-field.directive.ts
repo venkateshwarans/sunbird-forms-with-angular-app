@@ -14,6 +14,7 @@ import { TextboxComponent } from '../textbox/textbox.component';
 import { TextareaComponent } from '../textarea/textarea.component';
 import { FileComponent } from '../file/file.component';
 import { TopicpickerComponent } from '../topicpicker/topicpicker.component';
+import { KeywordsComponent } from '../keywords/keywords.component';
 
 
 const componentMapper = {
@@ -22,12 +23,12 @@ const componentMapper = {
   select: DropdownComponent,
   multiselect: DropdownComponent,
   file: FileComponent,
-  keywordsuggestion: TextboxComponent,
+  keywords: KeywordsComponent,
   dialcode: TextboxComponent,
   topicselector: TopicpickerComponent,
-  licenses: TextboxComponent,
+  licenses: DropdownComponent,
   label: TextboxComponent,
-  number: TextboxComponent,
+  number: TextboxComponent
 };
 
 @Directive({
