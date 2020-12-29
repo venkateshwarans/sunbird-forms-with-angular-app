@@ -11,7 +11,7 @@ import * as _ from 'lodash-es';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements OnInit, OnChanges {
   @Input() config;
   @Output() initialize = new EventEmitter();
   @Input() dataLoadStatusDelegate = new Subject<'LOADING' | 'LOADED'>();
@@ -29,6 +29,10 @@ export class FormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+  }
+
+  ngOnChanges() {
     const formGroupData = {};
     const dependency = [];
 
