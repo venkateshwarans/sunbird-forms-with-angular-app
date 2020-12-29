@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonFormElementsModule } from 'common-form-elements';
-
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -9,7 +8,8 @@ import { AppComponent } from './app.component';
     AppComponent
   ],
   imports: [
-    BrowserModule, CommonFormElementsModule
+    BrowserModule,
+    CommonFormElementsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

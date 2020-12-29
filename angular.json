@@ -25,7 +25,7 @@
             "styles": [
               "src/styles.css",
               "projects/common-form-elements/src/lib/utilities/semantic/semantic.min.css",
-              "projects/common-form-elements/src/lib/utilities/semantic/themes/default/assets/styles/styles.scss"
+              "projects/common-form-elements/src/lib/utilities/assets/styles/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

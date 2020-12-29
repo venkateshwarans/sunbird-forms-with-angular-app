@@ -14,21 +14,27 @@ import { GreenTickComponent } from './icon/green-tick/green-tick.component';
 import { RedExclamationComponent } from './icon/red-exclamation/red-exclamation.component';
 import { FileComponent } from './file/file.component';
 import { TopicpickerComponent } from './topicpicker/topicpicker.component';
+import { KeywordsComponent } from './keywords/keywords.component';
+import { TagInputModule } from 'ngx-chips';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    TagInputModule,
+    BrowserAnimationsModule
   ],
   entryComponents: [TextareaComponent, TextboxComponent, DropdownComponent,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent,
-    FileComponent, TopicpickerComponent],
+    FileComponent, TopicpickerComponent, KeywordsComponent],
   declarations: [CommonFormElementsComponent, FormComponent,
-    TextboxComponent, TextareaComponent,CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent,
-    RedExclamationComponent, DropdownComponent, DynamicFieldDirective, FileComponent, TopicpickerComponent],
+    TextboxComponent, TextareaComponent, CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent,
+    RedExclamationComponent, DropdownComponent, DynamicFieldDirective, FileComponent, TopicpickerComponent, KeywordsComponent],
   exports: [CommonFormElementsComponent, FormComponent, TextboxComponent, TextareaComponent, DropdownComponent, DynamicFieldDirective,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent, FileComponent,
-    TopicpickerComponent ]
+    TopicpickerComponent, KeywordsComponent ]
 })
 export class CommonFormElementsModule { }
