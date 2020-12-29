@@ -13,7 +13,7 @@ import { formConfig, formConfigWithClass, formConfigWithSection } from './formCo
 export class AppComponent {
   title = 'app';
 
-  config = map(formConfigWithClass, field => {
+  config = map(formConfig, field => {
     if (field.code === 'additionalCategories') {
         field.range = this.onChange;
     }

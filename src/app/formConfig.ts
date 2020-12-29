@@ -16,10 +16,12 @@ export const formConfig = [
     'required': true,
     'visible': true,
     'default': 'Test Name',
-    'validation': [{
+    'validations': [{
       'type': 'max',
       'value': '120',
       'message': 'Input is Exceded'
+    }, {
+      'type': 'required'
     }]
   },
   {
@@ -34,10 +36,13 @@ export const formConfig = [
     'renderingHints': {},
     'required': false,
     'visible': true,
-    'validation': [{
+    'validations': [{
       'type': 'max',
       'value': '1000',
       'message': 'Input is Exceded'
+    },
+    {
+      'type': 'required',
     }]
   },
   {

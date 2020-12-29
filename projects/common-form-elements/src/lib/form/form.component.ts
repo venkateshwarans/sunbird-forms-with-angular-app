@@ -11,10 +11,19 @@ import * as _ from 'lodash-es';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent implements OnInit, OnChanges {
+export class FormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() config;
   @Output() initialize = new EventEmitter();
+  @Output() finalize = new EventEmitter();
+
   @Input() dataLoadStatusDelegate = new Subject<'LOADING' | 'LOADED'>();
+
+  @Output() valueChanges = new EventEmitter();
+  @Output() statusChanges = new EventEmitter();
+
+  private statusChangesSubscription: Subscription;
+  private valueChangesSubscription: Subscription;
+
 
   _: any = _;
 
@@ -35,6 +44,14 @@ export class FormComponent implements OnInit, OnChanges {
   ngOnChanges() {
     const formGroupData = {};
     const dependency = [];
+
+    if (this.statusChangesSubscription) {
+      this.statusChangesSubscription.unsubscribe();
+    }
+
+    if (this.valueChangesSubscription) {
+      this.valueChangesSubscription.unsubscribe();
+    }
 
     // this.config.forEach((element: any, index) => {
     //   // if (element.type !== FieldConfigInputType.LABEL) {
@@ -81,11 +98,53 @@ export class FormComponent implements OnInit, OnChanges {
     this.mapDependency(dependency);
     this.formGroup = this.formBuilder.group(formGroupData);
     // this.initialize.emit(this.formGroup);
-    this.formGroup.valueChanges.pipe(
+
+    this.statusChangesSubscription = this.formGroup.valueChanges.pipe(
+      tap((v) => {
+        this.statusChanges.emit({
+          isPristine: this.formGroup.pristine,
+          isDirty: this.formGroup.dirty,
+          isInvalid: this.formGroup.invalid,
+          isValid: this.formGroup.valid,
+          controls: this.getFormValidationErrors()
+        });
+      })
+    ).subscribe();
+
+    this.valueChangesSubscription =  this.formGroup.valueChanges.pipe(
       tap((data) => {
         this.initialize.emit(data);
       })
     ).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.finalize.emit();
+
+    if (this.statusChangesSubscription) {
+      this.statusChangesSubscription.unsubscribe();
+    }
+
+    if (this.valueChangesSubscription) {
+      this.valueChangesSubscription.unsubscribe();
+    }
+  }
+
+  getFormValidationErrors() {
+    const errors = [];
+    _.keys(this.formGroup.controls).forEach(key => {
+      const controlErrors = this.formGroup.get(key).errors;
+      if (controlErrors != null) {
+        _.keys(controlErrors).forEach(keyError => {
+          errors.push({
+            control_name: key,
+            error_name: keyError,
+            error_value: controlErrors[ keyError ]
+          });
+        });
+      }
+    });
+    return errors;
   }
 
 
@@ -94,10 +153,17 @@ export class FormComponent implements OnInit, OnChanges {
     const validationList = [];
 
     let defaultVal: any = '';
-    switch (element.type) {
+    switch (element.inputType) {
+      case 'text':
+        defaultVal = element.default || null;
+        break;
       case 'select':
-        defaultVal = element.templateOptions.multiple ?
+      case 'nested_select':
+        defaultVal = element.templateOptions && element.templateOptions.multiple ?
           (element.default && Array.isArray(element.default) ? element.default : []) : (element.default || null);
+        break;
+      case 'checkbox':
+        defaultVal = false || !!element.default;
         break;
     }
 
@@ -107,16 +173,22 @@ export class FormComponent implements OnInit, OnChanges {
       element.validations.forEach((data, i) => {
         switch (data.type) {
           case 'required':
-            if (element.type === 'select' || element.type === 'nested_select') {
-              validationList.push((c) => {
-                if (element.templateOptions.multiple) {
-                  return c.value && c.value.length ? null : 'error';
-                }
-                return !!c.value ? null : 'error';
-              });
+            if (element.inputType === 'select' || element.inputType === 'nested_select') {
+              validationList.push(Validators.required);
+            } else if (element.type === 'checkbox') {
+              validationList.push(Validators.requiredTrue);
             } else {
               validationList.push(Validators.required);
             }
+            break;
+          case 'pattern':
+            validationList.push(Validators.pattern(element.validations[i].value as string));
+            break;
+          case 'min':
+            validationList.push(Validators.minLength(element.validations[i].value as number));
+            break;
+          case 'max':
+            validationList.push(Validators.maxLength(element.validations[i].value as number));
             break;
         }
       });

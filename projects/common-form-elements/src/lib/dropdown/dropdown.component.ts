@@ -106,7 +106,9 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.contextValueChangesSubscription.unsubscribe();
+    if(this.contextValueChangesSubscription) {
+      this.contextValueChangesSubscription.unsubscribe();
+    }
   }
 
   isOptionsArray(options: any) {
