@@ -29,6 +29,7 @@
     "ngx-chips": "2.1.0",
     "rxjs": "^6.0.0",
     "save": "^2.4.0",
+    "v-dynamic-forms": "0.0.1-beta.9",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

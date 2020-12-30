@@ -16,7 +16,6 @@ import { FileComponent } from './file/file.component';
 import { TopicpickerComponent } from './topicpicker/topicpicker.component';
 import { KeywordsComponent } from './keywords/keywords.component';
 import { TagInputModule } from 'ngx-chips';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -25,7 +24,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     FormsModule,
     TagInputModule,
-    BrowserAnimationsModule
   ],
   entryComponents: [TextareaComponent, TextboxComponent, DropdownComponent,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent,
