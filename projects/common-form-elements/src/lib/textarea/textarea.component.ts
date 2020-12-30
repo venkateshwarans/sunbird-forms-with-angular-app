@@ -14,6 +14,7 @@ export class TextareaComponent implements OnInit {
   @Input() placeholder: String;
   @Input() formControlRef: FormControl;
   @Input() field: FieldConfig<String>;
+  @Input() validations?: any;
 
   remainderValidLength$?: Observable<number>;
 

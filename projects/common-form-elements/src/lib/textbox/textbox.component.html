@@ -6,7 +6,10 @@
     <div class="prefix" *ngIf="prefix">
       <span>{{prefix}}</span>
     </div>
-    <input [formControl]="formControlRef" class="sb-textbox" placeholder={{placeholder}} type="text" [(ngModel)]="default">
+    <input [formControl]="formControlRef" [class.valid]="formControlRef.valid &&
+    (formControlRef.dirty || formControlRef.touched)"
+[class.invalid]="formControlRef.invalid &&
+(formControlRef.dirty || formControlRef.touched)" class="sb-textbox" placeholder={{placeholder}} type="text" [(ngModel)]="default">
     <div class="async-icons" *ngIf="asyncValidation && asyncValidation?.trigger">
       <!-- <sb-green-tick *ngIf="formControlRef.value && formControlRef.status === 'VALID'"></sb-green-tick> -->
       <!-- <sb-red-exclamation *ngIf="formControlRef.value && formControlRef.status !== 'VALID'"></sb-red-exclamation> -->
@@ -16,7 +19,7 @@
 
   <ng-container *ngFor="let validation of validations">
     <div class="cf-error"
-      *ngIf="(validation.type && (validation.type).toLowerCase && validation.message && formControlRef.errors && formControlRef.errors[(validation.type).toLowerCase()] && (formControlRef.dirty || formControlRef.touched))">
+      *ngIf="(validation.type && (validation.type).toLowerCase() && validation.message && formControlRef.errors && formControlRef.errors[(validation.type).toLowerCase()] && (formControlRef.dirty || formControlRef.touched))">
       {{ validation.message }}
     </div>
   </ng-container>

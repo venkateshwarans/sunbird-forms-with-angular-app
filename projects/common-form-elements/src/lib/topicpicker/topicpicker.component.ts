@@ -3,7 +3,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { LazzyLoadScriptService } from './../utilities/lazzy-load-script.service';
 import * as _ from 'lodash-es';
 import { FormControl } from '@angular/forms';
-import { FieldConfig } from 'common-form-elements/lib/common-form-config';
+import { FieldConfig } from '../common-form-config';
 
 declare var treePicker: any;
 declare var $: any;
@@ -32,6 +32,7 @@ export class TopicpickerComponent implements OnInit {
   @Input() formControlRef: FormControl;
   @Input() field: FieldConfig<String>;
   @Output() topicChange = new EventEmitter();
+  @Input() validations?: any;
 
 
   public selectedNodes: any;

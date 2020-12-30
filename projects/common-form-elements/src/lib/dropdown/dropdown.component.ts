@@ -28,6 +28,7 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
   @Input() type?: string;
   @Input() styleClass?: string;
   @Output() onChangeFilter: EventEmitter<any> = new EventEmitter();
+  @Input() validations?: any;
 
   @Input() depends?: FormControl[];
   @Input() dependencyTerms?: any = [];

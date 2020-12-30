@@ -44,6 +44,7 @@ export class DynamicFieldDirective implements OnInit {
   @Input() label: String;
   @Input() options?: any = [];
   @Input() context?: FormControl;
+  @Input() validations?: any;
   @Input() contextTerms?: any = [];
   @Input() depends?: FormControl[];
   @Input() dependencyTerms?: any = [];
@@ -79,6 +80,7 @@ export class DynamicFieldDirective implements OnInit {
     this.componentRef.instance.dependencyTerms = this.dependencyTerms;
     this.componentRef.instance.default = this.default;
     this.componentRef.instance.dataLoadStatusDelegate = this.dataLoadStatusDelegate;
+    this.componentRef.instance.validations = this.validations;
 
     // this.componentRef.instance = {
     //   field : this.field,

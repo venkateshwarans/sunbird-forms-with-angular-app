@@ -36,3 +36,9 @@ label {
   letter-spacing: 0;
   line-height: 20px;
 }
+
+.cf-error{
+  color: red;
+  font-family: "Noto Sans";
+  font-size: 12px;
+}

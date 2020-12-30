@@ -21,7 +21,8 @@ export const formConfig = [
       'value': '120',
       'message': 'Input is Exceded'
     }, {
-      'type': 'required'
+      'type': 'required',
+      'message': 'Name is required'
     }]
   },
   {
@@ -43,6 +44,7 @@ export const formConfig = [
     },
     {
       'type': 'required',
+      'message': 'Description is required'
     }]
   },
   {
@@ -71,7 +73,8 @@ export const formConfig = [
       'hidden': false,
     },
     'validations': [{
-      'type': 'required'
+      'type': 'required',
+      'message': 'Board is required'
     }],
     'identifier': 'ekstep_ncert_k-12_board',
     'terms': [
@@ -521,7 +524,8 @@ export const formConfig = [
       'multiple': false,
     },
     'validations': [{
-      'type': 'required'
+      'type': 'required',
+      'message': 'Medium is required'
     }]
   },
   {
@@ -739,7 +743,8 @@ export const formConfig = [
 export const formConfigWithClass = [
   {
     'name': '',
-    'fields': [{
+    'fields': [
+      {
       'code': 'appicon',
       'visible': true,
       'editable': true,
@@ -770,10 +775,13 @@ export const formConfigWithClass = [
       'label': 'Name',
       'placeholder': 'Name',
       'required': true,
-      'validation': [{
+      'validations': [{
         'type': 'max',
         'message': 'Input is Exceded',
         'value': '120'
+      }, {
+        'type': 'required',
+        'message': 'Name is required'
       }]
     }, {
       'code': 'description',
@@ -790,10 +798,13 @@ export const formConfigWithClass = [
       'label': 'Description',
       'placeholder': 'Description',
       'required': false,
-      'validation': [{
+      'validations': [{
         'type': 'max',
         'message': 'Input is Exceded',
         'value': '1000'
+      }, {
+        'type': 'required',
+        'message': 'Description is required'
       }],
       'section': {
         'index': 1,
@@ -817,7 +828,11 @@ export const formConfigWithClass = [
       'section': {
         'index': 1,
         'name': ''
-      }
+      },
+      'validations': [{
+        'type': 'required',
+        'message': 'Keyword is required'
+      }]
     }, {
       'code': 'primaryCategory',
       'dataType': 'text',
@@ -890,7 +905,11 @@ export const formConfigWithClass = [
       'section': {
         'index': 3,
         'name': ''
-      }
+      },
+      'validations': [{
+        'type': 'required',
+        'message': 'Board is required'
+      }]
     }, {
       'code': 'medium',
       'visible': true,
@@ -910,7 +929,11 @@ export const formConfigWithClass = [
       'section': {
         'index': 3,
         'name': ''
-      }
+      },
+      'validations': [{
+        'type': 'required',
+        'message': 'Medium is required'
+      }]
     }, {
       'code': 'gradeLevel',
       'visible': true,
@@ -73698,7 +73721,11 @@ export const formConfigWithClass = [
           "category": "topic",
           "status": "Live"
         }
-      ]
+      ],
+      'validations': [{
+        'type': 'required',
+        'message': 'Topic is required'
+      }]
     }, {
       'code': 'year',
       'visible': true,

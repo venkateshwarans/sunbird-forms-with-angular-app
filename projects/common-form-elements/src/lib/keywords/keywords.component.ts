@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FieldConfig } from 'common-form-elements/lib/common-form-config';
+import { FieldConfig } from '../common-form-config';
 
 @Component({
   selector: 'sb-keywords',
@@ -12,6 +12,7 @@ export class KeywordsComponent implements OnInit {
   @Input() placeholder: String;
   @Input() formControlRef: FormControl;
   @Input() field: FieldConfig<String>;
+  @Input() validations?: any;
 
   public items: any;
   inputText = '';

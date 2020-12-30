@@ -14,3 +14,9 @@ label {
     border-bottom: 0.5px solid #333333;
     box-sizing: border-box;
 }
+
+.cf-error{
+  color: red;
+  font-family: "Noto Sans";
+  font-size: 12px;
+}
