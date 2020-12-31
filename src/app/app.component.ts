@@ -28,11 +28,12 @@ export class AppComponent {
       console.log(event);
   }
 
-  onChange(control, depends, loading, loaded) {
+  onChange(control, depends, formGroup, loading, loaded) {
 
     const response = merge(...map(depends, depend => depend.valueChanges)).pipe(
 
       switchMap((value) => {
+        console.log(formGroup.value);
         if (value === 'andhra') {
           return of([{
               label: 'andhra1',

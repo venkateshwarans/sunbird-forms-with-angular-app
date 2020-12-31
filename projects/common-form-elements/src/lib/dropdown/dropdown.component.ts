@@ -50,6 +50,7 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
       this.options$ = (this.options as FieldConfigOptionsBuilder<any>)(
         this.formControlRef,
         this.depends,
+        this.formGroup,
         () => this.dataLoadStatusDelegate.next('LOADING'),
         () => this.dataLoadStatusDelegate.next('LOADED')
       ) as any;
@@ -101,13 +102,13 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.isOptionsClosure(this.options)) {
       // tslint:disable-next-line:max-line-length
-      this.options$ = (this.options as FieldConfigOptionsBuilder<any>)(this.formControlRef, this.depends, () => this.dataLoadStatusDelegate.next('LOADING'), () => this.dataLoadStatusDelegate.next('LOADED')) as any;
+      this.options$ = (this.options as FieldConfigOptionsBuilder<any>)(this.formControlRef, this.depends, this.formGroup, () => this.dataLoadStatusDelegate.next('LOADING'), () => this.dataLoadStatusDelegate.next('LOADED')) as any;
     }
 
   }
 
   ngOnDestroy(): void {
-    if(this.contextValueChangesSubscription) {
+    if (this.contextValueChangesSubscription) {
       this.contextValueChangesSubscription.unsubscribe();
     }
   }

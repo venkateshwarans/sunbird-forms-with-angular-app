@@ -1,5 +1,5 @@
 import {Observable} from 'rxjs';
-import {AsyncValidatorFn, FormControl} from '@angular/forms';
+import {AsyncValidatorFn, FormControl, FormGroup} from '@angular/forms';
 
 export enum FieldConfigInputType {
   INPUT = 'input',
@@ -22,7 +22,7 @@ export enum FieldConfigValidationType {
 }
 
 export type FieldConfigOptionsBuilder<T> =
-  (control: FormControl, depends?: FormControl[], notifyLoading?: () => void,
+  (control: FormControl, depends?: FormControl[], formGroup?: FormGroup, notifyLoading?: () => void,
     notifyLoaded?: () => void) => Observable<FieldConfigOption<T>[]> | Promise<FieldConfigOption<T>[]>;
 
 export type AsyncValidatorFactory = (marker: string, trigger: HTMLElement) => AsyncValidatorFn;
