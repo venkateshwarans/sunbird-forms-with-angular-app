@@ -226,10 +226,11 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
   getAllDependsFormControl(code) {
     const depends = _.get(this.fieldDependency, code);
-    const fieldDepends =  _.map(depends, depend => {
-      return this.formGroup.get(depend);
+    const fieldDepends: any = {};
+    _.forEach(depends, depend => {
+        fieldDepends[depend] = this.formGroup.get(depend);
     });
-    return _.compact(fieldDepends) || null;
+    return fieldDepends || null;
   }
 
   fetchDependencyTerms(code) {

@@ -41,7 +41,6 @@ export class TopicpickerComponent implements OnInit {
   constructor(private lazzyLoadScriptService: LazzyLoadScriptService) { }
 
   ngOnInit() {
-    console.log('topicpicker.component');
   }
 
   // tslint:disable-next-line:use-life-cycle-interface

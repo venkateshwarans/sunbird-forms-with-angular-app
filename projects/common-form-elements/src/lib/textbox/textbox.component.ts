@@ -22,7 +22,6 @@ export class TextboxComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnInit() {
-    console.log('default ', this.default);
   }
 
   ngOnChanges() {

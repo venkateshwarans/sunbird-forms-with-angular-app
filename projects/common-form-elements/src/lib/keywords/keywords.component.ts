@@ -19,7 +19,6 @@ export class KeywordsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('KeywordsComponent');
   }
 
 }

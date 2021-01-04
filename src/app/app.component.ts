@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import {tap, switchMap} from 'rxjs/operators';
-import {of, merge, from} from 'rxjs';
+import {tap, switchMap, startWith, pairwise} from 'rxjs/operators';
+import {of, merge, from, concat, Observable} from 'rxjs';
 import { map } from 'lodash-es';
 import * as _ from 'lodash-es';
-
+import { ObjectDifference } from './helpers/helpers';
 import { formConfig, formConfigWithClass, formConfigWithSection } from './formConfig';
+import { cr } from '@angular/core/src/render3';
+import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -25,15 +27,27 @@ export class AppComponent {
 
 
   output(event) {
-      console.log(event);
+      // console.log(event);
   }
 
-  onChange(control, depends, formGroup, loading, loaded) {
-
-    const response = merge(...map(depends, depend => depend.valueChanges)).pipe(
-
-      switchMap((value) => {
-        console.log(formGroup.value);
+  onChange(control, depends: FormControl[], formGroup, loading, loaded) {
+    const instance = this;
+    let oldValue = {};
+    _.forEach(depends, (depend, key) => {
+      oldValue[key] = depend.value;
+    });
+    const response = merge(
+      ...map(depends, (depend) => {
+        return depend.valueChanges;
+      })
+      ).pipe(
+      switchMap((value: any): any => {
+        const newValue = {};
+        _.forEach(depends, (depend, key) => {
+          newValue[key] = depend.value;
+        });
+        console.log(ObjectDifference(oldValue, newValue));
+        oldValue = newValue;
         if (value === 'andhra') {
           return of([{
               label: 'andhra1',
@@ -44,7 +58,7 @@ export class AppComponent {
               value: 'andhra2'
             }
           ]);
-        } else if (value === 'karnataka') {
+        } else if (value.includes('karnataka')) {
           loading();
           return from(fetch('https://api.jsonbin.io/b/5fe1970847ed0861b36a715c', {
             headers: {
@@ -57,8 +71,6 @@ export class AppComponent {
         }
       })
     );
-
-
     return response;
   }
 

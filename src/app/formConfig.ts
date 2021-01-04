@@ -724,6 +724,7 @@ export const formConfig = [
     'code': 'licenseTerms',
     'dataType': 'text',
     'description': 'licenseTerms',
+    'depends': ['additionalCategories'],
     'editable': true,
     'index': 5,
     'inputType': 'select',

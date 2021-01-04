@@ -42,7 +42,6 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('Is it going to ngonchanges');
     if (!this.options) {
       this.options = [];
     }
@@ -87,7 +86,7 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if(this.field && this.field.range && !this.depends) {
-      this.options$ = (this.options)()
+      this.options$ = (this.options)();
     }
 
     if (!_.isEmpty(this.depends) && !this.isOptionsClosure(this.options)) {
