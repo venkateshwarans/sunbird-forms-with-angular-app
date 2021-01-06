@@ -9,26 +9,31 @@ import * as _ from 'lodash-es';
 import {Subject} from 'rxjs';
 
 
-import { DropdownComponent } from '../dropdown/dropdown.component';
-import { TextboxComponent } from '../textbox/textbox.component';
-import { TextareaComponent } from '../textarea/textarea.component';
+import { DynamicTextboxComponent } from '../dynamic-textbox/dynamic-textbox.component'
+import { DynamicTextareaComponent } from '../dynamic-textarea/dynamic-textarea.component';
 import { FileComponent } from '../file/file.component';
 import { TopicpickerComponent } from '../topicpicker/topicpicker.component';
 import { KeywordsComponent } from '../keywords/keywords.component';
+import { MultiSelectComponent } from '../multi-select/multi-select.component';
+import { DynamicDropdownComponent } from '../dynamic-dropdown/dynamic-dropdown.component';
+import { DynamicMultipleDropdownComponent } from '../dynamic-multiple-dropdown/dynamic-multiple-dropdown.component';
+import { DynamicCheckboxComponent } from '../dynamic-checkbox/dynamic-checkbox.component';
 
 
 const componentMapper = {
-  textarea: TextareaComponent,
-  text: TextboxComponent,
-  select: DropdownComponent,
-  multiselect: DropdownComponent,
+  textarea: DynamicTextareaComponent,
+  text: DynamicTextboxComponent,
+  select: DynamicDropdownComponent,
+  multiselect: MultiSelectComponent,
+  nestedselect: DynamicMultipleDropdownComponent,
   file: FileComponent,
   keywords: KeywordsComponent,
-  dialcode: TextboxComponent,
+  dialcode: DynamicTextboxComponent,
   topicselector: TopicpickerComponent,
-  licenses: DropdownComponent,
-  label: TextboxComponent,
-  number: TextboxComponent
+  licenses: DynamicDropdownComponent,
+  label: DynamicTextboxComponent,
+  number: DynamicTextboxComponent,
+  checkbox: DynamicCheckboxComponent
 };
 
 @Directive({

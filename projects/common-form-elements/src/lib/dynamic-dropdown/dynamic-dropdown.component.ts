@@ -5,12 +5,13 @@ import {FieldConfig, FieldConfigOption, FieldConfigOptionsBuilder} from '../comm
 import {tap} from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import {ValueComparator} from '../utilities/value-comparator';
+
 @Component({
-  selector: 'sb-dropdown',
-  templateUrl: './dropdown.component.html',
-  styleUrls: ['./dropdown.component.css']
+  selector: 'sb-dynamic-dropdown',
+  templateUrl: './dynamic-dropdown.component.html',
+  styleUrls: ['./dynamic-dropdown.component.css']
 })
-export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
+export class DynamicDropdownComponent implements OnInit, OnChanges, OnDestroy {
   ValueComparator = ValueComparator;
   @Input() field: FieldConfig<String>;
   @Input() disabled?: boolean;
@@ -69,25 +70,10 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
       console.log
     );
 
-    if (!_.isEmpty(this.field.depends)) {
-      this.formControlRef.valueChanges.pipe(
-          tap(() => {
-            _.forEach(this.field.depends, depend => {
-              if (!_.isEmpty(this.formGroup.get(depend))) {
-                this.formGroup.get(depend).patchValue(null);
-              }
-            });
-          })
-      ).subscribe();
-    }
-
     if (this.field && this.field.range) {
       this.options = this.field.range;
     }
 
-    if(this.field && this.field.range && !this.depends) {
-      this.options$ = (this.options)();
-    }
 
     if (!_.isEmpty(this.depends) && !this.isOptionsClosure(this.options)) {
      this.contextValueChangesSubscription =  merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
@@ -97,6 +83,18 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
       ).subscribe();
     }
 
+    if (!_.isEmpty(this.field.depends)) {
+      merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
+          tap(() => {
+            // _.forEach(this.field.depends, depend => {
+            //   if (!_.isEmpty(this.formGroup.get(depend))) {
+            //     this.formGroup.get(depend).patchValue(null);
+            //   }
+            // });
+            this.formControlRef.patchValue(null);
+          })
+      ).subscribe();
+    }
 
 
     if (this.isOptionsClosure(this.options)) {
@@ -104,6 +102,15 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
       this.options$ = (this.options as FieldConfigOptionsBuilder<any>)(this.formControlRef, this.depends, this.formGroup, () => this.dataLoadStatusDelegate.next('LOADING'), () => this.dataLoadStatusDelegate.next('LOADED')) as any;
     }
 
+    this.formControlRef.valueChanges.pipe(
+      tap((value: any) => {
+        if (this.field.dataType === 'list') {
+          if (_.isString(value)) {
+            // this.formControlRef.patchValue([value]);
+          }
+        }
+      })
+    ).subscribe();
   }
 
   ngOnDestroy(): void {
@@ -161,4 +168,5 @@ export class DropdownComponent implements OnInit, OnChanges, OnDestroy {
   getParentValue() {
     return this.latestParentValue || _.compact(_.map(this.depends, 'value'));
   }
+
 }

@@ -4,7 +4,8 @@ import {of, merge, from, concat, Observable} from 'rxjs';
 import { map } from 'lodash-es';
 import * as _ from 'lodash-es';
 import { ObjectDifference } from './helpers/helpers';
-import { formConfig, formConfigWithClass, formConfigWithSection } from './formConfig';
+import { formConfig} from './formConfigSmall';
+import { formConfigWithClass, formConfigWithSection } from './formConfig';
 import { cr } from '@angular/core/src/render3';
 import { FormControl } from '@angular/forms';
 @Component({
@@ -20,18 +21,25 @@ export class AppComponent {
         field.range = this.onChange;
     }
     if (field.code === 'licenseTerms') {
-      field.range = this.loadLicenseTerms;
+      // field.range = this.loadLicenseTerms;
+    }
+    if (field.code === 'gradeLevel') {
+      field.range = _.map(field.terms, r => {
+        return {
+          value: r.identifier,
+          label: r.name
+        };
+      });
     }
       return field;
   });
 
 
   output(event) {
-      // console.log(event);
+      console.log(event);
   }
 
   onChange(control, depends: FormControl[], formGroup, loading, loaded) {
-    const instance = this;
     let oldValue = {};
     _.forEach(depends, (depend, key) => {
       oldValue[key] = depend.value;
@@ -48,7 +56,7 @@ export class AppComponent {
         });
         console.log(ObjectDifference(oldValue, newValue));
         oldValue = newValue;
-        if (value === 'andhra') {
+        if (_.includes(value, 'andhra')) {
           return of([{
               label: 'andhra1',
               value: 'andhra1'
@@ -58,7 +66,7 @@ export class AppComponent {
               value: 'andhra2'
             }
           ]);
-        } else if (value.includes('karnataka')) {
+        } else if (_.includes(value, 'karnataka')) {
           loading();
           return from(fetch('https://api.jsonbin.io/b/5fe1970847ed0861b36a715c', {
             headers: {
@@ -75,13 +83,23 @@ export class AppComponent {
   }
 
   loadLicenseTerms (control, depends, loading, loaded) {
-    return from(fetch('https://api.jsonbin.io/b/5fe1970847ed0861b36a715c', {
+    return from(fetch('https://api.jsonbin.io/b/5fe1970847ed0861b36a715c/2', {
       headers: {
         'secret-key': '$2b$10$0Z5ZDRd9x3Y8dDRsO4fKJO.GbDf/QCamiaNtBmD51lPoBMNUP6F7a'
       }
-    })).pipe(switchMap(res => {
+    })).pipe(switchMap(async res => {
       loaded();
-      return res.json();
+      const licenses = await res.json();
+      try {
+        return _.map(licenses, l => {
+          return {
+            value: l.name,
+            label: l.name
+          };
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }));
   }
 

@@ -5,11 +5,12 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
 @Component({
-  selector: 'sb-textarea',
-  templateUrl: './textarea.component.html',
-  styleUrls: ['./textarea.component.css']
+  selector: 'sb-dynamic-textarea',
+  templateUrl: './dynamic-textarea.component.html',
+  styleUrls: ['./dynamic-textarea.component.css']
 })
-export class TextareaComponent implements OnInit {
+export class DynamicTextareaComponent implements OnInit {
+
   @Input() label: String;
   @Input() placeholder: String;
   @Input() formControlRef: FormControl;

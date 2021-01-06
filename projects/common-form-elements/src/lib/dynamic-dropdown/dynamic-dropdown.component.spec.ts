@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormComponent } from './form.component';
+import { DynamicDropdownComponent } from './dynamic-dropdown.component';
 
-describe('FormComponent', () => {
-  let component: FormComponent;
-  let fixture: ComponentFixture<FormComponent>;
+describe('DynamicDropdownComponent', () => {
+  let component: DynamicDropdownComponent;
+  let fixture: ComponentFixture<DynamicDropdownComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FormComponent ]
+      declarations: [ DynamicDropdownComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FormComponent);
+    fixture = TestBed.createComponent(DynamicDropdownComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

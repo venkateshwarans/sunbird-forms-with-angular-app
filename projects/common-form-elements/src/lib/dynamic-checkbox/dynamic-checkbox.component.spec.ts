@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TextboxComponent } from './textbox.component';
+import { DynamicCheckboxComponent } from './dynamic-checkbox.component';
 
-describe('TextboxComponent', () => {
-  let component: TextboxComponent;
-  let fixture: ComponentFixture<TextboxComponent>;
+describe('DynamicCheckboxComponent', () => {
+  let component: DynamicCheckboxComponent;
+  let fixture: ComponentFixture<DynamicCheckboxComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TextboxComponent ]
+      declarations: [ DynamicCheckboxComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TextboxComponent);
+    fixture = TestBed.createComponent(DynamicCheckboxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -59,6 +59,7 @@ export interface FieldConfig<T> {
   children?: { [key: string]: FieldConfig<T>[] } | FieldConfig<T>[];
   range: any;
   terms: any;
+  dataType?: string;
   templateOptions: {
     type?: string,
     label?: string,

@@ -3,11 +3,12 @@ import {FormControl} from '@angular/forms';
 import { FieldConfigAsyncValidation } from '../common-form-config';
 
 @Component({
-  selector: 'sb-textbox',
-  templateUrl: './textbox.component.html',
-  styleUrls: ['./textbox.component.css']
+  selector: 'sb-dynamic-textbox',
+  templateUrl: './dynamic-textbox.component.html',
+  styleUrls: ['./dynamic-textbox.component.css']
 })
-export class TextboxComponent implements OnInit, AfterViewInit, OnChanges {
+export class DynamicTextboxComponent implements OnInit,  AfterViewInit, OnChanges  {
+
   @Input() asyncValidation?: FieldConfigAsyncValidation;
   @Input() label: String;
   @Input() labelHtml: any;

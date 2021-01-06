@@ -7,11 +7,11 @@ import {distinctUntilChanged, map, scan, tap} from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
 @Component({
-  selector: 'sb-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css']
+  selector: 'sb-dynamic-form',
+  templateUrl: './dynamic-form.component.html',
+  styleUrls: ['./dynamic-form.component.css']
 })
-export class FormComponent implements OnInit, OnChanges, OnDestroy {
+export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
   @Input() config;
   @Output() initialize = new EventEmitter();
   @Output() finalize = new EventEmitter();
@@ -41,9 +41,15 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges): void {
     const formGroupData = {};
     const dependency = [];
+    if (changes['config']) {
+      if ((changes['config'].currentValue && changes['config'].firstChange)
+      || changes['config'].previousValue !== changes['config'].currentValue) {
+        this.initialize.emit(this.formGroup);
+      }
+    }
 
     if (this.statusChangesSubscription) {
       this.statusChangesSubscription.unsubscribe();
@@ -95,9 +101,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
     });
     }
     this.flattenSectionFields = this.getFlattenedSectionFields();
-    this.mapDependency(dependency);
     this.formGroup = this.formBuilder.group(formGroupData);
-    // this.initialize.emit(this.formGroup);
 
     this.statusChangesSubscription = this.formGroup.valueChanges.pipe(
       tap((v) => {
@@ -113,7 +117,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
     this.valueChangesSubscription =  this.formGroup.valueChanges.pipe(
       tap((data) => {
-        this.initialize.emit(data);
+        this.valueChanges.emit(data);
       })
     ).subscribe();
   }
@@ -158,9 +162,44 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
         defaultVal = element.default || null;
         break;
       case 'select':
-      case 'nested_select':
-        defaultVal = element.templateOptions && element.templateOptions.multiple ?
-          (element.default && Array.isArray(element.default) ? element.default : []) : (element.default || null);
+        if (element.default) {
+          if (element.dataType === 'list') {
+            if (_.isArray(element.default)) {
+              defaultVal = _.toString(element.default);
+            } else {
+              defaultVal = element.default;
+            }
+          } else if (element.dataType === 'text') {
+            if (_.isString(element.default)) {
+              defaultVal = element.default;
+            } else {
+              defaultVal = _.toString(element.default);
+            }
+          }
+        } else {
+          defaultVal = null;
+        }
+        break;
+      case 'multiselect':
+        if (element.default) {
+          if (element.dataType === 'list' && _.isArray(element.default)) {
+            defaultVal = element.default;
+          } else if (element.dataType === 'list' && _.isString(element.default)) {
+            if (_.includes(element.default, ',')) {
+              defaultVal = _.split(element.default, ',');
+            } else {
+              defaultVal = [element.default];
+            }
+          } else if (element.dataType === 'text') {
+            if (_.includes(element.default, ',')) {
+              defaultVal = _.split(element.default, ',');
+            } else {
+              defaultVal = [element.default];
+            }
+          }
+        } else {
+          defaultVal = [];
+        }
         break;
       case 'checkbox':
         defaultVal = false || !!element.default;
@@ -173,7 +212,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
       element.validations.forEach((data, i) => {
         switch (data.type) {
           case 'required':
-            if (element.inputType === 'select' || element.inputType === 'nested_select') {
+            if (element.inputType === 'select' || element.inputType === 'multiselect') {
               validationList.push(Validators.required);
             } else if (element.type === 'checkbox') {
               validationList.push(Validators.requiredTrue);
@@ -199,45 +238,27 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
     return formValueList;
   }
 
-  mapDependency(dependency) {
-    const configCode = _.map(this.flattenSectionFields, 'code');
-    const fieldDependency = {};
-    _.forEach(configCode, code => {
-        _.forEach(this.config, config => {
-          _.forEach(config.fields, field => {
-            if (_.includes(field.depends, code)) {
-                if (_.has(fieldDependency, code)) {
-                  fieldDependency[code].push(field.code);
-                } else {
-                  fieldDependency[code] = [];
-                  fieldDependency[code].push(field.code);
-                }
-            }
-          })
-        });
-    });
-    this.fieldDependency = fieldDependency;
-  }
-
 
   fetchContextTerms(config: FieldConfig<any>, context) {
     return _.get(_.find(config, {'code': context}), 'terms') || null;
   }
 
-  getAllDependsFormControl(code) {
-    const depends = _.get(this.fieldDependency, code);
+  getAllDependsFormControl(code, depends) {
     const fieldDepends: any = {};
     _.forEach(depends, depend => {
-        fieldDepends[depend] = this.formGroup.get(depend);
-    });
+        if (this.formGroup.get(depend)) {
+            fieldDepends[depend] = this.formGroup.get(depend);
+        }
+      });
     return fieldDepends || null;
   }
 
-  fetchDependencyTerms(code) {
-    const depends = _.get(this.fieldDependency, code);
+  fetchDependencyTerms(code, depends) {
     const dependsTerms = _.map(_.filter(this.flattenSectionFields, c => {
       return _.includes(depends, c.code);
-    }), 'terms');
+    }), (depend) => {
+      return depend.terms || depend.range;
+    });
     return _.flatten(dependsTerms);
   }
 

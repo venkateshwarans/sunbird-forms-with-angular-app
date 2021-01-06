@@ -1,0 +1,12 @@
+
+<div class="dynamic-form" [formGroup]="formGroup">
+  <div *ngFor="let section of config" class="formSection grid two-column-grid">
+      <ng-container *ngFor="let field of section['fields']" libDynamicField
+      [depends]="getAllDependsFormControl(field.code, field.depends)" [dependencyTerms]="field.depends ? fetchDependencyTerms(field.code, field.depends) : []"
+      [context]="field.context ? formGroup.get(field.context) : null" [contextTerms]="fetchContextTerms(config, field.context)"
+      [options]="field.terms" [field]="field" [formGroup]="formGroup" [default]="field.default || ''" [label]="field.label" [formControlRef]="formGroup.get(field.code)"
+      [dataLoadStatusDelegate]="dataLoadStatusDelegate" [validations]="field.validations || []">
+    </ng-container>
+  </div>
+</div>
+

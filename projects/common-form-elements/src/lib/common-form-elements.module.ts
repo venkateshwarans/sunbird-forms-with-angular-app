@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CommonFormElementsComponent } from './common-form-elements.component';
-import { FormComponent } from './form/form.component';
-import { DropdownComponent } from './dropdown/dropdown.component';
-import { TextboxComponent } from './textbox/textbox.component';
+import { MultiSelectComponent } from './multi-select/multi-select.component';
 import { DynamicFieldDirective } from './dynamic-field/dynamic-field.directive';
-import { TextareaComponent } from './textarea/textarea.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CaretDownComponent } from './icon/caret-down/caret-down.component';
 import { DropdownIconComponent } from './icon/dropdown/dropdownIcon.component';
@@ -16,6 +13,12 @@ import { FileComponent } from './file/file.component';
 import { TopicpickerComponent } from './topicpicker/topicpicker.component';
 import { KeywordsComponent } from './keywords/keywords.component';
 import { TagInputModule } from 'ngx-chips';
+import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
+import { DynamicTextboxComponent } from './dynamic-textbox/dynamic-textbox.component';
+import { DynamicTextareaComponent } from './dynamic-textarea/dynamic-textarea.component';
+import { DynamicDropdownComponent } from './dynamic-dropdown/dynamic-dropdown.component';
+import { DynamicMultipleDropdownComponent } from './dynamic-multiple-dropdown/dynamic-multiple-dropdown.component';
+import { DynamicCheckboxComponent } from './dynamic-checkbox/dynamic-checkbox.component';
 
 
 @NgModule({
@@ -25,14 +28,20 @@ import { TagInputModule } from 'ngx-chips';
     FormsModule,
     TagInputModule,
   ],
-  entryComponents: [TextareaComponent, TextboxComponent, DropdownComponent,
+  entryComponents: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
+    DynamicMultipleDropdownComponent, DynamicCheckboxComponent,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent,
-    FileComponent, TopicpickerComponent, KeywordsComponent],
-  declarations: [CommonFormElementsComponent, FormComponent,
-    TextboxComponent, TextareaComponent, CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent,
-    RedExclamationComponent, DropdownComponent, DynamicFieldDirective, FileComponent, TopicpickerComponent, KeywordsComponent],
-  exports: [CommonFormElementsComponent, FormComponent, TextboxComponent, TextareaComponent, DropdownComponent, DynamicFieldDirective,
+    FileComponent, TopicpickerComponent, KeywordsComponent, MultiSelectComponent],
+  declarations: [CommonFormElementsComponent,
+     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent,
+    RedExclamationComponent, DynamicFieldDirective, FileComponent, TopicpickerComponent, KeywordsComponent,
+    MultiSelectComponent,
+    DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent,
+    DynamicDropdownComponent, DynamicMultipleDropdownComponent, DynamicCheckboxComponent],
+  exports: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
+    DynamicMultipleDropdownComponent, DynamicCheckboxComponent, CommonFormElementsComponent,
+    DynamicFieldDirective,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent, FileComponent,
-    TopicpickerComponent, KeywordsComponent ]
+    TopicpickerComponent, KeywordsComponent, MultiSelectComponent ]
 })
 export class CommonFormElementsModule { }
