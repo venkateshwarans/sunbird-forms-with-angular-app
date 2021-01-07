@@ -1,9 +1,4 @@
-<div class="sb-checkbox">
-  <div class="checkbox-row">
-      <label class="container">
-          <input type="checkbox" [formControl]="formControlRef" name="checkbox" value="value">
-          <span class="checkmark"></span>
-      </label>
-      <label *ngIf="label" class="checkbox-label">{{label}}</label>
-  </div>
+<div class="sb-checkbox sb-checkbox-primary">
+  <input type="checkbox" [formControl]="formControlRef" name="checkbox" value="value" id="{{label}}">
+  <label *ngIf="label" for="{{label}}">{{label}}</label>
 </div>
