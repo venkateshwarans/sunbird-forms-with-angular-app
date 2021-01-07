@@ -181,26 +181,32 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
         }
         break;
       case 'multiselect':
-        if (element.default) {
-          if (element.dataType === 'list' && _.isArray(element.default)) {
-            defaultVal = element.default;
-          } else if (element.dataType === 'list' && _.isString(element.default)) {
-            if (_.includes(element.default, ',')) {
-              defaultVal = _.split(element.default, ',');
-            } else {
-              defaultVal = [element.default];
+          if (element.default) {
+            if (element.dataType === 'list' && _.isArray(element.default)) {
+              defaultVal = element.default;
+            } else if (element.dataType === 'list' && _.isString(element.default)) {
+              if (_.includes(element.default, ',')) {
+                defaultVal = _.split(element.default, ',');
+              } else {
+                defaultVal = [element.default];
+              }
+            } else if (element.dataType === 'text') {
+              if (_.includes(element.default, ',')) {
+                defaultVal = _.split(element.default, ',');
+              } else {
+                defaultVal = [element.default];
+              }
             }
-          } else if (element.dataType === 'text') {
-            if (_.includes(element.default, ',')) {
-              defaultVal = _.split(element.default, ',');
-            } else {
-              defaultVal = [element.default];
-            }
+          } else {
+            defaultVal = [];
           }
-        } else {
-          defaultVal = [];
-        }
-        break;
+          break;
+      case 'nestedselect':
+          defaultVal = element.dataType === 'list' ?
+          (element.default && Array.isArray(element.default) ? element.default :
+          _.isEmpty(element.default) ? [] : [element.default]) :
+          (element.default || null);
+          break;
       case 'checkbox':
         defaultVal = false || !!element.default;
         break;

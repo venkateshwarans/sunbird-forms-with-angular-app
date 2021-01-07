@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy,
   OnInit, SimpleChanges, HostListener, ViewChild } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {from, Subject} from 'rxjs';
+import {from, Subject, merge} from 'rxjs';
 import {FieldConfig, FieldConfigOptionsBuilder} from '../common-form-config';
 import {takeUntil, tap} from 'rxjs/operators';
 import {fromJS, List, Map, Set} from 'immutable';
-
+import * as _ from 'lodash-es';
 @Component({
   selector: 'sb-dynamic-multiple-dropdown',
   templateUrl: './dynamic-multiple-dropdown.component.html',
@@ -50,17 +50,15 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
   ) {
   }
   ngOnInit() {
-
-
     if (this.field && this.field.range) {
       this.options = this.field.range;
     }
 
-    if (this.context) {
-      this.context.valueChanges.pipe(
+    if (!_.isEmpty(this.depends)) {
+      merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
         tap(() => {
           this.formControlRef.patchValue(null);
-          this.setupOptions();
+          this.resetTempValue();
         }),
         takeUntil(this.dispose$)
       ).subscribe();
@@ -74,13 +72,12 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
       takeUntil(this.dispose$)
     ).subscribe();
     this.setupOptions();
-
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes['options'] || !changes['options'].currentValue) {
       return;
     }
-
   }
 
   onSubmit() {
@@ -89,6 +86,7 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
     this.formControlRef.markAsDirty();
     this.showModal = false;
   }
+
   openModal(event) {
     if (this.context && this.context.invalid) {
       return;
@@ -157,6 +155,10 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
       }
       // this.onSubmit();
     }
+  }
+
+  private resetTempValue() {
+    this.tempValue = Set(null);
   }
 
   private setupOptions() {

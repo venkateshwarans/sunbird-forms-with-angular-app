@@ -534,6 +534,7 @@ export const formConfig = [
     'required': true,
     'visible': true,
     'identifier': 'ekstep_ncert_k-12_gradelevel',
+    'default': ['ekstep_ncert_k-12_gradelevel_class1', 'ekstep_ncert_k-12_gradelevel_class2'],
     'terms': [
       {
         'identifier': 'ekstep_ncert_k-12_gradelevel_class1',
