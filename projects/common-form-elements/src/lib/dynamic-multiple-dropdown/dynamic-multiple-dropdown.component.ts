@@ -168,9 +168,15 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
     }
 
     if (this.isOptionsArray()) {
-      this.resolvedOptions = fromJS(this.options);
+      const optionMap = _.map(this.options, option => {
+        return {
+          value: option.value || option.identifier || option.name || option,
+          label: option.label || option.name || option.value || option,
+        };
+      });
+      this.resolvedOptions = fromJS(optionMap);
     } else if (this.isOptionsMap()) {
-      this.resolvedOptions = (this.context && this.context.value) ?
+      this.resolvedOptions = (this.depends) ?
         fromJS(this.options[this.context.value]) :
         this.resolvedOptions;
     } else if (this.isOptionsClosure()) {
@@ -185,7 +191,10 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
           this.resolvedOptions = fromJS(options);
 
           this.resolvedOptions.forEach((option) => {
-            this.optionValueToOptionLabelMap = this.optionValueToOptionLabelMap.set(option.get('value'), option.get('label'));
+            const value: any = option.get('value') || option.get('identifier') || option.get('name') || option;
+            const labelVal: any = option.get('label') || option.get('name') || option;
+
+            this.optionValueToOptionLabelMap = this.optionValueToOptionLabelMap.set(value, labelVal);
           });
 
           this.setTempValue(this.default);
@@ -197,7 +206,10 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
     }
 
     this.resolvedOptions.forEach((option) => {
-      this.optionValueToOptionLabelMap = this.optionValueToOptionLabelMap.set(option.get('value'), option.get('label'));
+      const value: any = option.get('value') || option.get('identifier') || option.get('name') || option;
+      const labelVal: any = option.get('label') || option.get('name') || option;
+
+      this.optionValueToOptionLabelMap = this.optionValueToOptionLabelMap.set(value, labelVal);
     });
 
     this.setTempValue(this.default);

@@ -18,7 +18,7 @@ export class AppComponent {
 
   config = map(formConfig, field => {
     if (field.code === 'additionalCategories') {
-        field.range = this.onChange;
+        // field.range = this.onChange;
     }
     if (field.code === 'licenseTerms') {
       // field.range = this.loadLicenseTerms;
@@ -30,6 +30,9 @@ export class AppComponent {
           label: r.name
         };
       });
+    }
+    if (field.code === 'showQuestions') {
+      field.range = _.range(1, 5);
     }
       return field;
   });
