@@ -1,6 +1,6 @@
 <div class="treepicker-parent">
   <label *ngIf="label">{{label}}</label>
-  <input [formControl]="formControlRef" [(ngModel)]="placeHolder" id="treePicker" class="topic-picker-selector cursor-pointer" readonly/>
+  <input [libDisableControl]="disabled" [formControl]="formControlRef" [placeholder]="placeHolder" id="treePicker" class="topic-picker-selector cursor-pointer" readonly/>
   <ng-container *ngFor="let validation of validations">
     <div class="cf-error"
       *ngIf="(validation.type && (validation.type).toLowerCase() && validation.message && formControlRef.errors && formControlRef.errors[(validation.type).toLowerCase()] && (formControlRef.dirty || formControlRef.touched))">

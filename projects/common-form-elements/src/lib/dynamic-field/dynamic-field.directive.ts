@@ -46,6 +46,7 @@ export class DynamicFieldDirective implements OnInit {
   @Input() field: FieldConfig;
   @Input() formGroup: FormGroup;
   @Input() formControlRef?: FormControl;
+  @Input() disabled?: boolean;
   @Input() label: String;
   @Input() options?: any = [];
   @Input() context?: FormControl;
@@ -86,6 +87,7 @@ export class DynamicFieldDirective implements OnInit {
     this.componentRef.instance.default = this.default;
     this.componentRef.instance.dataLoadStatusDelegate = this.dataLoadStatusDelegate;
     this.componentRef.instance.validations = this.validations;
+    this.componentRef.instance.disabled = this.disabled;
 
     // this.componentRef.instance = {
     //   field : this.field,

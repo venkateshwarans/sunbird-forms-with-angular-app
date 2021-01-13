@@ -51,6 +51,7 @@ export interface FieldConfig<T> {
   code: string;
   type: FieldConfigInputType;
   fieldName?: string;
+  name?: string;
   association?: boolean;
   depends?: string[];
   default?: any;

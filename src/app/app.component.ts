@@ -5,7 +5,8 @@ import { map } from 'lodash-es';
 import * as _ from 'lodash-es';
 import { ObjectDifference } from './helpers/helpers';
 import { formConfig} from './formConfigSmall';
-import { formConfigWithClass, formConfigWithSection } from './formConfig';
+import { formConfigWithClass } from './formConfig';
+import { formConfigWithSection } from './formConfigSection';
 import { cr } from '@angular/core/src/render3';
 import { FormControl } from '@angular/forms';
 @Component({
@@ -39,7 +40,11 @@ export class AppComponent {
 
 
   output(event) {
-      console.log(event);
+      // console.log(event);
+  }
+
+  valueChanges(event) {
+    console.log(event);
   }
 
   onChange(control, depends: FormControl[], formGroup, loading, loaded) {

@@ -2,11 +2,10 @@
   <label class="input-label" *ngIf="label">{{label}}</label>
   <!-- <div *ngIf="labelHtml" [innerHTML]="labelHtml | transposeHtml"></div> -->
   <div class="multi-select-container">
-    <sb-caret-down class="caret-down"
-      [attr.disabled]="disabled ? true : ( context ? (context.invalid ? true : null) : null )" (click)="openModal($event)">
+    <sb-caret-down class="caret-down" [ngClass]="{'disabled': disabled === true ? true : ( depends ? (isDependsInvalid ? true : null) : null ) }" (click)="openModal($event)" [attr.disabled]="disabled ? true : ( depends ? (isDependsInvalid ? true : null) : null )">
     </sb-caret-down>
     <div class="list-border" (click)="openModal($event)">
-      <ul [attr.disabled]="disabled ? true : ( context ? (context.invalid ? true : null) : null )">
+      <ul [ngClass]="{'disabled': disabled === true ? true : ( depends ? (isDependsInvalid ? true : null) : null ) }" [attr.disabled]="disabled ? true : ( depends ? (isDependsInvalid ? true : null) : null )">
         <ng-container *ngIf="isMultiple">
           <li *ngIf="!formControlRef.value || !formControlRef.value?.length" class="placeholder">{{placeHolder}}</li>
           <ng-container *ngIf="formControlRef.value?.length">

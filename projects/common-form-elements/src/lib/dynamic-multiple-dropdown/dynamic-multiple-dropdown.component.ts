@@ -30,6 +30,8 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
   @Input() depends?: FormControl[];
   @Input() dependencyTerms?: any = [];
 
+  public isDependsInvalid: any;
+
   showModal = false;
   tempValue = Set<any>();
   resolvedOptions = List<Map<string, string>>();
@@ -62,6 +64,15 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
         }),
         takeUntil(this.dispose$)
       ).subscribe();
+
+      merge(..._.map(this.depends, depend => depend.statusChanges)).pipe(
+        tap(() => {
+          this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
+        }),
+        takeUntil(this.dispose$)
+      ).subscribe();
+
+      this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
     }
 
     this.formControlRef.valueChanges.pipe(
@@ -89,6 +100,9 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
 
   openModal(event) {
     if (this.context && this.context.invalid) {
+      return;
+    }
+    if (this.disabled === true || this.isDependsInvalid) {
       return;
     }
 

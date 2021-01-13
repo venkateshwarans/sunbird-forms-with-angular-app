@@ -36,10 +36,21 @@ export class DynamicCheckboxComponent implements OnInit {
   @Input() depends?: FormControl[];
   @Input() dependencyTerms?: any = [];
 
+  _: any = _;
+
+  public checked: boolean;
 
   constructor() { }
 
   ngOnInit() {
+    const desiredValue = (this.field.dataType === 'text') ? (this.field.default === 'Yes' ? true : false) : !!this.field.default
+    this.checked = desiredValue;
+  }
+
+  onChecklistChange(checked) {
+    this.checked = checked;
+    const desiredValue = (this.field.dataType === 'text') ? (checked === true ? 'Yes' : 'No') : checked;
+    this.formControlRef.setValue(desiredValue);
   }
 
 

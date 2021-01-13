@@ -161,6 +161,9 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
       case 'text':
         defaultVal = element.default || null;
         break;
+      case 'textarea':
+        defaultVal = element.default || null;
+        break;
       case 'select':
         if (element.default) {
           if (element.dataType === 'list') {
@@ -208,7 +211,10 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
           (element.default || null);
           break;
       case 'checkbox':
-        defaultVal = false || !!element.default;
+        defaultVal = (element.dataType === 'text') ? (element.default === 'Yes' ? 'Yes' : 'No') : !!element.default;
+        // (this.field.dataType === 'text') ? (checked === true ? 'Yes' : 'No') : checked
+
+        // false || !!element.default;
         break;
     }
 
@@ -218,7 +224,7 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
       element.validations.forEach((data, i) => {
         switch (data.type) {
           case 'required':
-            if (element.inputType === 'select' || element.inputType === 'multiselect') {
+            if (element.inputType === 'select' || element.inputType === 'multiselect' || element.inputType === 'nestedselect') {
               validationList.push(Validators.required);
             } else if (element.type === 'checkbox') {
               validationList.push(Validators.requiredTrue);

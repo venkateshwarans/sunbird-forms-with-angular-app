@@ -16,6 +16,8 @@ export class DynamicTextareaComponent implements OnInit {
   @Input() formControlRef: FormControl;
   @Input() field: FieldConfig<String>;
   @Input() validations?: any;
+  @Input() default: String;
+  @Input() disabled: Boolean;
 
   remainderValidLength$?: Observable<number>;
 
