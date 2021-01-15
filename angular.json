@@ -24,16 +24,16 @@
             ],
             "styles": [
               "src/styles.css",
-              "projects/common-form-elements/src/lib/utilities/semantic/semantic.min.css",
-              "projects/common-form-elements/src/lib/utilities/assets/styles/styles.scss"
+              "src/assets/libs/semantic/semantic.min.css",
+              "src/assets/libs/assets/styles/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
-              "projects/common-form-elements/src/lib/utilities/dimmer.min.js",
-              "projects/common-form-elements/src/lib/utilities/transition.min.js",
-              "projects/common-form-elements/src/lib/utilities/modal.min.js",
-              "projects/common-form-elements/src/lib/utilities/semantic-ui-tree-picker.js"
+              "src/assets/libs/dimmer.min.js",
+              "src/assets/libs/transition.min.js",
+              "src/assets/libs/modal.min.js",
+              "src/assets/libs/semantic-ui-tree-picker.js"
             ]
           },
           "configurations": {
