@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Subscription, combineLatest } from 'rxjs';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, AfterViewInit } from '@angular/core';
+import { Subscription, combineLatest, Subject, merge, from } from 'rxjs';
 import { LazzyLoadScriptService } from './../utilities/lazzy-load-script.service';
 import * as _ from 'lodash-es';
 import { FormControl , FormGroup} from '@angular/forms';
 import { FieldConfig } from '../common-form-config';
-import { tap } from 'rxjs/operators';
+import { tap, takeUntil } from 'rxjs/operators';
 
 declare var treePicker: any;
 declare var $: any;
@@ -24,7 +24,7 @@ interface JQuery {
   templateUrl: './topicpicker.component.html',
   styleUrls: ['./topicpicker.component.css']
 })
-export class TopicpickerComponent implements OnInit {
+export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() selectedTopics: any;
   @Input() topicPickerClass: string;
@@ -42,6 +42,9 @@ export class TopicpickerComponent implements OnInit {
   @Input() dependencyTerms?: any = [];
   public selectedNodes: any;
   public placeHolder: string;
+
+  public isDependsInvalid: any;
+  private dispose$ = new Subject<undefined>();
 
   constructor(private lazzyLoadScriptService: LazzyLoadScriptService) { }
 
@@ -73,12 +76,31 @@ export class TopicpickerComponent implements OnInit {
       this.placeHolder = this.default &&  this.default.length + ' topics selected';
       this.formControlRef.setValue(this.default);
     }
+
+
+    if (!_.isEmpty(this.depends)) {
+      merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
+       tap((value: any) => {
+         this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
+         this.formControlRef.patchValue(null);
+       }),
+       takeUntil(this.dispose$)
+       ).subscribe();
+
+       this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
+     }
+
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
     this.initTopicPicker(this.formatTopics(this.field.range));
 
+  }
+
+  ngOnDestroy(): void {
+    this.dispose$.next(null);
+    this.dispose$.complete();
   }
 
   private formatTopics(topics, subTopic = false): Array<TopicTreeNode> {

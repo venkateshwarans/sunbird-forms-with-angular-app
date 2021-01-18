@@ -5,7 +5,8 @@ export const formConfig = [
         'code': 'title',
         'dataType': 'text',
         'description': 'Name of the content',
-        'editable': true,
+        'default': 'fasdad',
+        'editable': false,
         'inputType': 'text',
         'label': 'Title',
         'name': 'Title',
@@ -137,7 +138,7 @@ export const formConfig = [
         'code': 'board',
         'visible': true,
         'depends': ['gradeLevel', 'medium', 'subject', 'topic'],
-        'editable': true,
+        'editable': false,
         'dataType': 'text',
         'renderingHints': {
 
@@ -210,7 +211,7 @@ export const formConfig = [
       {
         'code': 'topic',
         'visible': true,
-        'editable': true,
+        'editable': false,
         'dataType': 'list',
         'default': ['ONE', 'TWO'],
         'renderingHints': {},

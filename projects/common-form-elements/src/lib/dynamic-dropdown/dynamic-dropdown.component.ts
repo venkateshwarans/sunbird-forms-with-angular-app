@@ -34,6 +34,8 @@ export class DynamicDropdownComponent implements OnInit, OnChanges, OnDestroy {
   @Input() depends?: FormControl[];
   @Input() dependencyTerms?: any = [];
 
+  public isDependsInvalid: any;
+
   options$?: Observable<FieldConfigOption<any>[]>;
   contextValueChangesSubscription?: Subscription;
   selectedType: any;
@@ -75,25 +77,16 @@ export class DynamicDropdownComponent implements OnInit, OnChanges, OnDestroy {
     }
 
 
-    if (!_.isEmpty(this.depends) && !this.isOptionsClosure(this.options)) {
+    if (!_.isEmpty(this.depends)) {
      this.contextValueChangesSubscription =  merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
       tap((value: any) => {
         this.latestParentValue = value;
+        this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
+        this.formControlRef.patchValue(null);
       })
       ).subscribe();
-    }
 
-    if (!_.isEmpty(this.field.depends)) {
-      merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
-          tap(() => {
-            // _.forEach(this.field.depends, depend => {
-            //   if (!_.isEmpty(this.formGroup.get(depend))) {
-            //     this.formGroup.get(depend).patchValue(null);
-            //   }
-            // });
-            this.formControlRef.patchValue(null);
-          })
-      ).subscribe();
+      this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
     }
 
 
@@ -101,16 +94,6 @@ export class DynamicDropdownComponent implements OnInit, OnChanges, OnDestroy {
       // tslint:disable-next-line:max-line-length
       this.options$ = (this.options as FieldConfigOptionsBuilder<any>)(this.formControlRef, this.depends, this.formGroup, () => this.dataLoadStatusDelegate.next('LOADING'), () => this.dataLoadStatusDelegate.next('LOADED')) as any;
     }
-
-    this.formControlRef.valueChanges.pipe(
-      tap((value: any) => {
-        if (this.field.dataType === 'list') {
-          if (_.isString(value)) {
-            // this.formControlRef.patchValue([value]);
-          }
-        }
-      })
-    ).subscribe();
   }
 
   ngOnDestroy(): void {
