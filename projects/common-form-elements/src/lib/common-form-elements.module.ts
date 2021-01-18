@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { CommonFormElementsComponent } from './common-form-elements.component';
 import { MultiSelectComponent } from './multi-select/multi-select.component';
 import { DynamicFieldDirective } from './dynamic-field/dynamic-field.directive';
-import { DisableControlDirective } from './disable-control/disable-control.directive';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CaretDownComponent } from './icon/caret-down/caret-down.component';
 import { DropdownIconComponent } from './icon/dropdown/dropdownIcon.component';
@@ -35,13 +34,13 @@ import { DynamicCheckboxComponent } from './dynamic-checkbox/dynamic-checkbox.co
     FileComponent, TopicpickerComponent, KeywordsComponent, MultiSelectComponent],
   declarations: [CommonFormElementsComponent,
      CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent,
-    RedExclamationComponent, DynamicFieldDirective, DisableControlDirective, FileComponent, TopicpickerComponent, KeywordsComponent,
+    RedExclamationComponent, DynamicFieldDirective, FileComponent, TopicpickerComponent, KeywordsComponent,
     MultiSelectComponent,
     DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent,
     DynamicDropdownComponent, DynamicMultipleDropdownComponent, DynamicCheckboxComponent],
   exports: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
     DynamicMultipleDropdownComponent, DynamicCheckboxComponent, CommonFormElementsComponent,
-    DynamicFieldDirective, DisableControlDirective,
+    DynamicFieldDirective,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent, FileComponent,
     TopicpickerComponent, KeywordsComponent, MultiSelectComponent ]
 })
