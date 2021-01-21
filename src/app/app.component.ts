@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {tap, switchMap, startWith, pairwise} from 'rxjs/operators';
 import {of, merge, from, concat, Observable} from 'rxjs';
 import { map } from 'lodash-es';
@@ -7,6 +7,7 @@ import { ObjectDifference } from './helpers/helpers';
 import { formConfig} from './formConfigSmall';
 import { formConfigWithClass } from './formConfig';
 import { formConfigWithSection } from './formConfigSection';
+import { formConfigFramework } from './formConfigFrameWork';
 import { cr } from '@angular/core/src/render3';
 import { FormControl } from '@angular/forms';
 @Component({
@@ -14,30 +15,36 @@ import { FormControl } from '@angular/forms';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
 
-  config = map(formConfig, field => {
-    if (field.code === 'additionalCategories') {
-        // field.range = this.onChange;
-    }
-    if (field.code === 'licenseTerms') {
-      // field.range = this.loadLicenseTerms;
-    }
-    if (field.code === 'gradeLevel') {
-      field.range = _.map(field.terms, r => {
-        return {
-          value: r.identifier,
-          label: r.name
-        };
-      });
-    }
-    if (field.code === 'showQuestions') {
-      field.range = _.range(1, 5);
-    }
-      return field;
-  });
+  // config = map(formConfig, field => {
+  //   if (field.code === 'additionalCategories') {
+  //       // field.range = this.onChange;
+  //   }
+  //   if (field.code === 'licenseTerms') {
+  //     // field.range = this.loadLicenseTerms;
+  //   }
+  //   if (field.code === 'gradeLevel') {
+  //     field.range = _.map(field.terms, r => {
+  //       return {
+  //         value: r.identifier,
+  //         label: r.name
+  //       };
+  //     });
+  //   }
+  //   if (field.code === 'showQuestions') {
+  //     field.range = _.range(1, 5);
+  //   }
+  //     return field;
+  // });
 
+  config: any
+
+
+ ngOnInit() {
+   this.config = formConfigFramework;;
+ }
 
   output(event) {
       // console.log(event);

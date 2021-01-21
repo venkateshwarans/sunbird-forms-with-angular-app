@@ -83,6 +83,10 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
        tap((value: any) => {
          this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
          this.formControlRef.patchValue(null);
+         this.placeHolder = '';
+         this.default = [];
+         this.selectedNodes = {};
+         this.initTopicPicker(this.formatTopics(this.field.range));
        }),
        takeUntil(this.dispose$)
        ).subscribe();
@@ -127,10 +131,6 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private initTopicPicker(data: Array<TopicTreeNode>) {
-    // combineLatest(this.lazzyLoadScriptService.loadScript('fancytree-all-deps.js'),
-    // this.lazzyLoadScriptService.loadScript('semanticModal.js')).subscribe(() => {
-
-
       $('.topic-picker-selector').treePicker({
         data: data,
         name: 'Topics',
@@ -159,9 +159,7 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
         nodeName: 'topicSelector',
         minSearchQueryLength: 1
       });
-      setTimeout(() =>
-        document.getElementById('topicSelector').classList.add(this.topicPickerClass), 100);
-    // });
+      setTimeout(() => document.getElementById('topicSelector').classList.add(this.topicPickerClass), 0);
   }
 
 }
