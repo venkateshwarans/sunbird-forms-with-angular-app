@@ -45,6 +45,8 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public isDependsInvalid: any;
   private dispose$ = new Subject<undefined>();
+  latestParentValue: string;
+  tempAssociation: any;
 
   constructor(private lazzyLoadScriptService: LazzyLoadScriptService) { }
 
@@ -53,7 +55,8 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.formControlRef.valueChanges.pipe(
       tap(val => {
         console.log(val);
-      })
+      }),
+      takeUntil(this.dispose$)
     ).subscribe();
     const selectedTopics = _.reduce(this.default, (collector, element) => {
       if (typeof element === 'string') {
@@ -81,12 +84,13 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!_.isEmpty(this.depends)) {
       merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
        tap((value: any) => {
+         this.latestParentValue = value;
          this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
          this.formControlRef.patchValue(null);
          this.placeHolder = '';
          this.default = [];
          this.selectedNodes = {};
-         this.initTopicPicker(this.formatTopics(this.field.range));
+         this.initTopicPicker(this.formatTopics(this.fetchAssociations()));
        }),
        takeUntil(this.dispose$)
        ).subscribe();
@@ -118,7 +122,7 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private formatSelectedTopics(topics, unformatted, formatted) {
     _.forEach(topics, (topic) => {
-      if (unformatted.includes(topic.name) && !topic.children) {
+      if (unformatted.includes(this.field.output ? topic[this.field.output] : topic.name) && !topic.children) {
         formatted.push({
           identifier: topic.identifier,
           name: topic.name
@@ -152,14 +156,45 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.topicChange.emit(this.selectedTopics);
           const topics = [];
           _.forEach(this.selectedTopics, (value, index) => {
-            topics.push(value.name);
+            if(this.field.output) {
+             topics.push(value[this.field.output]);
+            } else {
+              topics.push(value.name)
+            }
           });
           this.formControlRef.setValue(topics);
         },
         nodeName: 'topicSelector',
-        minSearchQueryLength: 1
+        displayFormat: function(picked) { return this.placeHolder; } ,
+        minSearchQueryLength: 1,
+        disabled: (node)  => {
+          return this.disabled ? true : ( this.depends ? (this.isDependsInvalid ? true : false) : false )
+        }
       });
       setTimeout(() => document.getElementById('topicSelector').classList.add(this.topicPickerClass), 0);
+  }
+
+  fetchAssociations() {
+    // && this.context.value && this.field.association
+    if (!_.isEmpty(this.depends)) {
+      const filteredTerm = _.find(this.dependencyTerms, terms => {
+        return _.includes(this.getParentValue(), terms.identifier);
+      });
+      if (filteredTerm) {
+        this.tempAssociation =  _.filter(filteredTerm.associations, association => {
+          return (this.field.sourceCategory) ? (association.category === this.field.sourceCategory) : association.category === this.field.code;
+        });
+        return this.tempAssociation;
+      } else  {
+        return this.field.range;
+      }
+    } else {
+      return this.field.range;
+    }
+  }
+
+  getParentValue() {
+    return this.latestParentValue || _.compact(_.map(this.depends, 'value'));
   }
 
 }

@@ -136,7 +136,7 @@ export class DynamicDropdownComponent implements OnInit, OnChanges, OnDestroy {
       });
       if (filteredTerm) {
         this.tempAssociation =  _.filter(filteredTerm.associations, association => {
-          return association.category === this.field.code;
+          return (this.field.sourceCategory) ? (association.category === this.field.sourceCategory) : association.category === this.field.code;
         });
         return this.tempAssociation;
       } else  {

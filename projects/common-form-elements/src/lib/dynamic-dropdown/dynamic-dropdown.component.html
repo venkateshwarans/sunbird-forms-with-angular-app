@@ -26,7 +26,7 @@
         </ng-container> -->
 
         <ng-container *ngIf="!field.range && field.terms">
-          <option class="optionsLast" *ngFor="let option of fetchAssociations()" [ngValue]="option.identifier">{{option.name}}</option>
+          <option class="optionsLast" *ngFor="let option of fetchAssociations()" [ngValue]="(field.output) ? option[this.field.output] :  option.name">{{option.name}}</option>
         </ng-container>
       </select>
     </div>
