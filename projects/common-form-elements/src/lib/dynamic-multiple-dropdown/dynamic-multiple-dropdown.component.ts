@@ -30,6 +30,9 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
   @Input() depends?: FormControl[];
   @Input() dependencyTerms?: any = [];
 
+  _: any = _;
+
+
   public isDependsInvalid: any;
 
   showModal = false;
@@ -128,14 +131,14 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
 
   addSelected(option: Map<string, string>) {
     if (this.isMultiple) {
-      if (this.tempValue.includes(option.get('value'))) {
-        this.tempValue = this.tempValue.remove(option.get('value'));
+      if (this.tempValue.includes(option.get(this.field.output))) {
+        this.tempValue = (this.field.output) ? this.tempValue.remove(this.field.output) : this.tempValue.remove(option.get('identifier'));
       } else {
-        this.tempValue = this.tempValue.add(option.get('value'));
+        this.tempValue = (this.field.output) ? this.tempValue.add(option.get(this.field.output)) :  this.tempValue.add(option.get('identifier'));
       }
     } else {
       this.tempValue = this.tempValue.clear();
-      this.tempValue = this.tempValue.add(option.get('value'));
+      this.tempValue = (this.field.output) ? this.tempValue.add(option.get(this.field.output)) : this.tempValue.add(option.get('identifier'));
     }
   }
   onCancel() {
@@ -184,8 +187,8 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
     if (this.isOptionsArray()) {
       const optionMap = _.map(this.options, option => {
         return {
-          value: option.value || option.identifier || option.name || option,
-          label: option.label || option.name || option.value || option,
+          identifier: option.value || option.identifier || option.name || option,
+          name: option.label || option.name || option.value || option,
         };
       });
       this.resolvedOptions = fromJS(optionMap);
@@ -205,8 +208,8 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
           this.resolvedOptions = fromJS(options);
 
           this.resolvedOptions.forEach((option) => {
-            const value: any = option.get('value') || option.get('identifier') || option.get('name') || option;
-            const labelVal: any = option.get('label') || option.get('name') || option;
+            const value: any = !_.isEmpty(this.field.output) ? option.get(this.field.output) : option.get('identifier') || option.get('value') || option.get('name') || option;
+            const labelVal: any = option.get('name') || option.get('label') || option;
 
             this.optionValueToOptionLabelMap = this.optionValueToOptionLabelMap.set(value, labelVal);
           });
@@ -220,8 +223,8 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
     }
 
     this.resolvedOptions.forEach((option) => {
-      const value: any = option.get('value') || option.get('identifier') || option.get('name') || option;
-      const labelVal: any = option.get('label') || option.get('name') || option;
+      const value: any = !_.isEmpty(this.field.output) ? option.get(this.field.output) : option.get('identifier') || option.get('value')  || option.get('name') || option;
+      const labelVal: any = option.get('name') || option.get('label') || option;
 
       this.optionValueToOptionLabelMap = this.optionValueToOptionLabelMap.set(value, labelVal);
     });

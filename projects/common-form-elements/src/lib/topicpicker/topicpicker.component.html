@@ -1,6 +1,6 @@
 <div class="treepicker-parent">
   <label *ngIf="label">{{label}}</label>
-  <div class="list-border" [attr.disabled]="disabled ? true : ( depends ? (isDependsInvalid ? true : null) : null )" id="treePicker" class="topic-picker-selector cursor-pointer">
+  <div [attr.disabled]="disabled ? true : ( depends ? (isDependsInvalid ? true : null) : null )" id="treePicker" class="topic-picker-selector cursor-pointer list-border">
   {{placeHolder}}
   </div>
 

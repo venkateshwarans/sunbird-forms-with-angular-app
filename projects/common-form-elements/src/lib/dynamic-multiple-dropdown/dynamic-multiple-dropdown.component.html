@@ -35,10 +35,10 @@
               <li *ngFor="let option of resolvedOptions; let i=index">
                 <div (click)="addSelected(option)" class="row">
                   <label class="container" style="pointer-events: none">
-                    <input [checked]="tempValue.includes(option.get('value'))" class="sb-checkbox" type="checkbox">
+                    <input [checked]="!_.isEmpty(field.output) ? tempValue.includes(option.get(field.output)) : tempValue.includes(option.get('identifier'))" class="sb-checkbox" type="checkbox">
                     <span class="checkmark"></span>
                   </label>
-                  <span>{{option.get('label')}}</span>
+                  <span>{{option.get('name')}}</span>
                 </div>
               </li>
             </ul>
@@ -56,9 +56,9 @@
     </div>
     <div class="sb-modal-dropdown-web" *ngIf="platform === 'web'"  [hidden]="!showModal" (click)="showModal=false;">
       <ul>
-        <li *ngFor="let option of resolvedOptions; let i=index" [ngClass]="{'selected-option':tempValue.includes(option.get('value'))}">
+        <li *ngFor="let option of resolvedOptions; let i=index" [ngClass]="{'selected-option': !_.isEmpty(field.output) ? tempValue.includes(option.get(this.field.output)) : tempValue.includes(option.get('identifier'))}">
           <div (click)="addSelected(option); onSubmit()">
-            <span class="cursor-pointer">{{option.get('label')}}</span>
+            <span class="cursor-pointer">{{option.get('name')}}</span>
           </div>
         </li>
       </ul>
