@@ -17,7 +17,7 @@ export class DynamicDropdownComponent implements OnInit, OnChanges, OnDestroy {
   @Input() disabled?: boolean;
   @Input() options: any;
   @Input() label?: string;
-  @Input() placeHolder?: string;
+  @Input() placeholder?: string;
   @Input() isMultiple?: boolean;
   @Input() context?: FormControl;
   @Input() contextTerms?: any;
@@ -60,6 +60,10 @@ export class DynamicDropdownComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
+    if (!this.options) {
+      this.options = [];
+    }
+
     // if (this.context) {
       // this.contextValueChangesSubscription = this.context.valueChanges.pipe(
       //   tap(() => {
@@ -74,6 +78,9 @@ export class DynamicDropdownComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.field && this.field.range) {
       this.options = this.field.range;
+    } else if (_.isEmpty(this.options) && _.isEmpty(this.field.range) && this.default) {
+      this.field.range = [];
+      this.field.range.push(this.default);
     }
 
 
@@ -132,11 +139,15 @@ export class DynamicDropdownComponent implements OnInit, OnChanges, OnDestroy {
     // && this.context.value && this.field.association
     if (!_.isEmpty(this.depends)) {
       const filteredTerm = _.find(this.dependencyTerms, terms => {
-        return _.includes(this.getParentValue(), terms.identifier);
+        return !_.isEmpty(this.field.output) ?
+        _.includes(this.getParentValue(), terms[this.field.output]) :
+        _.includes(this.getParentValue(), terms.name) ;
       });
       if (filteredTerm) {
         this.tempAssociation =  _.filter(filteredTerm.associations, association => {
-          return (this.field.sourceCategory) ? (association.category === this.field.sourceCategory) : association.category === this.field.code;
+          return (this.field.sourceCategory) ?
+          (association.category === this.field.sourceCategory) :
+          association.category === this.field.code;
         });
         return this.tempAssociation;
       } else  {

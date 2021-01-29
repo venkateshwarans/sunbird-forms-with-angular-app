@@ -18,7 +18,7 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
   @Input() options: any;
   @Input() label?: string;
   @Input() labelHtml: any;
-  @Input() placeHolder?: string;
+  @Input() placeholder?: string;
   @Input() isMultiple = true;
   @Input() context?: FormControl;
   @Input() formControlRef?: FormControl;

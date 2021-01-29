@@ -7,7 +7,7 @@
     <div class="list-border" (click)="openModal($event)">
       <ul [ngClass]="{'disabled': disabled === true ? true : ( depends ? (isDependsInvalid ? true : null) : null ) }" [attr.disabled]="disabled ? true : ( depends ? (isDependsInvalid ? true : null) : null )">
         <ng-container *ngIf="isMultiple">
-          <li *ngIf="!formControlRef.value || !formControlRef.value?.length" class="placeholder">{{placeHolder}}</li>
+          <li *ngIf="!formControlRef.value || !formControlRef.value?.length" class="placeholder">{{placeholder}}</li>
           <ng-container *ngIf="formControlRef.value?.length">
             <span *ngFor="let value of formControlRef.value; let index=index">
               {{optionValueToOptionLabelMap.get(fromJS(value))}}
@@ -18,7 +18,7 @@
         </ng-container>
 
         <ng-container *ngIf="!isMultiple">
-          <li *ngIf="!formControlRef.value" class="placeholder">{{placeHolder}}</li>
+          <li *ngIf="!formControlRef.value" class="placeholder">{{placeholder}}</li>
 
           <span *ngIf="formControlRef.value">{{optionValueToOptionLabelMap.get(fromJS(formControlRef.value))}}</span>
         </ng-container>
@@ -28,14 +28,14 @@
       <div class="sb-modal-overlay">
         <div class="sb-modal" (click)="$event.stopPropagation()">
           <div class="header">
-            {{placeHolder}}
+            {{placeholder}}
           </div>
           <div class="body">
             <ul>
               <li *ngFor="let option of resolvedOptions; let i=index">
                 <div (click)="addSelected(option)" class="row">
                   <label class="container" style="pointer-events: none">
-                    <input [checked]="!_.isEmpty(field.output) ? tempValue.includes(option.get(field.output)) : tempValue.includes(option.get('identifier'))" class="sb-checkbox" type="checkbox">
+                    <input [checked]="!_.isEmpty(field.output) ? tempValue.includes(option.get(field.output)) : tempValue.includes(option.get('name'))" class="sb-checkbox" type="checkbox">
                     <span class="checkmark"></span>
                   </label>
                   <span>{{option.get('name')}}</span>
@@ -56,7 +56,7 @@
     </div>
     <div class="sb-modal-dropdown-web" *ngIf="platform === 'web'"  [hidden]="!showModal" (click)="showModal=false;">
       <ul>
-        <li *ngFor="let option of resolvedOptions; let i=index" [ngClass]="{'selected-option': !_.isEmpty(field.output) ? tempValue.includes(option.get(this.field.output)) : tempValue.includes(option.get('identifier'))}">
+        <li *ngFor="let option of resolvedOptions; let i=index" [ngClass]="{'selected-option': !_.isEmpty(field.output) ? tempValue.includes(option.get(field.output)) : tempValue.includes(option.get('name'))}">
           <div (click)="addSelected(option); onSubmit()">
             <span class="cursor-pointer">{{option.get('name')}}</span>
           </div>

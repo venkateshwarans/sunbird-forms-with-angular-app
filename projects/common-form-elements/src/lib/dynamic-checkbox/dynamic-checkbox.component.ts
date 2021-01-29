@@ -19,7 +19,7 @@ export class DynamicCheckboxComponent implements OnInit {
   @Input() disabled?: boolean;
   @Input() options: any;
   @Input() label?: string;
-  @Input() placeHolder?: string;
+  @Input() placeholder?: string;
   @Input() isMultiple?: boolean;
   @Input() context?: FormControl;
   @Input() contextTerms?: any;

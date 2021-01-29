@@ -67,7 +67,7 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
       return collector;
     }, { formatted: [], unformatted: [] });
 
-    this.formatSelectedTopics(this.field.range, selectedTopics.unformatted, selectedTopics.formatted);
+    this.formatSelectedTopics(this.field.terms, selectedTopics.unformatted, selectedTopics.formatted);
     this.default = selectedTopics.unformatted;
     this.selectedNodes = { ...selectedTopics.formatted };
     this.topicChange.emit(this.selectedTopics);
@@ -102,7 +102,7 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
-    this.initTopicPicker(this.formatTopics(this.field.range));
+    this.initTopicPicker(this.formatTopics(this.field.terms));
 
   }
 
@@ -135,7 +135,7 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private initTopicPicker(data: Array<TopicTreeNode>) {
-      $('.topic-picker-selector').treePicker({
+      $(`.topic-picker-selector_${this.field.code}`).treePicker({
         data: data,
         name: 'Topics',
         noDataMessage: 'noDataMessage',
@@ -156,29 +156,29 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.topicChange.emit(this.selectedTopics);
           const topics = [];
           _.forEach(this.selectedTopics, (value, index) => {
-            if(this.field.output) {
+            if (this.field.output) {
              topics.push(value[this.field.output]);
             } else {
-              topics.push(value.name)
+              topics.push(value.name);
             }
           });
           this.formControlRef.setValue(topics);
         },
-        nodeName: 'topicSelector',
+        nodeName: `topicSelector_${this.field.code}`,
         displayFormat: function(picked) { return this.placeHolder; } ,
         minSearchQueryLength: 1,
         disabled: (node)  => {
           return this.disabled ? true : ( this.depends ? (this.isDependsInvalid ? true : false) : false )
         }
       });
-      setTimeout(() => document.getElementById('topicSelector').classList.add(this.topicPickerClass), 0);
+      setTimeout(() => document.getElementById(`topicSelector_${this.field.code}`).classList.add(this.topicPickerClass), 0);
   }
 
   fetchAssociations() {
     // && this.context.value && this.field.association
     if (!_.isEmpty(this.depends)) {
       const filteredTerm = _.find(this.dependencyTerms, terms => {
-        return _.includes(this.getParentValue(), terms.identifier);
+        return !_.isEmpty(this.field.output) ? _.includes(this.getParentValue(), terms[this.field.output]) : _.includes(this.getParentValue(), terms.name) ;
       });
       if (filteredTerm) {
         this.tempAssociation =  _.filter(filteredTerm.associations, association => {
@@ -186,10 +186,10 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         return this.tempAssociation;
       } else  {
-        return this.field.range;
+        return this.field.terms;
       }
     } else {
-      return this.field.range;
+      return this.field.terms;
     }
   }
 
