@@ -18,7 +18,7 @@ export class DynamicTextboxComponent implements OnInit,  AfterViewInit, OnChange
   @Input() prefix?: String;
   @Input() default: String;
   @Input() disabled: Boolean;
-  @ViewChild('validationTrigger') validationTrigger: ElementRef;
+  @ViewChild('validationTrigger', {static: false}) validationTrigger: ElementRef;
 
   constructor() {
   }
