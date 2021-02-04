@@ -7,8 +7,7 @@ import { ObjectDifference } from './helpers/helpers';
 import { formConfig} from './formConfigSmall';
 import { formConfigWithClass } from './formConfig';
 import { formConfigWithSection } from './formConfigSection';
-import { formConfigFramework } from './formConfigFrameWork';
-import { cr } from '@angular/core/src/render3';
+// import { formConfigFramework } from './formConfigFrameWork';
 import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-root',
@@ -43,7 +42,7 @@ export class AppComponent implements OnInit {
 
 
  ngOnInit() {
-   this.config = formConfigFramework;;
+   this.config = formConfig;
  }
 
   output(event) {

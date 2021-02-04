@@ -163,4 +163,50 @@ export class DynamicDropdownComponent implements OnInit, OnChanges, OnDestroy {
     return this.latestParentValue || _.compact(_.map(this.depends, 'value'));
   }
 
+  getOptionValueForTerms(option) {
+    if (this.field.output) {
+      if (this.field.dataType === 'list') {
+        return [option[this.field.output]];
+      }
+      return option[this.field.output];
+    } else {
+      return this.field.dataType === 'list' ? [option.name] : option.name;
+    }
+  }
+
+  getOptionValueForRange(option, optionsType) {
+    if (this.field.output) {
+      if (this.field.dataType === 'list') {
+        if (optionsType === 'map' || optionsType === 'closure') {
+          return [option[this.field.output]] || [option.value] || [option.identifier] || [option.name] || [option.label];
+        } else  {
+          return [option];
+        }
+      } else {
+        if (optionsType === 'map' || optionsType === 'closure') {
+          return option[this.field.output] || option.value || option.identifier || option.name || option.label;
+        } else  {
+          return option;
+        }
+      }
+    } else {
+      if (this.field.dataType === 'list') {
+        if (optionsType === 'map' || optionsType === 'closure') {
+          return [option.value] || [option.identifier] || [option.name] || [option.label];
+        } else  {
+          return [option];
+        }
+      } else {
+        if (optionsType === 'map' || optionsType === 'closure') {
+          return  option.name || option.label || option.value || option.identifier;
+        } else  {
+          return option;
+        }
+      }
+    }
+  }
+
+  convertOptionToArray(option, output?) {
+
+  }
 }

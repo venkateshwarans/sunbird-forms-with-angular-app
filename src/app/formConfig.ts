@@ -100,9 +100,9 @@ export const formConfigWithClass = [
       }]
     }, {
       'code': 'primaryCategory',
-      'dataType': 'text',
+      'dataType': 'list',
       'description': 'Collection Type',
-      'editable': false,
+      'editable': true,
       'index': 4,
       'renderingHints': {
 

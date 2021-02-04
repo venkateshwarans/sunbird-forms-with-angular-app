@@ -59,16 +59,6 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
       this.valueChangesSubscription.unsubscribe();
     }
 
-    // this.config.forEach((element: any, index) => {
-    //   // if (element.type !== FieldConfigInputType.LABEL) {
-    //     // }
-    // const formValueList = this.prepareFormValidationData(element, index);
-    //   if (!_.isEmpty(element.depends)) {
-    //     dependency.push({code: element.code, depends: element.depends});
-    //   }
-    //   formGroupData[element.code] = formValueList;
-    // });
-
     this.isSection = !_.isEmpty(_.find(this.config, 'fields'));
     if (this.isSection) {
       this.config.forEach((sections) => {
@@ -168,9 +158,9 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
         if (element.default) {
           if (element.dataType === 'list') {
             if (_.isArray(element.default)) {
-              defaultVal = _.toString(element.default);
-            } else {
               defaultVal = element.default;
+            } else {
+              defaultVal = _.toArray(element.default);
             }
           } else if (element.dataType === 'text') {
             if (_.isString(element.default)) {
@@ -212,9 +202,6 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
           break;
       case 'checkbox':
         defaultVal = (element.dataType === 'text') ? (element.default === 'Yes' ? 'Yes' : 'No') : !!element.default;
-        // (this.field.dataType === 'text') ? (checked === true ? 'Yes' : 'No') : checked
-
-        // false || !!element.default;
         break;
     }
 

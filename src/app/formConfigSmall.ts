@@ -72,8 +72,9 @@ export const formConfig = [
       },
       {
         'code': 'primaryCategory',
-        'dataType': 'text',
+        'dataType': 'list',
         'description': 'Type',
+        'default': ['karnataka1'],
         'editable': true,
         'index': 4,
         'renderingHints': {
@@ -102,7 +103,7 @@ export const formConfig = [
       },
       {
         'code': 'additionalCategories',
-        'dataType': 'list',
+        'dataType': 'text',
         'depends': ['title', 'primaryCategory'],
         'description': 'Additonal Category of the Content',
         'editable': true,
@@ -110,7 +111,7 @@ export const formConfig = [
         'default': ['Classroom Teaching Video',
           'Concept Map'
         ],
-        'inputType': 'nestedselect',
+        'inputType': 'select',
         'label': 'Additional Category',
         'name': 'Additional Category',
         'placeholder': 'Select Additional Category',
@@ -133,6 +134,26 @@ export const formConfig = [
         ],
         'required': false,
         'visible': true
+      },
+      {
+        'code': 'audience',
+        'visible': true,
+        'editable': true,
+        'default': ['Teacher'],
+        'dataType': 'list',
+        'renderingHints': {},
+        'description': '',
+        'index': 14,
+        'range': ['Student', 'Teacher', 'Administrator'],
+        'label': 'Audience',
+        'required': false,
+        'name': 'Audience',
+        'inputType': 'select',
+        'placeholder': 'Select Audience',
+        'section': {
+          'index': 4,
+          'name': ''
+        }
       },
       {
         'code': 'board',
@@ -227,22 +248,6 @@ export const formConfig = [
           'type': 'required',
           'message': 'Topic is required'
         }]
-      },
-      {
-        'code': 'audience',
-        'dataType': 'list',
-        'description': 'Audience',
-        'editable': true,
-        'inputType': 'select',
-        'label': 'Audience',
-        'name': 'Audience',
-        'placeholder': 'Select Audience',
-        'renderingHints': {
-          'class': 'sb-g-col-lg-1'
-        },
-        'required': true,
-        'visible': true,
-        'range': ['Student', 'Teacher', 'Administrator'],
       },
       {
         'code': 'showFeedback',
