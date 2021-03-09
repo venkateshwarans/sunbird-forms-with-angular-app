@@ -14,7 +14,7 @@ import { DynamicTextareaComponent } from '../dynamic-textarea/dynamic-textarea.c
 import { FileComponent } from '../file/file.component';
 import { TopicpickerComponent } from '../topicpicker/topicpicker.component';
 import { KeywordsComponent } from '../keywords/keywords.component';
-import { MultiSelectComponent } from '../multi-select/multi-select.component';
+import { DynamicMultiSelectComponent } from '../dynamic-multi-select/dynamic-multi-select.component';
 import { DynamicDropdownComponent } from '../dynamic-dropdown/dynamic-dropdown.component';
 import { DynamicMultipleDropdownComponent } from '../dynamic-multiple-dropdown/dynamic-multiple-dropdown.component';
 import { DynamicCheckboxComponent } from '../dynamic-checkbox/dynamic-checkbox.component';
@@ -24,7 +24,7 @@ const componentMapper = {
   textarea: DynamicTextareaComponent,
   text: DynamicTextboxComponent,
   select: DynamicDropdownComponent,
-  multiselect: MultiSelectComponent,
+  multiselect: DynamicMultiSelectComponent,
   nestedselect: DynamicMultipleDropdownComponent,
   file: FileComponent,
   keywords: KeywordsComponent,

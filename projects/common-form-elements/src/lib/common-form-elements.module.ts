@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CommonFormElementsComponent } from './common-form-elements.component';
-import { MultiSelectComponent } from './multi-select/multi-select.component';
+import { DynamicMultiSelectComponent } from './dynamic-multi-select/dynamic-multi-select.component';
 import { DynamicFieldDirective } from './dynamic-field/dynamic-field.directive';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CaretDownComponent } from './icon/caret-down/caret-down.component';
@@ -31,17 +31,17 @@ import { DynamicCheckboxComponent } from './dynamic-checkbox/dynamic-checkbox.co
   entryComponents: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
     DynamicMultipleDropdownComponent, DynamicCheckboxComponent,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent,
-    FileComponent, TopicpickerComponent, KeywordsComponent, MultiSelectComponent],
+    FileComponent, TopicpickerComponent, KeywordsComponent, DynamicMultiSelectComponent],
   declarations: [CommonFormElementsComponent,
      CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent,
     RedExclamationComponent, DynamicFieldDirective, FileComponent, TopicpickerComponent, KeywordsComponent,
-    MultiSelectComponent,
+    DynamicMultiSelectComponent,
     DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent,
     DynamicDropdownComponent, DynamicMultipleDropdownComponent, DynamicCheckboxComponent],
   exports: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
     DynamicMultipleDropdownComponent, DynamicCheckboxComponent, CommonFormElementsComponent,
     DynamicFieldDirective,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent, FileComponent,
-    TopicpickerComponent, KeywordsComponent, MultiSelectComponent ]
+    TopicpickerComponent, KeywordsComponent, DynamicMultiSelectComponent ]
 })
 export class CommonFormElementsModule { }

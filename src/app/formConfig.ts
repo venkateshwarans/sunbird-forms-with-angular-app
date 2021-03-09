@@ -9,22 +9,6 @@ export const formConfigWithClass = [
   {
     'name': '',
     'fields': [
-      {
-      'code': 'appicon',
-      'visible': true,
-      'editable': true,
-      'dataType': 'url',
-      'renderingHints': {
-        'class': 'col-start-1 col-end-2'
-      },
-      'name': 'Icon',
-      'description': 'Icon',
-      'index': 0,
-      'inputType': 'file',
-      'label': 'Icon',
-      'placeholder': 'Icon',
-      'required': true
-    },
     {
       'code': 'name',
       'visible': true,

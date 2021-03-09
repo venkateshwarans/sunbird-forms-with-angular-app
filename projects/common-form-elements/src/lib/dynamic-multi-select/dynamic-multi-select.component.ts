@@ -6,11 +6,11 @@ import {tap} from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import {ValueComparator} from '../utilities/value-comparator';
 @Component({
-  selector: 'sb-multi-select',
-  templateUrl: './multi-select.component.html',
-  styleUrls: ['./multi-select.component.css']
+  selector: 'sb-dynamic-multi-select',
+  templateUrl: './dynamic-multi-select.component.html',
+  styleUrls: ['./dynamic-multi-select.component.css']
 })
-export class MultiSelectComponent implements OnInit, OnChanges, OnDestroy {
+export class DynamicMultiSelectComponent implements OnInit, OnChanges, OnDestroy {
   ValueComparator = ValueComparator;
   @Input() field: FieldConfig<String>;
   @Input() disabled?: boolean;
