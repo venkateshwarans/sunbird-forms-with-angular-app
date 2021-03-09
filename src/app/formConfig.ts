@@ -147,6 +147,7 @@ export const formConfigCurriculumCourse = [
         "depends": [],
         "editable": true,
         "dataType": "text",
+        "default": ["tn_k-12_board_statetamilnadu"],
         "sourceCategory": "board",
         "output": "identifier",
         "renderingHints": {
@@ -2076,6 +2077,7 @@ export const formConfigCurriculumCourse = [
         "depends": [
           "boardIds"
         ],
+        default: ["tn_k-12_medium_english"],
         "editable": true,
         "dataType": "list",
         "sourceCategory": "medium",
@@ -4420,6 +4422,7 @@ export const formConfigCurriculumCourse = [
           "boardIds",
           "mediumIds"
         ],
+        default: ["tn_k-12_gradelevel_class10"],
         "editable": true,
         "dataType": "list",
         "sourceCategory": "gradeLevel",
@@ -6695,6 +6698,7 @@ export const formConfigCurriculumCourse = [
           "mediumIds",
           "gradeLevelIds"
         ],
+        "default": ["tn_k-12_subject_computerapplications"],
         "editable": true,
         "dataType": "list",
         "sourceCategory": "subject",

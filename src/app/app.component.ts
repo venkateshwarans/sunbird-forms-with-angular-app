@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
 
 
  ngOnInit() {
-   this.config = fullFormConfig;
+   this.config = formConfigCurriculumCourse;
  }
 
   output(event) {
