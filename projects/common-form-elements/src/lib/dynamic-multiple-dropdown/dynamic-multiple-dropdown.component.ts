@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
   OnInit, SimpleChanges, HostListener, ViewChild } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {from, Subject, merge} from 'rxjs';
-import {FieldConfig, FieldConfigOptionsBuilder} from '../common-form-config';
+import {FieldConfig, FieldConfigOptionsBuilder, DynamicFieldConfigOptionsBuilder} from '../common-form-config';
 import {takeUntil, tap} from 'rxjs/operators';
 import {fromJS, List, Map, Set} from 'immutable';
 import * as _ from 'lodash-es';
@@ -210,7 +210,7 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
         fromJS(this.options[this.context.value]) :
         this.resolvedOptions;
     } else if (this.isOptionsClosure()) {
-      from((this.options as FieldConfigOptionsBuilder<any>)(
+      from((this.options as DynamicFieldConfigOptionsBuilder<any>)(
         this.formControlRef,
         this.depends,
         this.formGroup,
@@ -221,7 +221,8 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
           this.resolvedOptions = fromJS(options);
 
           this.resolvedOptions.forEach((option) => {
-            const value: any = !_.isEmpty(this.field.output) ? option.get(this.field.output) : option.get('name') || option.get('identifier') || option.get('value') || option.get('name') || option;
+            const value: any = !_.isEmpty(this.field.output) ? option.get(this.field.output) :
+             option.get('name') || option.get('identifier') || option.get('value') || option;
             const labelVal: any = option.get('name') || option.get('label') || option;
 
             this.optionValueToOptionLabelMap = this.optionValueToOptionLabelMap.set(value, labelVal);
@@ -236,7 +237,9 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
     }
 
     this.resolvedOptions.forEach((option) => {
-      const value: any = !_.isEmpty(this.field.output) ? option.get(this.field.output) : option.get('name') || option.get('identifier') || option.get('value')  || option.get('name') || option;
+      const value: any = !_.isEmpty(this.field.output) ? option.get(this.field.output) :
+      option.get('name') || option.get('identifier') || option.get('value') || option;
+
       const labelVal: any = option.get('name') || option.get('label') || option;
 
       this.optionValueToOptionLabelMap = this.optionValueToOptionLabelMap.set(value, labelVal);

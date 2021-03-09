@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, EventEmitter} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Observable, Subject, Subscription, combineLatest, merge} from 'rxjs';
-import {FieldConfig, FieldConfigOption, FieldConfigOptionsBuilder} from '../common-form-config';
+import {FieldConfig, FieldConfigOption, FieldConfigOptionsBuilder, DynamicFieldConfigOptionsBuilder} from '../common-form-config';
 import {tap} from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import {ValueComparator} from '../utilities/value-comparator';
@@ -46,7 +46,7 @@ export class DynamicMultiSelectComponent implements OnInit, OnChanges, OnDestroy
       this.options = [];
     }
     if (this.isOptionsClosure(this.options)) {
-      this.options$ = (this.options as FieldConfigOptionsBuilder<any>)(
+      this.options$ = (this.options as DynamicFieldConfigOptionsBuilder<any>)(
         this.formControlRef,
         this.depends,
         this.formGroup,
@@ -98,7 +98,7 @@ export class DynamicMultiSelectComponent implements OnInit, OnChanges, OnDestroy
 
     if (this.isOptionsClosure(this.options)) {
       // tslint:disable-next-line:max-line-length
-      this.options$ = (this.options as FieldConfigOptionsBuilder<any>)(this.formControlRef, this.depends, this.formGroup, () => this.dataLoadStatusDelegate.next('LOADING'), () => this.dataLoadStatusDelegate.next('LOADED')) as any;
+      this.options$ = (this.options as DynamicFieldConfigOptionsBuilder<any>)(this.formControlRef, this.depends, this.formGroup, () => this.dataLoadStatusDelegate.next('LOADING'), () => this.dataLoadStatusDelegate.next('LOADED')) as any;
     }
 
 
