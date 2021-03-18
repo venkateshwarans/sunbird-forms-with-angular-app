@@ -18,7 +18,7 @@ import { DynamicMultiSelectComponent } from '../dynamic-multi-select/dynamic-mul
 import { DynamicDropdownComponent } from '../dynamic-dropdown/dynamic-dropdown.component';
 import { DynamicMultipleDropdownComponent } from '../dynamic-multiple-dropdown/dynamic-multiple-dropdown.component';
 import { DynamicCheckboxComponent } from '../dynamic-checkbox/dynamic-checkbox.component';
-
+import { DynamicTimerComponent } from '../dynamic-timer/dynamic-timer.component';
 
 const componentMapper = {
   textarea: DynamicTextareaComponent,
@@ -33,7 +33,8 @@ const componentMapper = {
   licenses: DynamicDropdownComponent,
   label: DynamicTextboxComponent,
   number: DynamicTextboxComponent,
-  checkbox: DynamicCheckboxComponent
+  checkbox: DynamicCheckboxComponent,
+  timer: DynamicTimerComponent
 };
 
 @Directive({

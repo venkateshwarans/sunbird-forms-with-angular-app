@@ -1,10 +1,12 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit,
   Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
   import {AsyncValidatorFactory, FieldConfig, FieldConfigInputType, FieldConfigValidationType, SectionConfig} from '../common-form-config';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {Subject, Subscription} from 'rxjs';
 import {distinctUntilChanged, map, scan, tap} from 'rxjs/operators';
 import * as _ from 'lodash-es';
+import * as moment_ from 'moment';
+const moment = moment_;
 
 @Component({
   selector: 'sb-dynamic-form',
@@ -222,11 +224,20 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
           case 'pattern':
             validationList.push(Validators.pattern(element.validations[i].value as string));
             break;
-          case 'min':
+          case 'minLength':
             validationList.push(Validators.minLength(element.validations[i].value as number));
             break;
-          case 'max':
+          case 'maxLength':
             validationList.push(Validators.maxLength(element.validations[i].value as number));
+            break;
+          case 'min':
+            validationList.push(Validators.min(element.validations[i].value as number));
+            break;
+          case 'max':
+            validationList.push(Validators.max(element.validations[i].value as number));
+            break;
+          case 'time':
+            validationList.push(this.validateTime.bind(this, element.validations[i].value));
             break;
         }
       });
@@ -280,6 +291,11 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
 
   getFlattenedSectionFields() {
     return _.flatten(_.map(this.config, 'fields'));
+  }
+
+  validateTime(pattern, control: AbstractControl): ValidationErrors | null  {
+    console.log(moment(control.value, pattern).isValid());
+    return moment(control.value, pattern, true).isValid() ? null : {time: true};
   }
 
 }
