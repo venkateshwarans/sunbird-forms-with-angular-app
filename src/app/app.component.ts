@@ -39,7 +39,8 @@ export class AppComponent implements OnInit {
     const oldValue = {};
     const response = merge(..._.map(depends, depend => depend.valueChanges)).pipe(
       switchMap((value: any) => {
-        if (value.length === 8 && value !== '00:00:00') {
+        const isDependsInvalid = _.includes(_.map(depends, depend => depend.invalid), true);
+        if (!isDependsInvalid) {
           return of(true);
         } else {
           return of(false);

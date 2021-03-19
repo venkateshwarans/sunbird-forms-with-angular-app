@@ -238,7 +238,7 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
             validationList.push(Validators.max(element.validations[i].value as number));
             break;
           case 'time':
-            validationList.push(this.validateTime.bind(this, element.validations[i].value));
+            validationList.push(this.validateTime.bind(this, element.validations[i].value, element));
             break;
           case 'compare':
             validationList.push(this.compareFields.bind(this, element.validations[i].criteria));
@@ -297,9 +297,13 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
     return _.flatten(_.map(this.config, 'fields'));
   }
 
-  validateTime(pattern, control: AbstractControl): ValidationErrors | null  {
-    console.log(moment(control.value, pattern).isValid());
-    return moment(control.value, pattern, true).isValid() ? null : {time: true};
+  validateTime(pattern, field, control: AbstractControl): ValidationErrors | null  {
+    const isPatternMatched = moment(control.value, pattern, true).isValid();
+    if (!isPatternMatched && (control.touched || control.dirty)) {
+      return {time : true};
+    }
+    return null;
+    // return moment(control.value, pattern, true).isValid() && control.touched ? null : {time: true};
   }
 
 
@@ -312,6 +316,10 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
         return false;
       }
     });
-    return result ? {compare: true} : null;
+    if (result && (control.touched || control.dirty)) {
+      return { compare: true };
+    }
+    return null;
+    // return result ? {compare: true} : null;
   }
 }
