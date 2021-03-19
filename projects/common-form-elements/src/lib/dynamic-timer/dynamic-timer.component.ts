@@ -57,14 +57,6 @@ export class DynamicTimerComponent implements OnInit, OnDestroy {
       this.options$.subscribe(
         (response) => {
             this.dependencyTerms = response;
-            if (this.dependencyTerms && this.dependencyTerms.length === 8) {
-              this.formGroup.controls[this.field.code]
-              .setValidators([_.find(this.validations, {type: 'function'}).value.bind(this, this.dependencyTerms, this.formGroup ),
-                this.formControlRef.validator]);
-              // this.formControlRef.setValidators([Validators.max(this.dependencyTerms), this.formControlRef.validator]);
-              this.formGroup.controls[this.field.code].updateValueAndValidity();
-            }
-
         },
       );
     }
@@ -72,6 +64,8 @@ export class DynamicTimerComponent implements OnInit, OnDestroy {
     if (!_.isEmpty(this.depends)) {
       this.contextValueChangesSubscription =  merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
        tap((value: any) => {
+         this.value = null;
+         this.formControlRef.patchValue(null);
          this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
        })
        ).subscribe();
@@ -115,7 +109,9 @@ export class DynamicTimerComponent implements OnInit, OnDestroy {
     type = 'text';
     let input = event.target.value;
     if (/\D\/$/.test(input)) { input = input.substr(0, input.length - 3); }
-    const values = input.split(':').map(function(v) {
+
+
+    const values = input.split(':').map((v) => {
       return v.replace(/\D/g, '');
     });
 
@@ -125,22 +121,29 @@ export class DynamicTimerComponent implements OnInit, OnDestroy {
           values[index] = this.checkValue(val, this.maxValue[index]);
         }
       });
+      const output = values.map((v, i) => {
+        if (this.maxValue[i] && this.maxValue[i].length && v.length === this.maxValue[i].length &&
+          i <= this.maxValue.length) {
+            return v + ':';
+        } else if (this.maxValue[i] && this.maxValue[i].length && this.maxValue[i].length < v.length) {
+          return v.substr(0, this.maxValue[i].length);
+        } else {
+          return v;
+        }
+      });
+      this.value = output.join('').substr(0, this.getMaxValueLength());
     }
-    const output = values.map((v, i) => {
-      return v.length === this.maxValue[i].length && i <= this.maxValue.length ? v + ':' :
-       v.length > this.maxValue[i].length ? v.substr(0, this.maxValue[i].length) : v;
-    });
-    this.value = output.join('').substr(0, this.getMaxValueLength());
+
     this.formControlRef.markAsTouched();
     this.formControlRef.patchValue(this.value);
-
   }
 
   findMaxValue() {
     let maxObj = _.find(this.validations, {type: 'max'});
-    maxObj = maxObj && maxObj.value ? maxObj : {type: 'max', value: '05:59:59'};
-    // this.maxValue = maxObj.value.split(':').map((v) => v.replace(/\D/g, ''));
-    this.maxValue = this.maxValue;
+    maxObj = maxObj && maxObj.value ? maxObj :
+    !_.isEmpty(_.compact(this.dependencyTerms)) ?
+     {type: 'max', value: this.dependencyTerms} : {};
+    this.maxValue = maxObj && maxObj.value ? maxObj.value.split(':').map((v) => v.replace(/\D/g, '')) : [];
   }
 
   getMaxValueLength() {

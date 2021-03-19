@@ -18,6 +18,7 @@ export class DynamicCheckboxComponent implements OnInit {
   ValueComparator = ValueComparator;
   @Input() field: FieldConfig<String>;
   @Input() disabled?: boolean;
+  @Input() visible?: boolean;
   @Input() options?: any;
   @Input() label?: string;
   @Input() placeholder?: string;

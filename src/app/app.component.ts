@@ -18,11 +18,6 @@ export class AppComponent implements OnInit {
     if (field.code === 'ShowTimer') {
         field.options = this.showTimer;
     }
-    if (field.code === 'warningTime') {
-      field.options = this.validateWarningTime;
-      const validationFunction = _.find(field.validations, {type: 'function'});
-      if (!_.isEmpty(validationFunction))  {validationFunction.value = this.compareMaxTimeWarningTime; }
-    }
     return field;
   });
 

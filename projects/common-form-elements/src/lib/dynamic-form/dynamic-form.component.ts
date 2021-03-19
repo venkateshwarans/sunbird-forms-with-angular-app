@@ -6,6 +6,7 @@ import {Subject, Subscription} from 'rxjs';
 import {distinctUntilChanged, map, scan, tap} from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import * as moment_ from 'moment';
+import { FieldComparator } from '../utilities/fieldComparator';
 const moment = moment_;
 
 @Component({
@@ -26,7 +27,7 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
   private statusChangesSubscription: Subscription;
   private valueChangesSubscription: Subscription;
 
-
+  FieldComparator = FieldComparator;
   _: any = _;
 
   formGroup: FormGroup;
@@ -239,6 +240,9 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
           case 'time':
             validationList.push(this.validateTime.bind(this, element.validations[i].value));
             break;
+          case 'compare':
+            validationList.push(this.compareFields.bind(this, element.validations[i].criteria));
+            break;
         }
       });
     }
@@ -298,4 +302,16 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
     return moment(control.value, pattern, true).isValid() ? null : {time: true};
   }
 
+
+
+  compareFields(criteria, control: AbstractControl): ValidationErrors | null {
+    const result = _.find(criteria, (val, key) => {
+      if (control && control.parent && control.parent.controls[val]) {
+        return FieldComparator.operators[key](control.parent.controls[val].value, control.value);
+      } else {
+        return false;
+      }
+    });
+    return result ? {compare: true} : null;
+  }
 }

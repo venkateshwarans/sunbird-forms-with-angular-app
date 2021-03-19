@@ -46,11 +46,11 @@ export const timer = [
           {
             'type': 'time',
             'message': 'Please enter in hh:mm:ss',
-            'value': 'hh:mm:ss'
+            'value': 'mm:ss'
           },
           {
             'type': 'max',
-            'value': '21599', // specify in seconds
+            'value': '59:59', // specify in seconds
             'message': 'max time should be less than 05:59:59'
           },
         ]
@@ -68,23 +68,18 @@ export const timer = [
         'description': 'warning for the content',
         'inputType': 'timer',
         'label': 'Warning Time',
-        'placeholder': 'HH:MM:SS',
+        'placeholder': 'mm:ss',
         'required': true,
         'validations': [
           {
-            'type': 'pattern',
+            'type': 'time',
             'message': 'Please enter hh:mm:ss',
-            'value': /^(?:(?:([0]?[0-5]):)?([0-5]?\d):)?([0-5]?\d)$/
-          },
-          {
-            'type': 'function',
-            'message': 'warning time should be less than max timer'
+            'value': 'mm:ss'
           },
           {
             'type': 'compare',
             'criteria': {
-              '>=': ['maxTime'],
-              '!=': ['showTimer'],
+              '<=': ['maxTime'],
             },
             'message': 'warning time should be less than max timer'
           }

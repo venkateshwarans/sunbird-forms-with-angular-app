@@ -1,4 +1,4 @@
-<ng-container>
+<ng-container *ngIf="visible">
 
   <div class="sb-checkbox sb-checkbox-primary">
     <input [attr.disabled]="disabled ? true : null" type="checkbox" [formControl]="formControlRef" id="{{_.kebabCase(field.name) || field.code}}"
