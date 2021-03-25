@@ -157,7 +157,11 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
       case 'textarea':
         defaultVal = element.default || null;
         break;
+      case 'timer':
+        defaultVal = element.default || null;
+        break;
       case 'select':
+      case 'framework':
         if (element.default) {
           if (element.dataType === 'list') {
             if (_.isArray(element.default)) {
@@ -273,7 +277,7 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
     }), (depend) => {
       return depend.terms || depend.range;
     });
-    return _.flatten(dependsTerms);
+    return _.compact(_.flatten(dependsTerms));
   }
 
   getAppIcon(config, val) {
@@ -321,5 +325,15 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
     }
     return null;
     // return result ? {compare: true} : null;
+  }
+
+
+  getDependencyContext (field) {
+    return field.context.map(fieldName => {
+      return {
+        control: this.formGroup.get(fieldName),
+        field:  _.find(this.flattenSectionFields, {code: fieldName})
+      };
+    });
   }
 }

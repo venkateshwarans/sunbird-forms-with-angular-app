@@ -4,6 +4,7 @@
       <ng-container *ngFor="let field of section['fields']" libDynamicField
       [depends]="getAllDependsFormControl(field.code, field.depends)" [dependencyTerms]="field.depends ? fetchDependencyTerms(field.code, field.depends) : []"
       [context]="field.context ? formGroup.get(field.context) : null" [contextTerms]="fetchContextTerms(config, field.context)"
+      [dependencyContext]="field.context? getDependencyContext(field): null"
       [options]="field.terms" [field]="field" [formGroup]="formGroup" [default]="field.default || ''" [label]="field.label" [formControlRef]="formGroup.get(field.code)"
       [dataLoadStatusDelegate]="dataLoadStatusDelegate" [visible]="field.visible === false ? false : true" [placeholder]="field.placeholder || ''" [validations]="field.validations || []"
       [disabled]="field.editable === true ? false : true">

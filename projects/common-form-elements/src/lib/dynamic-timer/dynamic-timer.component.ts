@@ -71,6 +71,7 @@ export class DynamicTimerComponent implements OnInit, OnDestroy {
        ).subscribe();
        this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
      }
+     this.setDefaultValue();
   }
 
   checkValue(str, max) {
@@ -103,6 +104,13 @@ export class DynamicTimerComponent implements OnInit, OnDestroy {
       str = num > _.parseInt(max.toString().charAt(0)) && num.toString().length === 2 ? '0' + max : '0' +  num.toString();
     }
     return str;
+  }
+
+  setDefaultValue() {
+    if (!_.isEmpty(this.default)) {
+      this.value = this.default;
+      // this.formControlRef.patchValue(this.value);
+    }
   }
 
   onChangeEvent(event?: any, type?) {

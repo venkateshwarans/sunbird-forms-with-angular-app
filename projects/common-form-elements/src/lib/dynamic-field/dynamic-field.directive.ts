@@ -19,6 +19,7 @@ import { DynamicDropdownComponent } from '../dynamic-dropdown/dynamic-dropdown.c
 import { DynamicMultipleDropdownComponent } from '../dynamic-multiple-dropdown/dynamic-multiple-dropdown.component';
 import { DynamicCheckboxComponent } from '../dynamic-checkbox/dynamic-checkbox.component';
 import { DynamicTimerComponent } from '../dynamic-timer/dynamic-timer.component';
+import { DynamicFrameworkComponent } from '../dynamic-framework/dynamic-framework.component';
 
 const componentMapper = {
   textarea: DynamicTextareaComponent,
@@ -34,7 +35,8 @@ const componentMapper = {
   label: DynamicTextboxComponent,
   number: DynamicTextboxComponent,
   checkbox: DynamicCheckboxComponent,
-  timer: DynamicTimerComponent
+  timer: DynamicTimerComponent,
+  framework: DynamicFrameworkComponent
 };
 
 @Directive({
@@ -59,7 +61,7 @@ export class DynamicFieldDirective implements OnInit {
   @Input() dependencyTerms?: any = [];
   @Input() default: any;
   @Input() dataLoadStatusDelegate: Subject<'LOADING' | 'LOADED'>;
-
+  @Input() dependencyContext: any;
   componentRef: any;
 
 
@@ -93,6 +95,9 @@ export class DynamicFieldDirective implements OnInit {
     this.componentRef.instance.validations = this.validations;
     this.componentRef.instance.disabled = this.disabled;
     this.componentRef.instance.visible = this.visible;
+    this.componentRef.instance.dependencyContext = this.dependencyContext;
+
+
 
     // this.componentRef.instance = {
     //   field : this.field,

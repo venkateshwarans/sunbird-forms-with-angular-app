@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, AfterViewInit } from '@angular/core';
-import { Subscription, combineLatest, Subject, merge, from } from 'rxjs';
+import { Subscription, combineLatest, Subject, merge, from, Observable } from 'rxjs';
 import { LazzyLoadScriptService } from './../utilities/lazzy-load-script.service';
 import * as _ from 'lodash-es';
 import { FormControl , FormGroup} from '@angular/forms';
-import { FieldConfig } from '../common-form-config';
+import { DynamicFieldConfigOptionsBuilder, FieldConfig, FieldConfigOption } from '../common-form-config';
 import { tap, takeUntil } from 'rxjs/operators';
 
 declare var treePicker: any;
@@ -31,6 +31,7 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() label: String;
   @Input() disabled?: boolean;
   @Input() placeholder: String;
+  @Input() options: any;
   @Input() formControlRef: FormControl;
   @Input() field: FieldConfig<String>;
   @Output() topicChange = new EventEmitter();
@@ -39,14 +40,17 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() default?: any;
 
   @Input() depends?: FormControl[];
+  @Input() dataLoadStatusDelegate: Subject<'LOADING' | 'LOADED'>;
   @Input() dependencyTerms?: any = [];
   public selectedNodes: any;
   public placeHolder: string;
 
   public isDependsInvalid: any;
   private dispose$ = new Subject<undefined>();
+  options$?: Observable<FieldConfigOption<any>[]>;
   latestParentValue: string;
   tempAssociation: any;
+  isDynamicDependencyTerms: any;
 
   constructor(private lazzyLoadScriptService: LazzyLoadScriptService) { }
 
@@ -90,13 +94,32 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
          this.placeHolder = '';
          this.default = [];
          this.selectedNodes = {};
-         this.initTopicPicker(this.formatTopics(this.fetchAssociations()));
+         this.isDynamicDependencyTerms = _.compact(_.flatten(_.map(this.depends, depend => {
+          return depend.termsForDependantFields;
+        })));
+        if (!_.isEmpty(this.isDynamicDependencyTerms)) {
+          this.initTopicPicker(this.formatTopics(this.fetchDependencyTerms()));
+        } else {
+          this.initTopicPicker(this.formatTopics(this.fetchDependencyTerms()));
+        }
        }),
        takeUntil(this.dispose$)
        ).subscribe();
 
        this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
      }
+
+     if (this.isOptionsClosure(this.options)) {
+      // tslint:disable-next-line:max-line-length
+      this.options$ = (this.options as DynamicFieldConfigOptionsBuilder<any>)(this.formControlRef, this.depends, this.formGroup, () => this.dataLoadStatusDelegate.next('LOADING'), () => this.dataLoadStatusDelegate.next('LOADED')) as any;
+
+      this.options$.subscribe(
+        (response) => {
+          this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
+          this.dependencyTerms = response;
+        },
+      );
+    }
 
   }
 
@@ -193,8 +216,70 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  fetchDependencyTerms() { // subject
+    if (!_.isEmpty(this.isDynamicDependencyTerms)) {
+      const filteredTerm = this.getTermsByValue(this.isDynamicDependencyTerms, this.getParentValue(), true);
+      if (filteredTerm) {
+        let tempAssociations: any;
+        let lookUp: string;
+        if (filteredTerm.categories) {
+          tempAssociations = filteredTerm.categories;
+          lookUp = 'code';
+        } else if (filteredTerm.terms) {
+          tempAssociations = filteredTerm.terms;
+          lookUp = 'category';
+        } else if (filteredTerm.associations) {
+          tempAssociations = filteredTerm.associations;
+          lookUp = 'category';
+        }
+
+        const filteredCategory = _.filter(tempAssociations, association => {
+          return (this.field.sourceCategory) ? (association[lookUp] === this.field.sourceCategory) :
+           association[lookUp] === this.field.code;
+        });
+        this.tempAssociation =  this.extractAndFlattenTerms(filteredCategory);
+
+      return this.tempAssociation;
+      }
+    }
+  }
+
   getParentValue() {
     return this.latestParentValue || _.compact(_.map(this.depends, 'value'));
   }
+
+  getTermsByValue(categories, value,  doFlatten?) {
+    let array = categories;
+    if (doFlatten) {
+      array = _.flatten(categories);
+    }
+    if (!_.isEmpty(array)) {
+      return _.find(array, terms => {
+        return !_.isEmpty(this.field.output) ?
+        _.includes(value, terms[this.field.output]) :
+        _.includes(value, terms.name) ;
+      });
+
+    }
+  }
+
+  isOptionsClosure(options: any) {
+    return typeof options === 'function';
+  }
+
+  extractAndFlattenTerms(categories) {
+    return _.flatten(_.map(categories, category => {
+      if (_.has(category, 'terms')) {
+        return category.terms;
+      } else if (_.has(category, 'association')) {
+        return category.associations;
+      } else if (_.has(category, 'categories')) {
+        return category.categories;
+      } else {
+        return category;
+      }
+    }));
+  }
+
 
 }

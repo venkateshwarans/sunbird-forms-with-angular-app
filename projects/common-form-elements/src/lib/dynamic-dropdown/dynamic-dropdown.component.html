@@ -1,11 +1,12 @@
 <div class="sb-dropdown" *ngIf="!type">
-  <label>{{label}} {{context && 'has context'}}  {{context ?  field.context : '' }}</label>
-  <ng-container *ngIf="options">
+  <label>{{label}}</label>
+  <ng-container *ngIf="options || isDynamicDependencyTerms">
     <div class="dropdown-container">
       <sb-icon-dropdown class="dropdown-icon"></sb-icon-dropdown>
       <!-- [attr.disabled]="disabled ? true : ( context ? (context.invalid ? true : null) : null )" -->
+      <!-- [attr.disabled]="disabled ? true : ( depends ? (isDependsInvalid ? true : null) : null )" -->
       <select [formControl]="formControlRef"
-              [attr.disabled]="disabled ? true : ( depends ? (isDependsInvalid ? true : null) : null )"
+              [attr.disabled]="disabled ? true : null"
               [compareWith]="ValueComparator.valueComparator" class="sb-dropdown-select" id="sb-dropdown"
               name="sb-dropdown">
         <option [defaultSelected]="!default" [ngValue]="null" disabled>{{placeholder}}
@@ -26,7 +27,11 @@
         </ng-container> -->
 
         <ng-container *ngIf="!field.range && field.terms">
-          <option class="optionsLast" *ngFor="let option of fetchAssociations()" [ngValue]="getOptionValueForTerms(option)">{{option.name}}</option>
+          <option class="optionsAssociation" *ngFor="let option of fetchAssociations()" [ngValue]="getOptionValueForTerms(option)">{{option.name}}</option>
+        </ng-container>
+
+        <ng-container *ngIf="!field.range && !field.terms && isDynamicDependencyTerms && associationOption && associationOption.length">
+          <option class="optionsDependencyTerms" *ngFor="let option of associationOption" [ngValue]="getOptionValueForTerms(option)">{{option.name}}</option>
         </ng-container>
       </select>
     </div>

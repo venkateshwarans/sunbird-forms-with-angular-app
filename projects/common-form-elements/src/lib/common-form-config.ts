@@ -114,3 +114,12 @@ export interface SectionConfig<T> {
   name: string;
   fields: FieldConfig<T>[];
 }
+
+
+export interface CustomFormGroup extends FormGroup {
+  lastChangedField: any;
+}
+
+export interface CustomFormControl extends FormControl {
+  termsForDependantFields: any;
+}
