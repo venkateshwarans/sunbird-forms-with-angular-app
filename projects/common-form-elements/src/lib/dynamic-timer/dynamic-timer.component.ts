@@ -71,7 +71,15 @@ export class DynamicTimerComponent implements OnInit, OnDestroy {
        ).subscribe();
        this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
      }
+
+     this.setDefaultValue();
   }
+
+  setDefaultValue() {
+    if (!_.isEmpty(this.default)) {
+        this.value = this.default;
+    }
+}
 
   checkValue(str, max) {
     if (str.charAt(0) !== '0') {

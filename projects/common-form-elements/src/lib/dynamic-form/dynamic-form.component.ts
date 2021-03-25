@@ -171,6 +171,12 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
             } else {
               defaultVal = _.toString(element.default);
             }
+          } else if (element.dataType === 'number') {
+            if (_.isNumber(element.default)) {
+              defaultVal = element.default;
+            } else {
+              defaultVal = _.toNumber(element.default);
+            }
           }
         } else {
           defaultVal = null;
