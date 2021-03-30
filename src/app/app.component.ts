@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash-es';
 // import { formConfigCurriculumCourse, formConfigProfessionalDevelopmentCourse, fullFormConfig} from './formConfig';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
-import {tap, switchMap} from 'rxjs/operators';
+import {tap, switchMap, delay, distinctUntilChanged} from 'rxjs/operators';
 import {of, merge } from 'rxjs';
 import { map, forEach } from 'lodash-es';
 import { timer } from './timerConfig';
-import { formConfigProfessionalDevelopmentCourse } from './formConfig copy';
+// import { formConfigProfessionalDevelopmentCourse } from './formConfig copy';
 import { cbseFW } from './ekstep-framework'
 
 const fK12 = {
@@ -346,26 +346,22 @@ export class AppComponent implements OnInit {
     });
   });
 
+  // config: any;
 
  ngOnInit() {
-  //  this.config = timer;
+  //  this.config = formConfigCurriculumCourse;
  }
 
- getFramework(control, depends: FormControl[], formGroup: FormGroup, loading, loaded, instance) {
+ getFramework(control, depends: FormControl[], formGroup: FormGroup, loading, loaded, cb) {
   const response =  control.valueChanges.pipe(
+    delay(2000),
     switchMap((value: any) => {
       if (value[0] === 'K-12') {
-        control.termsForDependantFields = []
-        control.termsForDependantFields.push(fK12.result.framework);
-        return of(fK12.result.framework);
+        return of(fK12.result);
       } else if (value[0] === 'cbse-tpd') {
-        control.termsForDependantFields = []
-        control.termsForDependantFields.push(cbsetpd.framework);
-        return of(cbsetpd.framework);
+        return of(cbsetpd);
       } else if (value[0] === 'ekstep_ncert_k-12') {
-        control.termsForDependantFields = []
-        control.termsForDependantFields.push(cbseFW.framework);
-        return of(cbseFW.framework);
+        return of(cbseFW);
       } else {
         return of(null);
       }

@@ -202,6 +202,7 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
           }
           break;
       case 'nestedselect':
+      case 'frameworkCategorySelect':
           defaultVal = element.dataType === 'list' ?
           (element.default && Array.isArray(element.default) ? element.default :
           _.isEmpty(element.default) ? [] : [element.default]) :
@@ -218,7 +219,8 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
       element.validations.forEach((data, i) => {
         switch (data.type) {
           case 'required':
-            if (element.inputType === 'select' || element.inputType === 'multiselect' || element.inputType === 'nestedselect') {
+            if (element.inputType === 'select' || element.inputType === 'multiselect' || element.inputType === 'nestedselect' ||
+            element.inputType === 'frameworkCategorySelect') {
               validationList.push(Validators.required);
             } else if (element.type === 'checkbox') {
               validationList.push(Validators.requiredTrue);

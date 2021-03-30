@@ -9,7 +9,7 @@ import * as _ from 'lodash-es';
 import {Subject} from 'rxjs';
 
 
-import { DynamicTextboxComponent } from '../dynamic-textbox/dynamic-textbox.component'
+import { DynamicTextboxComponent } from '../dynamic-textbox/dynamic-textbox.component';
 import { DynamicTextareaComponent } from '../dynamic-textarea/dynamic-textarea.component';
 import { FileComponent } from '../file/file.component';
 import { TopicpickerComponent } from '../topicpicker/topicpicker.component';
@@ -20,6 +20,7 @@ import { DynamicMultipleDropdownComponent } from '../dynamic-multiple-dropdown/d
 import { DynamicCheckboxComponent } from '../dynamic-checkbox/dynamic-checkbox.component';
 import { DynamicTimerComponent } from '../dynamic-timer/dynamic-timer.component';
 import { DynamicFrameworkComponent } from '../dynamic-framework/dynamic-framework.component';
+import { DynamicFrameworkCategorySelectComponent } from '../dynamic-framework-category-select/dynamic-framework-category-select.component';
 
 const componentMapper = {
   textarea: DynamicTextareaComponent,
@@ -36,7 +37,8 @@ const componentMapper = {
   number: DynamicTextboxComponent,
   checkbox: DynamicCheckboxComponent,
   timer: DynamicTimerComponent,
-  framework: DynamicFrameworkComponent
+  framework: DynamicFrameworkComponent,
+  frameworkCategorySelect: DynamicFrameworkCategorySelectComponent
 };
 
 @Directive({

@@ -1,9 +1,9 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, EventEmitter, AfterViewInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {Observable, Subject, Subscription, combineLatest, merge} from 'rxjs';
+import {Observable, Subject, Subscription, combineLatest, merge, BehaviorSubject} from 'rxjs';
 import {FieldConfig, FieldConfigOption, FieldConfigOptionsBuilder, DynamicFieldConfigOptionsBuilder,
-CustomFormGroup } from '../common-form-config';
-import {tap} from 'rxjs/operators';
+CustomFormGroup, CustomFormControl } from '../common-form-config';
+import {distinctUntilChanged, takeUntil, tap} from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import {ValueComparator} from '../utilities/value-comparator';
 
@@ -13,7 +13,7 @@ import {ValueComparator} from '../utilities/value-comparator';
   templateUrl: './dynamic-framework.component.html',
   styleUrls: ['./dynamic-framework.component.css']
 })
-export class DynamicFrameworkComponent implements OnInit, AfterViewInit {
+export class DynamicFrameworkComponent implements OnInit, OnDestroy {
 
   ValueComparator = ValueComparator;
   @Input() field: FieldConfig<String>;
@@ -24,7 +24,7 @@ export class DynamicFrameworkComponent implements OnInit, AfterViewInit {
   @Input() isMultiple?: boolean;
   @Input() context?: FormControl;
   @Input() contextTerms?: any;
-  @Input() formControlRef?: FormControl;
+  @Input() formControlRef?: CustomFormControl;
   @Input() formGroup?: CustomFormGroup;
   @Input() default?: any;
   @Input() contextData: any;
@@ -39,15 +39,18 @@ export class DynamicFrameworkComponent implements OnInit, AfterViewInit {
   @Input() depends?: FormControl[];
   @Input() dependencyTerms?: any = [];
 
+  private dispose$ = new Subject<undefined>();
   options$?: Observable<FieldConfigOption<any>[]>;
   contextValueChangesSubscription?: Subscription;
+  isTermsLoaded = false;
 
 
-
-  constructor() { }
+  constructor() {
+   }
 
 
   ngOnInit() {
+    this.formControlRef.customEventHandler$ =  new BehaviorSubject<any>({});
 
     if (!this.options) {
       this.options = _.isEmpty(this.field.options) ? this.isOptionsClosure(this.field.options) && this.field.options : [];
@@ -55,23 +58,44 @@ export class DynamicFrameworkComponent implements OnInit, AfterViewInit {
 
     if (this.isOptionsClosure(this.options)) {
       // tslint:disable-next-line:max-line-length
-      this.options$ = (this.options as DynamicFieldConfigOptionsBuilder<any>)(this.formControlRef, this.depends, this.formGroup, () => this.dataLoadStatusDelegate.next('LOADING'), () => this.dataLoadStatusDelegate.next('LOADED')) as any;
-
-      this.options$.subscribe();
+      this.options$ = (this.options as DynamicFieldConfigOptionsBuilder<any>)(this.formControlRef, this.depends, this.formGroup, () => this.dataLoadStatusDelegate.next('LOADING'), () => this.dataLoadStatusDelegate.next('LOADED'), ) as any;
+      this.options$.pipe(
+        distinctUntilChanged(),
+      ).subscribe(
+        (response) => {
+          const result = _.get(response, 'framework');
+          this.formControlRef.termsForDependantFields = [];
+          this.formControlRef.termsForDependantFields.push(result);
+          if (!_.isEmpty(this.formControlRef.value)) {
+            this.formGroup.lastChangedField = {code: this.field.code, value: this.formControlRef.value};
+          }
+          this.formControlRef.customEventHandler$.next(true);
+          // if (!this.isTermsLoaded) {
+          //   this.formControlRef.updateValueAndValidity({onlySelf: true, emitEvent: true});
+          // }
+          this.isTermsLoaded = true;
+        }
+      );
     }
-
-  }
-
-  ngAfterViewInit() {
-    if (this.default) {
-      this.handleIfDefaultExists();
+    if (!_.isEmpty(this.default)) {
+      this.formControlRef.updateValueAndValidity({onlySelf: false, emitEvent: true});
     }
   }
 
-  handleIfDefaultExists() {
-    this.formControlRef.patchValue(this.default);
-    this.formControlRef.updateValueAndValidity({onlySelf: false, emitEvent: true});
+  handleSelfChange() {
+    this.formControlRef.valueChanges.pipe(
+      tap((value) => {
+        const result = _.get(value, 'framework');
+        this.formControlRef.termsForDependantFields = [];
+        this.formControlRef.termsForDependantFields.push(result);
+        this.formGroup.lastChangedField = {code: this.field.code, value: this.formControlRef.value};
+        this.formControlRef.customEventHandler$.next(true);
+      }),
+      takeUntil(this.dispose$)
+    ).subscribe();
   }
+
+
 
   getOptionValueForTerms(option) {
     if (this.field.output) {
@@ -87,6 +111,11 @@ export class DynamicFrameworkComponent implements OnInit, AfterViewInit {
 
   isOptionsClosure(options: any) {
     return typeof options === 'function';
+  }
+
+  ngOnDestroy(): void {
+    this.dispose$.next(null);
+    this.dispose$.complete();
   }
 
 }

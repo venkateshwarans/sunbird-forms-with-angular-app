@@ -21,6 +21,7 @@ import { DynamicMultipleDropdownComponent } from './dynamic-multiple-dropdown/dy
 import { DynamicCheckboxComponent } from './dynamic-checkbox/dynamic-checkbox.component';
 import { DynamicTimerComponent } from './dynamic-timer/dynamic-timer.component';
 import { DynamicFrameworkComponent } from './dynamic-framework/dynamic-framework.component';
+import { DynamicFrameworkCategorySelectComponent } from './dynamic-framework-category-select/dynamic-framework-category-select.component';
 
 
 @NgModule({
@@ -33,17 +34,20 @@ import { DynamicFrameworkComponent } from './dynamic-framework/dynamic-framework
   entryComponents: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
     DynamicMultipleDropdownComponent, DynamicCheckboxComponent,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent,
-    FileComponent, TopicpickerComponent, KeywordsComponent, DynamicMultiSelectComponent, DynamicTimerComponent, DynamicFrameworkComponent],
+    FileComponent, TopicpickerComponent, KeywordsComponent, DynamicMultiSelectComponent, DynamicTimerComponent,
+    DynamicFrameworkCategorySelectComponent, DynamicFrameworkComponent],
   declarations: [CommonFormElementsComponent,
      CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent,
     RedExclamationComponent, DynamicFieldDirective, FileComponent, TopicpickerComponent, KeywordsComponent,
     DynamicMultiSelectComponent,
     DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent,
-    DynamicDropdownComponent, DynamicMultipleDropdownComponent, DynamicCheckboxComponent, DynamicTimerComponent, DynamicFrameworkComponent],
+    DynamicDropdownComponent, DynamicMultipleDropdownComponent, DynamicCheckboxComponent,
+    DynamicTimerComponent, DynamicFrameworkComponent, DynamicFrameworkCategorySelectComponent],
   exports: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
     DynamicMultipleDropdownComponent, DynamicCheckboxComponent, CommonFormElementsComponent,
     DynamicFieldDirective,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent, FileComponent,
-    TopicpickerComponent, KeywordsComponent, DynamicMultiSelectComponent, DynamicTimerComponent, DynamicFrameworkComponent ]
+    TopicpickerComponent, KeywordsComponent, DynamicMultiSelectComponent,
+    DynamicTimerComponent, DynamicFrameworkComponent, DynamicFrameworkCategorySelectComponent ]
 })
 export class CommonFormElementsModule { }

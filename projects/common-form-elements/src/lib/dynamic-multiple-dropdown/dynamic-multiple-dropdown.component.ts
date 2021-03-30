@@ -145,9 +145,9 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
         this.tempValue = this.tempValue.add(option.get('name'));
       }
     } else {
-      if(this.field.output) {
+      if (this.field.output) {
         this.tempValue = this.tempValue.clear();
-        this.tempValue = this.tempValue.add(option.get(this.field.output))
+        this.tempValue = this.tempValue.add(option.get(this.field.output));
       } else {
         this.tempValue = this.tempValue.clear();
         this.tempValue = this.tempValue.add(option.get('name'));

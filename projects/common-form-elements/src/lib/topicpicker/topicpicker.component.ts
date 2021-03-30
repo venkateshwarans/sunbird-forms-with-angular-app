@@ -3,7 +3,7 @@ import { Subscription, combineLatest, Subject, merge, from, Observable } from 'r
 import { LazzyLoadScriptService } from './../utilities/lazzy-load-script.service';
 import * as _ from 'lodash-es';
 import { FormControl , FormGroup} from '@angular/forms';
-import { DynamicFieldConfigOptionsBuilder, FieldConfig, FieldConfigOption } from '../common-form-config';
+import { CustomFormControl, CustomFormGroup, DynamicFieldConfigOptionsBuilder, FieldConfig, FieldConfigOption } from '../common-form-config';
 import { tap, takeUntil } from 'rxjs/operators';
 
 declare var treePicker: any;
@@ -32,11 +32,11 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() disabled?: boolean;
   @Input() placeholder: String;
   @Input() options: any;
-  @Input() formControlRef: FormControl;
+  @Input() formControlRef: CustomFormControl;
   @Input() field: FieldConfig<String>;
   @Output() topicChange = new EventEmitter();
   @Input() validations?: any;
-  @Input() formGroup?: FormGroup;
+  @Input() formGroup?: CustomFormGroup;
   @Input() default?: any;
 
   @Input() depends?: FormControl[];
@@ -51,17 +51,106 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
   latestParentValue: string;
   tempAssociation: any;
   isDynamicDependencyTerms: any;
+  isDependsTouched: any;
 
   constructor(private lazzyLoadScriptService: LazzyLoadScriptService) { }
 
   ngOnInit() {
+    this.handleSelfChange();
+    if (!_.isEmpty(this.depends)) {
+      this.checkForCustomEventHandler();
+     this.handleDependantFieldChanges();
+    }
 
+    this.checkIfDependsHasDefault();
+    this.handleClosureOption();
+
+     this.setDefaultValue();
+  }
+
+  checkIfDependsHasDefault() {
+    this.checkIfDependsIsInvalid();
+    this.checkIfDependsIsTouched();
+    this.generateDependencyTerms();
+    this.initTopicPicker(this.formatTopics(this.fetchDependencyTerms()));
+  }
+
+  handleSelfChange() {
     this.formControlRef.valueChanges.pipe(
-      tap(val => {
-        console.log(val);
-      }),
+      tap(val => val),
       takeUntil(this.dispose$)
     ).subscribe();
+  }
+
+  handleDependantFieldChanges() {
+    merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
+      tap((value: any) => {
+        this.formControlRef.patchValue(null);
+        this.latestParentValue = value;
+        this.checkIfDependsIsInvalid();
+        this.checkIfDependsIsTouched();
+        this.generateDependencyTerms();
+        this.placeHolder = '';
+        this.default = [];
+        this.selectedNodes = {};
+       if (!_.isEmpty(this.isDynamicDependencyTerms)) {
+         this.initTopicPicker(this.formatTopics(this.fetchDependencyTerms()));
+       } else {
+         this.initTopicPicker(this.formatTopics(this.fetchDependencyTerms()));
+       }
+      }),
+      takeUntil(this.dispose$)
+      ).subscribe();
+
+      this.checkIfDependsIsInvalid();
+  }
+
+  handleClosureOption() {
+    if (this.isOptionsClosure(this.options)) {
+      // tslint:disable-next-line:max-line-length
+      this.options$ = (this.options as DynamicFieldConfigOptionsBuilder<any>)(this.formControlRef, this.depends, this.formGroup, () => this.dataLoadStatusDelegate.next('LOADING'), () => this.dataLoadStatusDelegate.next('LOADED')) as any;
+
+      this.options$.subscribe(
+        (response) => {
+          this.checkIfDependsIsInvalid();
+          this.dependencyTerms = response;
+        },
+      );
+    }
+  }
+
+  checkForCustomEventHandler() {
+    merge(..._.compact(_.map(this.depends, depend => depend.customEventHandler$))).pipe(
+      takeUntil(this.dispose$)
+      ).subscribe(
+        (response) => {
+          if (response === true) {
+            this.checkIfDependsHasDefault();
+            this.setDefaultValue();
+          }
+        }, error => {
+          console.log(error);
+        }
+      );
+  }
+
+  checkIfDependsIsInvalid() {
+    this.isDependsInvalid = _.every(_.map(this.depends, depend => depend.invalid), true);
+    return this.isDependsInvalid;
+  }
+
+  checkIfDependsIsTouched() {
+    this.isDependsTouched = _.every(_.map(this.depends, depend => depend.touched), false);
+    return this.isDependsTouched;
+  }
+
+  generateDependencyTerms() {
+    this.isDynamicDependencyTerms = _.compact(_.flatten(_.map(this.depends, depend => {
+      return depend.termsForDependantFields;
+    })));
+  }
+
+  setDefaultValue() {
     const selectedTopics = _.reduce(this.default, (collector, element) => {
       if (typeof element === 'string') {
         collector.unformatted.push(element);
@@ -76,56 +165,18 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedNodes = { ...selectedTopics.formatted };
     this.topicChange.emit(this.selectedTopics);
 
-
-
-
-    if (!_.isEmpty(this.default)) {
+    if (!_.isEmpty(this.default) && this.isDefaultExistsInTerms()) {
       this.placeHolder = this.default &&  this.default.length + ' topics selected';
+    } else if (!_.isEmpty(this.default)) {
       this.formControlRef.setValue(this.default);
     }
 
-
-    if (!_.isEmpty(this.depends)) {
-      merge(..._.map(this.depends, depend => depend.valueChanges)).pipe(
-       tap((value: any) => {
-         this.latestParentValue = value;
-         this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
-         this.formControlRef.patchValue(null);
-         this.placeHolder = '';
-         this.default = [];
-         this.selectedNodes = {};
-         this.isDynamicDependencyTerms = _.compact(_.flatten(_.map(this.depends, depend => {
-          return depend.termsForDependantFields;
-        })));
-        if (!_.isEmpty(this.isDynamicDependencyTerms)) {
-          this.initTopicPicker(this.formatTopics(this.fetchDependencyTerms()));
-        } else {
-          this.initTopicPicker(this.formatTopics(this.fetchDependencyTerms()));
-        }
-       }),
-       takeUntil(this.dispose$)
-       ).subscribe();
-
-       this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
-     }
-
-     if (this.isOptionsClosure(this.options)) {
-      // tslint:disable-next-line:max-line-length
-      this.options$ = (this.options as DynamicFieldConfigOptionsBuilder<any>)(this.formControlRef, this.depends, this.formGroup, () => this.dataLoadStatusDelegate.next('LOADING'), () => this.dataLoadStatusDelegate.next('LOADED')) as any;
-
-      this.options$.subscribe(
-        (response) => {
-          this.isDependsInvalid = _.includes(_.map(this.depends, depend => depend.invalid), true);
-          this.dependencyTerms = response;
-        },
-      );
-    }
-
   }
-
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
-    this.initTopicPicker(this.formatTopics(this.field.terms));
+    if (this.field.terms || this.tempAssociation) {
+      this.initTopicPicker(this.formatTopics(this.field.terms || this.tempAssociation));
+    }
 
   }
 
@@ -219,33 +270,40 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
   fetchDependencyTerms() { // subject
     if (!_.isEmpty(this.isDynamicDependencyTerms)) {
       const filteredTerm = this.getTermsByValue(this.isDynamicDependencyTerms, this.getParentValue(), true);
-      if (filteredTerm) {
-        let tempAssociations: any;
-        let lookUp: string;
-        if (filteredTerm.categories) {
-          tempAssociations = filteredTerm.categories;
-          lookUp = 'code';
-        } else if (filteredTerm.terms) {
-          tempAssociations = filteredTerm.terms;
-          lookUp = 'category';
-        } else if (filteredTerm.associations) {
-          tempAssociations = filteredTerm.associations;
-          lookUp = 'category';
-        }
-
-        const filteredCategory = _.filter(tempAssociations, association => {
-          return (this.field.sourceCategory) ? (association[lookUp] === this.field.sourceCategory) :
-           association[lookUp] === this.field.code;
+      if (!_.isEmpty(filteredTerm)) {
+        const consolidatedAssociations = [];
+        _.forEach(filteredTerm, item => {
+            let tempAssociations: any;
+            let lookUp: string;
+            if (item.categories) {
+              tempAssociations = item.categories;
+              lookUp = 'code';
+            } else if (item.terms) {
+              tempAssociations = item.terms;
+              lookUp = 'category';
+            } else if (item.associations) {
+              tempAssociations = item.associations;
+              lookUp = 'category';
+            }
+            const filteredCategory = _.filter(tempAssociations, association => {
+              return (this.field.sourceCategory) ? (association[lookUp] === this.field.sourceCategory) :
+              association[lookUp] === this.field.code;
+            });
+            consolidatedAssociations.push(...this.extractAndFlattenTerms(filteredCategory));
         });
-        this.tempAssociation =  this.extractAndFlattenTerms(filteredCategory);
-
-      return this.tempAssociation;
+        this.tempAssociation = _.uniqBy(consolidatedAssociations, 'identifier');
+        return this.tempAssociation;
       }
+
     }
   }
 
   getParentValue() {
-    return this.latestParentValue || _.compact(_.map(this.depends, 'value'));
+    return !_.isEmpty(this.latestParentValue) && this.latestParentValue ||
+    !_.isEmpty(this.formGroup.lastChangedField) &&
+    !_.isEmpty(this.formGroup.lastChangedField.value) &&
+    this.formGroup.lastChangedField.value ||
+    _.castArray(_.last(_.compact(_.flatten((_.map(this.depends, 'value'))))));
   }
 
   getTermsByValue(categories, value,  doFlatten?) {
@@ -254,12 +312,12 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
       array = _.flatten(categories);
     }
     if (!_.isEmpty(array)) {
-      return _.find(array, terms => {
+      const filteredTerms = _.filter(array, terms => {
         return !_.isEmpty(this.field.output) ?
         _.includes(value, terms[this.field.output]) :
         _.includes(value, terms.name) ;
       });
-
+      return filteredTerms || [];
     }
   }
 
@@ -281,5 +339,15 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
     }));
   }
 
+  isDefaultExistsInTerms() {
+    if (!this.formControlRef.touched && !_.isEmpty(this.tempAssociation && this.default)) {
+      return _.find(this.tempAssociation, association => {
+        return !_.isEmpty(this.field.output) ?
+        _.includes(this.default, association[this.field.output]) :
+        _.includes(this.default, association.name);
+      });
+    }
+    return false;
+  }
 
 }
