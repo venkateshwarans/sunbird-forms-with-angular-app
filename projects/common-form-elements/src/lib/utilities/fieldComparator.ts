@@ -7,9 +7,3 @@ export const FieldComparator  = {
     '===': (a, b) => a === b
   }
 };
-
-
-// export class Dummy {
-//   operator: any = {
-//   };
-// }
