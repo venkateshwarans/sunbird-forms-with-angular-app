@@ -45,17 +45,6 @@ label {
   font-family: sans-serif;
   white-space: nowrap;
 }
-[data-title]:hover::after {
-  content: "";
-  position: absolute;
-  bottom: -10px;
-  left: 8px;
-  display: inline-block;
-  color: #fff;
-  border: 8px solid transparent;
-  border-bottom: 8px solid #000;
-  display: none;
-}
 [data-title] {
   position: relative;
   cursor: pointer;
