@@ -22,6 +22,7 @@ import { DynamicCheckboxComponent } from './dynamic-checkbox/dynamic-checkbox.co
 import { DynamicTimerComponent } from './dynamic-timer/dynamic-timer.component';
 import { DynamicFrameworkComponent } from './dynamic-framework/dynamic-framework.component';
 import { DynamicFrameworkCategorySelectComponent } from './dynamic-framework-category-select/dynamic-framework-category-select.component';
+import { RichtextComponent } from './richtext/richtext.component';
 
 
 @NgModule({
@@ -42,7 +43,7 @@ import { DynamicFrameworkCategorySelectComponent } from './dynamic-framework-cat
     DynamicMultiSelectComponent,
     DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent,
     DynamicDropdownComponent, DynamicMultipleDropdownComponent, DynamicCheckboxComponent,
-    DynamicTimerComponent, DynamicFrameworkComponent, DynamicFrameworkCategorySelectComponent],
+    DynamicTimerComponent, DynamicFrameworkComponent, DynamicFrameworkCategorySelectComponent, RichtextComponent],
   exports: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
     DynamicMultipleDropdownComponent, DynamicCheckboxComponent, CommonFormElementsComponent,
     DynamicFieldDirective,
