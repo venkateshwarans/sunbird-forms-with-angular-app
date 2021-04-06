@@ -1,15 +1,178 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit, AfterViewInit, OnChanges, ViewChild, ElementRef} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import { FieldConfigAsyncValidation } from '../common-form-config';
+import ClassicEditor from '@project-sunbird/ckeditor-build-font';
 
 @Component({
   selector: 'sb-richtext',
   templateUrl: './richtext.component.html',
   styleUrls: ['./richtext.component.css']
 })
-export class RichtextComponent implements OnInit {
-
+export class RichtextComponent implements OnInit, AfterViewInit {
+    @ViewChild('EDITOR', {static: false}) public editorRef: ElementRef;
+    @Input() asyncValidation?: FieldConfigAsyncValidation;
+    @Input() label: String;
+    @Input() labelHtml: any;
+    @Input() field: any;
+    @Input() placeholder: String;
+    @Input() validations?: any;
+    @Input() formControlRef?: FormControl;
+    @Input() prefix?: String;
+    @Input() default: String;
+    @Input() disabled: Boolean;
+    @ViewChild('validationTrigger', {static: false}) validationTrigger: ElementRef;
+    showEditor = false;
+    editorConfig: any;
+    editorInstance: any;
+    characterCount: any;
   constructor() { }
 
   ngOnInit() {
+    this.editorConfig = {
+        toolbar: ['bold', '|', 'italic', '|', 'underline',
+            '|', 'numberedList', '|', 'BulletedList', '|', 'fontSize',
+            '|', 'fontColor', '|',
+        ],
+        fontSize: {
+            options: [
+                9,
+                11,
+                13,
+                15,
+                17,
+                19,
+                21,
+                23,
+                25
+            ]
+        },
+        fontColor: {
+            colors: [
+                {
+                    color: 'hsl(0, 0%, 0%)',
+                    label: 'Black'
+                },
+                {
+                    color: 'hsl(0, 0%, 30%)',
+                    label: 'Dim grey'
+                },
+                {
+                    color: 'hsl(0, 0%, 60%)',
+                    label: 'Grey'
+                },
+                {
+                    color: 'hsl(0, 0%, 90%)',
+                    label: 'Light grey'
+                },
+                {
+                    color: 'hsl(0, 0%, 100%)',
+                    label: 'White',
+                    hasBorder: true
+                },
+                {
+                    color: 'hsl(0, 75%, 60%)',
+                    label: 'Red'
+                },
+                {
+                    color: 'hsl(30, 75%, 60%)',
+                    label: 'Orange'
+                },
+                {
+                    color: 'hsl(60, 75%, 60%)',
+                    label: 'Yellow'
+                },
+                {
+                    color: 'hsl(90, 75%, 60%)',
+                    label: 'Light green'
+                },
+                {
+                    color: 'hsl(120, 75%, 60%)',
+                    label: 'Green'
+                },
+                {
+                    color: 'hsl(150, 75%, 60%)',
+                    label: 'Aquamarine'
+                },
+                {
+                    color: 'hsl(180, 75%, 60%)',
+                    label: 'Turquoise'
+                },
+                {
+                    color: 'hsl(210, 75%, 60%)',
+                    label: 'Light blue'
+                },
+                {
+                    color: 'hsl(240, 75%, 60%)',
+                    label: 'Blue'
+                },
+                {
+                    color: 'hsl(270, 75%, 60%)',
+                    label: 'Purple'
+                }
+            ]
+        },
+        isReadOnly: this.disabled,
+        removePlugins: ['ImageCaption', 'mathtype', 'ChemType']
+    };
+    this.showEditor = true;
+}
+ngAfterViewInit() {
+    this.initializeEditors();
+        if (this.asyncValidation && this.asyncValidation.asyncValidatorFactory && this.formControlRef) {
+          if (this.formControlRef.asyncValidator) {
+            return;
+          }
+          this.formControlRef.setAsyncValidators(this.asyncValidation.asyncValidatorFactory(
+            this.asyncValidation.marker,
+            this.validationTrigger.nativeElement
+          ));
+        }
+      }
+
+  initializeEditors() {
+    ClassicEditor.create(this.editorRef.nativeElement, {
+      extraPlugins: ['Font'],
+      toolbar: this.editorConfig.toolbar,
+      fontSize: this.editorConfig.fontSize,
+      isReadOnly: this.editorConfig.isReadOnly,
+      removePlugins: this.editorConfig.removePlugins
+    })
+      .then(editor => {
+        this.editorInstance = editor;
+        editor.isReadOnly = this.disabled;
+        console.log('Editor was initialized');
+        this.changeTracker(this.editorInstance);
+      })
+      .catch(error => {
+        console.error(error.stack);
+      });
+  }
+  changeTracker(editor) {
+    editor.model.document.on('change', (eventInfo, batch) => {
+        this.characterCount = this.countCharacters(this.editorInstance.model.document);
+        if (this.characterCount === 0) {
+            this.formControlRef.markAsDirty();
+        }
+
+    });
+  }
+  countCharacters(document) {
+    const rootElement = document.getRoot();
+    return this.countCharactersInElement(rootElement);
+  }
+  countCharactersInElement(node) {
+    let chars = 0;
+    const forE = node.getChildren();
+    let child;
+
+    while (!(child = forE.next()).done) {
+      if (child.value.is('text')) {
+        chars += child.value.data.length;
+      } else if (child.value.is('element')) {
+        chars += this.countCharactersInElement(child.value);
+      }
+    }
+    return chars;
+  }
   }
 
-}

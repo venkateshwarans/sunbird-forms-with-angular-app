@@ -160,6 +160,9 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
       case 'timer':
         defaultVal = element.default || null;
         break;
+        case 'richText':
+          defaultVal = element.default || null;
+          break;
       case 'select':
       case 'framework':
         if (element.default) {
@@ -254,7 +257,7 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
     }
 
     formValueList.push(Validators.compose(validationList));
-
+console.log(formValueList, 'formValueList');
     return formValueList;
   }
 
