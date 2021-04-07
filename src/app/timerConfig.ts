@@ -16,6 +16,14 @@ export const timer = [
         },
         'validations': [
           {
+            'type': 'richtextminlength',
+            'value': {
+              '<':
+                  0
+          },
+            'message': 'Min input is needed'
+          },
+          {
             'type': 'richtextmaxlength',
             'value': {
               '>':

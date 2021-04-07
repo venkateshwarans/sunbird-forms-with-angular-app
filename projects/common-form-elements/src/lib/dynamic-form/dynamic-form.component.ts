@@ -246,7 +246,7 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
           case 'max':
             validationList.push(Validators.max(element.validations[i].value as number));
             break;
-          case 'richtextmaxlength':
+          case 'richtextminlength':
             validationList.push(this.validateRichTextMaxLength.bind(this, element.validations[i].value));
             break;
           case 'time':
@@ -353,7 +353,7 @@ console.log(formValueList, 'formValueList');
       }
     });
     if (result && (control.touched || control.dirty)) {
-      return { richtextmaxlength: true };
+      return { richtextminlength: true };
     }
     return null;
 }

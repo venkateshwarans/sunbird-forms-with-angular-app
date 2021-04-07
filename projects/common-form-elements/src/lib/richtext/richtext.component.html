@@ -5,7 +5,7 @@
       <div class="prefix" *ngIf="prefix">
         <span>{{prefix}}</span>
       </div>
-<textarea  *ngIf="showEditor"  #EDITOR  [formControl]="formControlRef" [class.valid]="formControlRef.valid &&
+<textarea  *ngIf="showEditor" id="richTextCount" #EDITOR  [formControl]="formControlRef" [class.valid]="formControlRef.valid &&
 (formControlRef.dirty || formControlRef.touched)"
 [class.invalid]="formControlRef.invalid &&
 (formControlRef.dirty || formControlRef.touched)" class="sb-textbox {{disabled}}" placeholder={{placeholder}} type="text"

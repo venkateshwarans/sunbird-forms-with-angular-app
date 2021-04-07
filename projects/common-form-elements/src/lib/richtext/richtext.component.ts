@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, AfterViewInit, OnChanges, ViewChild, ElementRef} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import { FieldConfigAsyncValidation, CustomFormControl } from '../common-form-config';
-import ClassicEditor from '@project-sunbird/ckeditor-build-font';
+import ClassicEditor from 'v-ckeditor';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -30,7 +30,7 @@ export class RichtextComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.editorConfig = {
-        toolbar: ['bold', '|', 'italic', '|', 'underline',
+        toolbar: ['bold', '|', 'italic', '|', 'underline', '|', 'insertTable',
             '|', 'numberedList', '|', 'BulletedList', '|', 'fontSize',
             '|', 'fontColor', '|',
         ],
@@ -132,16 +132,23 @@ ngAfterViewInit() {
 
   initializeEditors() {
     ClassicEditor.create(this.editorRef.nativeElement, {
-      extraPlugins: ['Font'],
+      extraPlugins: ['Font', 'Table'],
       toolbar: this.editorConfig.toolbar,
       fontSize: this.editorConfig.fontSize,
       isReadOnly: this.editorConfig.isReadOnly,
-      removePlugins: this.editorConfig.removePlugins
+      removePlugins: this.editorConfig.removePlugins,
+      wordCount: {
+        onUpdate: stats => {
+          this.characterCount = stats.characters;
+          console.log(this.characterCount, 'this.characterCount');
+        },
+      }
     })
       .then(editor => {
         this.editorInstance = editor;
+
         editor.isReadOnly = this.disabled;
-        console.log('Editor was initialized');
+        console.log(editor, 'Editor was initialized');
         this.changeTracker(this.editorInstance);
       })
       .catch(error => {
@@ -150,29 +157,30 @@ ngAfterViewInit() {
   }
   changeTracker(editor) {
     editor.model.document.on('change', (eventInfo, batch) => {
-        this.characterCount = this.countCharacters(this.editorInstance.model.document);
+        // this.characterCount = this.countCharacters(this.editorInstance.model.document);
         this.formControlRef.markAsTouched();
         this.formControlRef.richTextCharacterCount  = this.characterCount;
         this.formControlRef.patchValue(editor.getData());
+        // console.log(editor.getData(), 'value');
     });
   }
-  countCharacters(document) {
-    const rootElement = document.getRoot();
-    return this.countCharactersInElement(rootElement);
-  }
-  countCharactersInElement(node) {
-    let chars = 0;
-    const forE = node.getChildren();
-    let child;
+  // countCharacters(document) {
+  //   const rootElement = document.getRoot();
+  //   return this.countCharactersInElement(rootElement);
+  // }
+  // countCharactersInElement(node) {
+  //   let chars = 0;
+  //   const forE = node.getChildren();
+  //   let child;
 
-    while (!(child = forE.next()).done) {
-      if (child.value.is('text')) {
-        chars += child.value.data.length;
-      } else if (child.value.is('element')) {
-        chars += this.countCharactersInElement(child.value);
-      }
-    }
-    return chars;
-  }
+  //   while (!(child = forE.next()).done) {
+  //     if (child.value.is('text')) {
+  //       chars += child.value.data.length;
+  //     } else if (child.value.is('element')) {
+  //       chars += this.countCharactersInElement(child.value);
+  //     }
+  //   }
+  //   return chars;
+  // }
   }
 
