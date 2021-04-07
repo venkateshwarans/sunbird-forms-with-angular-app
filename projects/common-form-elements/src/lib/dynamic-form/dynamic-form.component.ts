@@ -263,7 +263,6 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
     }
 
     formValueList.push(Validators.compose(validationList));
-console.log(formValueList, 'formValueList');
     return formValueList;
   }
 
