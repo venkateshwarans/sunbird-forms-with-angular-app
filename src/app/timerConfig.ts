@@ -19,7 +19,7 @@ export const timer = [
             'type': 'richtextminlength',
             'value': {
               '<':
-                  0
+                  5
           },
             'message': 'Min input is needed'
           },
@@ -27,7 +27,7 @@ export const timer = [
             'type': 'richtextmaxlength',
             'value': {
               '>':
-                  120
+                  10
           },
             'message': 'Input is Exceeded'
           },

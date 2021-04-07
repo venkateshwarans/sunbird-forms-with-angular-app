@@ -140,7 +140,6 @@ ngAfterViewInit() {
       wordCount: {
         onUpdate: stats => {
           this.characterCount = stats.characters;
-          console.log(this.characterCount, 'this.characterCount');
         },
       }
     })
@@ -148,7 +147,6 @@ ngAfterViewInit() {
         this.editorInstance = editor;
 
         editor.isReadOnly = this.disabled;
-        console.log(editor, 'Editor was initialized');
         this.changeTracker(this.editorInstance);
       })
       .catch(error => {
