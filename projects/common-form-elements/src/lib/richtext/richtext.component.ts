@@ -1,7 +1,8 @@
 import {Component, Input, OnInit, AfterViewInit, OnChanges, ViewChild, ElementRef} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import { FieldConfigAsyncValidation } from '../common-form-config';
+import { FieldConfigAsyncValidation, CustomFormControl } from '../common-form-config';
 import ClassicEditor from '@project-sunbird/ckeditor-build-font';
+import * as _ from 'lodash-es';
 
 @Component({
   selector: 'sb-richtext',
@@ -16,7 +17,7 @@ export class RichtextComponent implements OnInit, AfterViewInit {
     @Input() field: any;
     @Input() placeholder: String;
     @Input() validations?: any;
-    @Input() formControlRef?: FormControl;
+    @Input() formControlRef?: CustomFormControl;
     @Input() prefix?: String;
     @Input() default: String;
     @Input() disabled: Boolean;
@@ -150,9 +151,18 @@ ngAfterViewInit() {
   changeTracker(editor) {
     editor.model.document.on('change', (eventInfo, batch) => {
         this.characterCount = this.countCharacters(this.editorInstance.model.document);
+        this.formControlRef.richTextCharacterCount  = this.characterCount;
+        this.formControlRef.patchValue(editor.getData());
+        // const maxObj = _.find(this.validations, { type: 'maxLength' });
         if (this.characterCount === 0) {
             this.formControlRef.markAsDirty();
         }
+        // if (this.characterCount > maxObj.value) {
+        //     this.formControlRef.markAsTouched();
+        //     // alert('max limit ');
+        //     // console.log(maxObj, 'validations');
+        //     console.log(this.formControlRef.errors, 'validations');
+        // }
 
     });
   }

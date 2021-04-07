@@ -21,18 +21,5 @@
       </div>
     </ng-container>
 
-      <ng-container *ngIf="asyncValidation?.trigger">
-    <div class="async-validator"
-      [hidden]="formControlRef.status === 'VALID' || formControlRef.status !== 'PENDING' || !formControlRef.value">
-      <div class="cf-error" *ngIf="asyncValidation?.message">
-        {{ asyncValidation.message }}
-      </div>
-      <div class="async-container">
-        <button class="async-btn" #validationTrigger [attr.data-marker]="asyncValidation.marker">
-          {{asyncValidation.trigger}}
-        </button>
-      </div>
-    </div>
-  </ng-container>
   </div>
   

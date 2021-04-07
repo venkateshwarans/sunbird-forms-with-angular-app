@@ -160,9 +160,9 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
       case 'timer':
         defaultVal = element.default || null;
         break;
-        case 'richText':
-          defaultVal = element.default || null;
-          break;
+      case 'richText':
+        defaultVal = element.default || null;
+        break;
       case 'select':
       case 'framework':
         if (element.default) {
@@ -245,6 +245,9 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
             break;
           case 'max':
             validationList.push(Validators.max(element.validations[i].value as number));
+            break;
+          case 'richTextMaxLength':
+            validationList.push(this.validateRichTextMaxLength.bind(this, element.validations[i].value));
             break;
           case 'time':
             validationList.push(this.validateTime.bind(this, element.validations[i].value, element));
@@ -341,4 +344,19 @@ console.log(formValueList, 'formValueList');
       };
     });
   }
+  validateRichTextMaxLength(maxLength, control: AbstractControl): ValidationErrors | null {
+    console.log(control.parent, '>>>>>>>>>> validateRichTextMaxLength');
+    // get the character count
+    const result = _.find(maxLength, (val, key) => {
+      if (control && control.parent && control.parent.controls[val]) {
+        return FieldComparator.operators[key](control.parent.controls[val].value, control.value);
+      } else {
+        return false;
+      }
+    });
+    if (result && (control.touched || control.dirty)) {
+      return { compare: true };
+    }
+    return null;
+}
 }
