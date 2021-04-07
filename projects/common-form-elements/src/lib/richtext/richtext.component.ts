@@ -47,7 +47,7 @@ export class RichtextComponent implements OnInit, AfterViewInit {
                 25
             ]
         },
-        fontColor: {
+        fontColor: { // should be remove lator
             colors: [
                 {
                     color: 'hsl(0, 0%, 0%)',
@@ -151,19 +151,9 @@ ngAfterViewInit() {
   changeTracker(editor) {
     editor.model.document.on('change', (eventInfo, batch) => {
         this.characterCount = this.countCharacters(this.editorInstance.model.document);
+        this.formControlRef.markAsTouched();
         this.formControlRef.richTextCharacterCount  = this.characterCount;
         this.formControlRef.patchValue(editor.getData());
-        // const maxObj = _.find(this.validations, { type: 'maxLength' });
-        if (this.characterCount === 0) {
-            this.formControlRef.markAsDirty();
-        }
-        // if (this.characterCount > maxObj.value) {
-        //     this.formControlRef.markAsTouched();
-        //     // alert('max limit ');
-        //     // console.log(maxObj, 'validations');
-        //     console.log(this.formControlRef.errors, 'validations');
-        // }
-
     });
   }
   countCharacters(document) {

@@ -1,5 +1,5 @@
 <div class="sb-input">
-    <label *ngIf="label">{{label}}{{characterCount}}</label>
+    <label *ngIf="label">{{label}}</label>
   
     <div [ngClass]="{'async-text': (asyncValidation && asyncValidation?.trigger), '': (!asyncValidation || !asyncValidation?.trigger)}">
       <div class="prefix" *ngIf="prefix">

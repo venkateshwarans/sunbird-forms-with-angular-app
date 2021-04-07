@@ -16,11 +16,10 @@ export const timer = [
         },
         'validations': [
           {
-            'type': 'richTextMaxLength',
+            'type': 'richtextmaxlength',
             'value': {
-              '<=': [
-                  "maxTime"
-              ]
+              '>':
+                  120
           },
             'message': 'Input is Exceeded'
           },

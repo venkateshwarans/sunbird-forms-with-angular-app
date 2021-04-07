@@ -246,7 +246,7 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
           case 'max':
             validationList.push(Validators.max(element.validations[i].value as number));
             break;
-          case 'richTextMaxLength':
+          case 'richtextmaxlength':
             validationList.push(this.validateRichTextMaxLength.bind(this, element.validations[i].value));
             break;
           case 'time':
@@ -345,17 +345,15 @@ console.log(formValueList, 'formValueList');
     });
   }
   validateRichTextMaxLength(maxLength, control: AbstractControl): ValidationErrors | null {
-    console.log(control.parent, '>>>>>>>>>> validateRichTextMaxLength');
-    // get the character count
     const result = _.find(maxLength, (val, key) => {
-      if (control && control.parent && control.parent.controls[val]) {
-        return FieldComparator.operators[key](control.parent.controls[val].value, control.value);
+      if (control.touched) {
+        return FieldComparator.operators[key](control['richTextCharacterCount'], val);
       } else {
         return false;
       }
     });
     if (result && (control.touched || control.dirty)) {
-      return { compare: true };
+      return { richtextmaxlength: true };
     }
     return null;
 }
