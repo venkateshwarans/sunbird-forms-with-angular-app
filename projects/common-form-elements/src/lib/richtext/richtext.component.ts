@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, AfterViewInit, OnChanges, ViewChild, ElementRef} from '@angular/core';
+import {Component, Input, OnInit, AfterViewInit, OnChanges, ViewChild, ElementRef, ViewEncapsulation} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import { FieldConfigAsyncValidation, CustomFormControl } from '../common-form-config';
 import ClassicEditor from 'v-ckeditor';
@@ -7,7 +7,8 @@ import * as _ from 'lodash-es';
 @Component({
   selector: 'sb-richtext',
   templateUrl: './richtext.component.html',
-  styleUrls: ['./richtext.component.css']
+  styleUrls: ['./richtext.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class RichtextComponent implements OnInit, AfterViewInit {
     @ViewChild('EDITOR', {static: false}) public editorRef: ElementRef;

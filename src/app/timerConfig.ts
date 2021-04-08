@@ -3,7 +3,7 @@ export const timer = [
     'name': 'First Section',
     'fields': [
       {
-        'code': 'richText',
+        'code': 'instruction',
         'dataType': 'text',
         'description': 'Name of the Instruction',
         'editable': true,
