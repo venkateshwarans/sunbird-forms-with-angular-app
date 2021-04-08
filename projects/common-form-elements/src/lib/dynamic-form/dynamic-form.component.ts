@@ -232,10 +232,18 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
             validationList.push(Validators.pattern(element.validations[i].value as string));
             break;
           case 'minLength':
-            validationList.push(Validators.minLength(element.validations[i].value as number));
+            if (element.inputType === 'richText') {
+              validationList.push(this.validateRichTextLength.bind(this, 'minLength' , '<', element.validations[i].value ));
+             } else {
+              validationList.push(Validators.minLength(element.validations[i].value as number));
+             }
             break;
           case 'maxLength':
-            validationList.push(Validators.maxLength(element.validations[i].value as number));
+            if (element.inputType === 'richText') {
+              validationList.push(this.validateRichTextLength.bind(this, 'maxLength' , '>', element.validations[i].value ));
+             } else {
+              validationList.push(Validators.maxLength(element.validations[i].value as number));
+             }
             break;
           case 'min':
             validationList.push(Validators.min(element.validations[i].value as number));
@@ -243,12 +251,6 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
           case 'max':
             validationList.push(Validators.max(element.validations[i].value as number));
             break;
-          case 'richTextMaxLength':
-            validationList.push(this.validateRichTextLength.bind(this, 'richTextMaxLength' , '>', element.validations[i].value));
-            break;
-          case 'richTextMinLength':
-            validationList.push(this.validateRichTextLength.bind(this, 'richTextMinLength' , '<=', element.validations[i].value));
-            break;    
           case 'time':
             validationList.push(this.validateTime.bind(this, element.validations[i].value, element));
             break;
