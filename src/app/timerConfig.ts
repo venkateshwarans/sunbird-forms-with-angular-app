@@ -17,12 +17,12 @@ export const timer = [
         'validations': [
           {
             'type': 'minLength',
-            'value': 5,
+            'value': '5',
             'message': 'Min input is needed'
           },
           {
             'type': 'maxLength',
-            'value': 20,
+            'value': '20',
             'message': 'Input is Exceeded'
           },
           {
