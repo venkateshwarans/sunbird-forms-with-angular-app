@@ -160,9 +160,6 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
       case 'timer':
         defaultVal = element.default || null;
         break;
-      case 'richText':
-        defaultVal = element.default || null;
-        break;
       case 'select':
       case 'framework':
         if (element.default) {
@@ -246,11 +243,11 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
           case 'max':
             validationList.push(Validators.max(element.validations[i].value as number));
             break;
-          case 'richtextmaxlength':
-            validationList.push(this.validateRichTextLength.bind(this, 'richtextmaxlength' ,element.validations[i].value));
+          case 'richTextMaxLength':
+            validationList.push(this.validateRichTextLength.bind(this, 'richTextMaxLength' , '>', element.validations[i].value));
             break;
-          case 'richtextminlength':
-            validationList.push(this.validateRichTextLength.bind(this, 'richtextminlength' ,element.validations[i].value));
+          case 'richTextMinLength':
+            validationList.push(this.validateRichTextLength.bind(this, 'richTextMinLength' , '<', element.validations[i].value));
             break;    
           case 'time':
             validationList.push(this.validateTime.bind(this, element.validations[i].value, element));
@@ -346,16 +343,15 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
       };
     });
   }
-  validateRichTextLength(validationField, maxLength, control: AbstractControl): ValidationErrors | null {
-    const result = _.find(maxLength, (val, key) => {
+  validateRichTextLength(validationType, keyOprtator, validationValue, control: AbstractControl): ValidationErrors | null {
+    let comp;
       if (control.touched) {
-        return FieldComparator.operators[key](control['richTextCharacterCount'], val);
+        comp = FieldComparator.operators[keyOprtator](control['richTextCharacterCount'], validationValue);
       } else {
-        return false;
+        comp =  false;
       }
-    });
-    if (result && (control.touched || control.dirty)) {
-      return { [validationField]: true };
+    if (comp && (control.touched || control.dirty)) {
+      return { [_.toLower(validationType)]: true };
     }
     return null;
 }

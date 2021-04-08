@@ -371,11 +371,11 @@ export class AppComponent implements OnInit {
 }
 
   output(event) {
-      // console.log(event);
+      console.log(event);
   }
 
   valueChanges(event) {
-    // console.log(event);
+    console.log(event);
     this.result = event;
   }
 

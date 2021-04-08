@@ -16,19 +16,13 @@ export const timer = [
         },
         'validations': [
           {
-            'type': 'richtextminlength',
-            'value': {
-              '<':
-                  5
-          },
+            'type': 'richTextMinLength',
+            'value': '10',
             'message': 'Min input is needed'
           },
           {
-            'type': 'richtextmaxlength',
-            'value': {
-              '>':
-                  10
-          },
+            'type': 'richTextMaxLength',
+            'value': '20',
             'message': 'Input is Exceeded'
           },
           {

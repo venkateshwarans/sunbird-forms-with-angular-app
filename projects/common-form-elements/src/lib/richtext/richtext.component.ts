@@ -155,30 +155,11 @@ ngAfterViewInit() {
   }
   changeTracker(editor) {
     editor.model.document.on('change', (eventInfo, batch) => {
-        // this.characterCount = this.countCharacters(this.editorInstance.model.document);
         this.formControlRef.markAsTouched();
         this.formControlRef.richTextCharacterCount  = this.characterCount;
         this.formControlRef.patchValue(editor.getData());
-        // console.log(editor.getData(), 'value');
     });
   }
-  // countCharacters(document) {
-  //   const rootElement = document.getRoot();
-  //   return this.countCharactersInElement(rootElement);
-  // }
-  // countCharactersInElement(node) {
-  //   let chars = 0;
-  //   const forE = node.getChildren();
-  //   let child;
 
-  //   while (!(child = forE.next()).done) {
-  //     if (child.value.is('text')) {
-  //       chars += child.value.data.length;
-  //     } else if (child.value.is('element')) {
-  //       chars += this.countCharactersInElement(child.value);
-  //     }
-  //   }
-  //   return chars;
-  // }
   }
 
