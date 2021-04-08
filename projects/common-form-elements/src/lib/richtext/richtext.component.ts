@@ -147,13 +147,13 @@ ngAfterViewInit() {
         this.editorInstance = editor;
 
         editor.isReadOnly = this.disabled;
-        this.changeTracker(this.editorInstance);
+        this.onChangeEditor(this.editorInstance);
       })
       .catch(error => {
         console.error(error.stack);
       });
   }
-  changeTracker(editor) {
+  onChangeEditor(editor) {
     editor.model.document.on('change', (eventInfo, batch) => {
         this.formControlRef.markAsTouched();
         this.formControlRef.richTextCharacterCount  = this.characterCount;
