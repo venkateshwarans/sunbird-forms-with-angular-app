@@ -247,7 +247,7 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
             validationList.push(this.validateRichTextLength.bind(this, 'richTextMaxLength' , '>', element.validations[i].value));
             break;
           case 'richTextMinLength':
-            validationList.push(this.validateRichTextLength.bind(this, 'richTextMinLength' , '<', element.validations[i].value));
+            validationList.push(this.validateRichTextLength.bind(this, 'richTextMinLength' , '<=', element.validations[i].value));
             break;    
           case 'time':
             validationList.push(this.validateTime.bind(this, element.validations[i].value, element));
@@ -343,10 +343,10 @@ export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy  {
       };
     });
   }
-  validateRichTextLength(validationType, keyOprtator, validationValue, control: AbstractControl): ValidationErrors | null {
+  validateRichTextLength(validationType, keyOperator, validationValue, control: AbstractControl): ValidationErrors | null {
     let comp;
       if (control.touched) {
-        comp = FieldComparator.operators[keyOprtator](control['richTextCharacterCount'], validationValue);
+        comp = FieldComparator.operators[keyOperator](control['richTextCharacterCount'], validationValue);
       } else {
         comp =  false;
       }
