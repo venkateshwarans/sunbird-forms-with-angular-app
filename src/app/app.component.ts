@@ -371,7 +371,7 @@ export class AppComponent implements OnInit {
 }
 
   output(event) {
-      console.log(event);
+     // console.log(event);
   }
 
   valueChanges(event) {
