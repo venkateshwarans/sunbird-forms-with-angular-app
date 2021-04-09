@@ -15,14 +15,14 @@ export const timer = [
           'class': 'sb-g-col-lg-2 required'
         },
         'validations': [
-          {
-            'type': 'minLength',
-            'value': '5',
-            'message': 'Min input is needed'
-          },
+          // {
+          //   'type': 'minLength',
+          //   'value': '5',
+          //   'message': 'Min input is needed'
+          // },
           {
             'type': 'maxLength',
-            'value': '20',
+            'value': '10',
             'message': 'Input is Exceeded'
           },
           {
@@ -31,7 +31,7 @@ export const timer = [
           }
         ],
         'required': true,
-        'visible': true,
+        'visible': false,
       },
       {
         'code': 'name',

@@ -22,6 +22,7 @@ export class RichtextComponent implements OnInit, AfterViewInit {
     @Input() prefix?: String;
     @Input() default: String;
     @Input() disabled: Boolean;
+    @Input() visible: Boolean;
     @ViewChild('validationTrigger', {static: false}) validationTrigger: ElementRef;
     showEditor = false;
     editorConfig: any;
@@ -32,8 +33,8 @@ export class RichtextComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.editorConfig = {
         toolbar: ['bold', '|', 'italic', '|', 'underline', '|', 'insertTable',
-            '|', 'numberedList', '|', 'BulletedList', '|', 'fontSize',
-            '|', 'fontColor', '|',
+            '|', 'numberedList', '|', 'BulletedList', '|', 'fontSize', '|',
+            // '|', 'fontColor', '|', 'uploadImage', '|'
         ],
         fontSize: {
             options: [
@@ -48,7 +49,7 @@ export class RichtextComponent implements OnInit, AfterViewInit {
                 25
             ]
         },
-        fontColor: { // should be remove lator
+        fontColor: {
             colors: [
                 {
                     color: 'hsl(0, 0%, 0%)',
@@ -113,13 +114,24 @@ export class RichtextComponent implements OnInit, AfterViewInit {
                 }
             ]
         },
+        image: {
+		toolbar: [
+			'imageStyle:full',
+			'imageStyle:side',
+			'|',
+			'imageTextAlternative',
+			'imageResize'
+		]
+	},
         isReadOnly: this.disabled,
         removePlugins: ['ImageCaption', 'mathtype', 'ChemType']
     };
     this.showEditor = true;
 }
 ngAfterViewInit() {
+  if(this.visible) {
     this.initializeEditors();
+  }
         if (this.asyncValidation && this.asyncValidation.asyncValidatorFactory && this.formControlRef) {
           if (this.formControlRef.asyncValidator) {
             return;
