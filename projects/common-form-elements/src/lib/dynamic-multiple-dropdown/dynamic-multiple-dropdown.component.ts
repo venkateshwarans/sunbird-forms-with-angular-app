@@ -189,6 +189,7 @@ export class DynamicMultipleDropdownComponent implements OnInit, OnChanges, OnDe
 
   private resetTempValue() {
     this.tempValue = Set(null);
+    this.default = [];
   }
 
   private setupOptions() {

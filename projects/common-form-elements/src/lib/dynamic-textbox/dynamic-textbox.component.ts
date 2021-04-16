@@ -12,12 +12,12 @@ export class DynamicTextboxComponent implements OnInit,  AfterViewInit, OnChange
   @Input() asyncValidation?: FieldConfigAsyncValidation;
   @Input() label: String;
   @Input() labelHtml: any;
-  @Input() field: any;
   @Input() placeholder: String;
   @Input() validations?: any;
   @Input() formControlRef?: FormControl;
   @Input() prefix?: String;
   @Input() default: String;
+  @Input() field?: any;
   @Input() disabled: Boolean;
   @ViewChild('validationTrigger', {static: false}) validationTrigger: ElementRef;
 
