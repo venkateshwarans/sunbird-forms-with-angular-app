@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, AfterViewInit } from '@angular/core';
 import { Subscription, combineLatest, Subject, merge, from, Observable } from 'rxjs';
 import { LazzyLoadScriptService } from './../utilities/lazzy-load-script.service';
 import * as _ from 'lodash-es';
@@ -22,8 +22,7 @@ interface JQuery {
 @Component({
   selector: 'sb-topicpicker',
   templateUrl: './topicpicker.component.html',
-  styleUrls: ['./topicpicker.component.css'],
-  encapsulation : ViewEncapsulation.None
+  styleUrls: ['./topicpicker.component.css']
 })
 export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
 
