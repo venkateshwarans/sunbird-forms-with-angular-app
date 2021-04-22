@@ -22,7 +22,7 @@ import { DynamicCheckboxComponent } from './dynamic-checkbox/dynamic-checkbox.co
 import { DynamicTimerComponent } from './dynamic-timer/dynamic-timer.component';
 import { DynamicFrameworkComponent } from './dynamic-framework/dynamic-framework.component';
 import { DynamicFrameworkCategorySelectComponent } from './dynamic-framework-category-select/dynamic-framework-category-select.component';
-
+import { RichtextComponent } from './richtext/richtext.component';
 
 @NgModule({
   imports: [
@@ -32,20 +32,20 @@ import { DynamicFrameworkCategorySelectComponent } from './dynamic-framework-cat
     TagInputModule,
   ],
   entryComponents: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
-    DynamicMultipleDropdownComponent, DynamicCheckboxComponent,
+    DynamicMultipleDropdownComponent, DynamicCheckboxComponent, RichtextComponent,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent,
     FileComponent, TopicpickerComponent, KeywordsComponent, DynamicMultiSelectComponent, DynamicTimerComponent,
     DynamicFrameworkCategorySelectComponent, DynamicFrameworkComponent],
   declarations: [CommonFormElementsComponent,
      CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent,
     RedExclamationComponent, DynamicFieldDirective, FileComponent, TopicpickerComponent, KeywordsComponent,
-    DynamicMultiSelectComponent,
+    DynamicMultiSelectComponent, RichtextComponent,
     DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent,
     DynamicDropdownComponent, DynamicMultipleDropdownComponent, DynamicCheckboxComponent,
     DynamicTimerComponent, DynamicFrameworkComponent, DynamicFrameworkCategorySelectComponent],
   exports: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
     DynamicMultipleDropdownComponent, DynamicCheckboxComponent, CommonFormElementsComponent,
-    DynamicFieldDirective,
+    DynamicFieldDirective, RichtextComponent,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent, FileComponent,
     TopicpickerComponent, KeywordsComponent, DynamicMultiSelectComponent,
     DynamicTimerComponent, DynamicFrameworkComponent, DynamicFrameworkCategorySelectComponent ]
