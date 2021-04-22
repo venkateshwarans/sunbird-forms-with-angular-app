@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, AfterViewInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { Subscription, combineLatest, Subject, merge, from, Observable } from 'rxjs';
-import { LazzyLoadScriptService } from './../utilities/lazzy-load-script.service';
 import * as _ from 'lodash-es';
 import { FormControl , FormGroup} from '@angular/forms';
-import { CustomFormControl, CustomFormGroup, DynamicFieldConfigOptionsBuilder, FieldConfig, FieldConfigOption } from '../common-form-config';
+import { CustomFormControl, CustomFormGroup, DynamicFieldConfigOptionsBuilder,
+  FieldConfig, FieldConfigOption } from '../common-form-config';
 import { tap, takeUntil } from 'rxjs/operators';
 
 declare var treePicker: any;
@@ -22,7 +22,8 @@ interface JQuery {
 @Component({
   selector: 'sb-topicpicker',
   templateUrl: './topicpicker.component.html',
-  styleUrls: ['./topicpicker.component.css']
+  styleUrls: ['./topicpicker.component.css'],
+  encapsulation : ViewEncapsulation.None
 })
 export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
 
@@ -53,7 +54,7 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
   isDynamicDependencyTerms: any;
   isDependsTouched: any;
 
-  constructor(private lazzyLoadScriptService: LazzyLoadScriptService) { }
+  constructor() { }
 
   ngOnInit() {
     this.handleSelfChange();
@@ -166,18 +167,16 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.topicChange.emit(this.selectedTopics);
 
     if (!_.isEmpty(this.default) && this.isDefaultExistsInTerms()) {
-      this.placeHolder = this.default &&  this.default.length + ' topics selected';
+      this.placeHolder = this.getPlaceHolder();
     } else if (!_.isEmpty(this.default)) {
+      this.placeHolder = this.getPlaceHolder();
       this.formControlRef.setValue(this.default);
     }
 
   }
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
-    if (this.field.terms || this.tempAssociation) {
-      this.initTopicPicker(this.formatTopics(this.field.terms || this.tempAssociation));
-    }
-
+      this.initTopicPicker(this.formatTopics(this.field.terms || this.tempAssociation || []));
   }
 
   ngOnDestroy(): void {
@@ -226,7 +225,7 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
             identifier: node.id,
             name: node.name
           }));
-          this.placeHolder = this.selectedTopics.length + ' topics selected';
+          this.placeHolder = this.getPlaceHolder();
           this.topicChange.emit(this.selectedTopics);
           const topics = [];
           _.forEach(this.selectedTopics, (value, index) => {
@@ -246,6 +245,17 @@ export class TopicpickerComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       });
       setTimeout(() => document.getElementById(`topicSelector_${this.field.code}`).classList.add(`topicSelector_${this.field.code}`), 0);
+  }
+
+  getPlaceHolder() {
+    if (!_.isEmpty(this.selectedTopics)) {
+      return this.selectedTopics.length + ' topics selected';
+    } else if (!_.isEmpty(this.selectedNodes)) {
+      const selectedNodesIdentifiers =  _.map(this.selectedNodes, 'identifier');
+      return selectedNodesIdentifiers.length + ' topics selected';
+    } else if (!_.isEmpty(this.default)) {
+      return this.default.length + ' topics selected';
+    }
   }
 
   fetchAssociations() {
