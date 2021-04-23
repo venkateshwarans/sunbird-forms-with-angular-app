@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RichtextComponent } from './richtext.component';
+import { DynamicRichtextComponent } from './dynamic-richtext.component';
 
-describe('RichtextComponent', () => {
-  let component: RichtextComponent;
-  let fixture: ComponentFixture<RichtextComponent>;
+describe('DynamicRichtextComponent', () => {
+  let component: DynamicRichtextComponent;
+  let fixture: ComponentFixture<DynamicRichtextComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RichtextComponent ]
+      declarations: [ DynamicRichtextComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RichtextComponent);
+    fixture = TestBed.createComponent(DynamicRichtextComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
