@@ -22,6 +22,8 @@ import { DynamicCheckboxComponent } from './dynamic-checkbox/dynamic-checkbox.co
 import { DynamicTimerComponent } from './dynamic-timer/dynamic-timer.component';
 import { DynamicFrameworkComponent } from './dynamic-framework/dynamic-framework.component';
 import { DynamicFrameworkCategorySelectComponent } from './dynamic-framework-category-select/dynamic-framework-category-select.component';
+import { DynamicRadioComponent } from './dynamic-radio/dynamic-radio.component';
+import { DynamicDialcodeComponent } from './dynamic-dialcode/dynamic-dialcode.component';
 
 
 @NgModule({
@@ -32,7 +34,7 @@ import { DynamicFrameworkCategorySelectComponent } from './dynamic-framework-cat
     TagInputModule,
   ],
   entryComponents: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
-    DynamicMultipleDropdownComponent, DynamicCheckboxComponent,
+    DynamicMultipleDropdownComponent, DynamicCheckboxComponent, DynamicRadioComponent, DynamicDialcodeComponent, 
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent,
     FileComponent, TopicpickerComponent, KeywordsComponent, DynamicMultiSelectComponent, DynamicTimerComponent,
     DynamicFrameworkCategorySelectComponent, DynamicFrameworkComponent],
@@ -41,11 +43,11 @@ import { DynamicFrameworkCategorySelectComponent } from './dynamic-framework-cat
     RedExclamationComponent, DynamicFieldDirective, FileComponent, TopicpickerComponent, KeywordsComponent,
     DynamicMultiSelectComponent,
     DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent,
-    DynamicDropdownComponent, DynamicMultipleDropdownComponent, DynamicCheckboxComponent,
+    DynamicDropdownComponent, DynamicMultipleDropdownComponent, DynamicCheckboxComponent, DynamicRadioComponent, DynamicDialcodeComponent,
     DynamicTimerComponent, DynamicFrameworkComponent, DynamicFrameworkCategorySelectComponent],
   exports: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
-    DynamicMultipleDropdownComponent, DynamicCheckboxComponent, CommonFormElementsComponent,
-    DynamicFieldDirective,
+    DynamicMultipleDropdownComponent, DynamicCheckboxComponent, DynamicRadioComponent, CommonFormElementsComponent,
+    DynamicDialcodeComponent, DynamicFieldDirective,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent, FileComponent,
     TopicpickerComponent, KeywordsComponent, DynamicMultiSelectComponent,
     DynamicTimerComponent, DynamicFrameworkComponent, DynamicFrameworkCategorySelectComponent ]

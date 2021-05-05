@@ -18,9 +18,11 @@ import { DynamicMultiSelectComponent } from '../dynamic-multi-select/dynamic-mul
 import { DynamicDropdownComponent } from '../dynamic-dropdown/dynamic-dropdown.component';
 import { DynamicMultipleDropdownComponent } from '../dynamic-multiple-dropdown/dynamic-multiple-dropdown.component';
 import { DynamicCheckboxComponent } from '../dynamic-checkbox/dynamic-checkbox.component';
+import { DynamicRadioComponent } from '../dynamic-radio/dynamic-radio.component';
 import { DynamicTimerComponent } from '../dynamic-timer/dynamic-timer.component';
 import { DynamicFrameworkComponent } from '../dynamic-framework/dynamic-framework.component';
 import { DynamicFrameworkCategorySelectComponent } from '../dynamic-framework-category-select/dynamic-framework-category-select.component';
+import { DynamicDialcodeComponent } from '../dynamic-dialcode/dynamic-dialcode.component';
 
 const componentMapper = {
   textarea: DynamicTextareaComponent,
@@ -30,12 +32,13 @@ const componentMapper = {
   nestedselect: DynamicMultipleDropdownComponent,
   file: FileComponent,
   keywords: KeywordsComponent,
-  dialcode: DynamicTextboxComponent,
+  dialcode: DynamicDialcodeComponent,
   topicselector: TopicpickerComponent,
   licenses: DynamicDropdownComponent,
   label: DynamicTextboxComponent,
   number: DynamicTextboxComponent,
   checkbox: DynamicCheckboxComponent,
+  radio: DynamicRadioComponent,
   timer: DynamicTimerComponent,
   framework: DynamicFrameworkComponent,
   frameworkCategorySelect: DynamicFrameworkCategorySelectComponent

@@ -20,6 +20,12 @@ export enum FieldConfigValidationType {
   PATTERN = 'pattern'
 }
 
+export interface DialcodeResponse {
+  isEditable?: Boolean;
+  isValid?: Boolean;
+  statusMsg?: String;
+}
+
 export type FieldConfigOptionsBuilder<T> =
   (control: FormControl, context?: FormControl, notifyLoading?: () => void,
     notifyLoaded?: () => void) => Observable<FieldConfigOption<T>[]> | Promise<FieldConfigOption<T>[]>;
