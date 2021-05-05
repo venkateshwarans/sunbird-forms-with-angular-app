@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { CommonFormElementsModule } from 'common-form-elements';
+import { CommonFormElementsModule, DialcodeCursor } from 'common-form-elements';
 // import { CommonFormElementsModule } from 'v-dynamic-forms';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DialcodeService } from './dialcode-cursor-implementation.service';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     CommonFormElementsModule,
   ],
-  providers: [],
+  providers: [{
+    provide: DialcodeCursor,
+    useClass: DialcodeService
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

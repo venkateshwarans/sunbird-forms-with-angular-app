@@ -5,9 +5,10 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors } from '@angu
 import {tap, switchMap, delay, distinctUntilChanged} from 'rxjs/operators';
 import {of, merge } from 'rxjs';
 import { map, forEach } from 'lodash-es';
-import { timer } from './timerConfig';
+// import { timer } from './timerConfig';
+import {  fullFormConfig  } from './dialcode.config';
 // import { formConfigProfessionalDevelopmentCourse } from './formConfig copy';
-import { cbseFW } from './ekstep-framework'
+import { cbseFW } from './ekstep-framework';
 
 const fK12 = {
   'id': 'api.framework.read',
@@ -337,7 +338,7 @@ const cbsetpd = {
 export class AppComponent implements OnInit {
   title = 'app';
   result: any;
-  config: any  = forEach(timer, section => {
+  config: any  = forEach(fullFormConfig, section => {
     forEach(section.fields, field => {
       if (_.includes(['framework'], field.code)) {
         field.options = this.getFramework;
