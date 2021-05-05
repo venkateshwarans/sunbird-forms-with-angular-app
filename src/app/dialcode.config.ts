@@ -7,7 +7,7 @@ export const fullFormConfig = [
         'dataType': 'text',
         'description': 'QR CODE REQUIRED',
         'editable': true,
-        'default': 'Yes',
+        'default': 'No',
         'index': 5,
         'inputType': 'radio',
         'label': 'QR CODE REQUIRED',
