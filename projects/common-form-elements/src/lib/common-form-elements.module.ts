@@ -24,7 +24,7 @@ import { DynamicFrameworkComponent } from './dynamic-framework/dynamic-framework
 import { DynamicFrameworkCategorySelectComponent } from './dynamic-framework-category-select/dynamic-framework-category-select.component';
 import { DynamicRadioComponent } from './dynamic-radio/dynamic-radio.component';
 import { DynamicDialcodeComponent } from './dynamic-dialcode/dynamic-dialcode.component';
-
+import { DynamicRichtextComponent } from './dynamic-richtext/dynamic-richtext.component';
 
 @NgModule({
   imports: [
@@ -34,7 +34,7 @@ import { DynamicDialcodeComponent } from './dynamic-dialcode/dynamic-dialcode.co
     TagInputModule,
   ],
   entryComponents: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
-    DynamicMultipleDropdownComponent, DynamicCheckboxComponent, DynamicRadioComponent, DynamicDialcodeComponent, 
+    DynamicMultipleDropdownComponent, DynamicCheckboxComponent, DynamicRadioComponent, DynamicDialcodeComponent, DynamicRichtextComponent,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent,
     FileComponent, TopicpickerComponent, KeywordsComponent, DynamicMultiSelectComponent, DynamicTimerComponent,
     DynamicFrameworkCategorySelectComponent, DynamicFrameworkComponent],
@@ -42,12 +42,12 @@ import { DynamicDialcodeComponent } from './dynamic-dialcode/dynamic-dialcode.co
      CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent,
     RedExclamationComponent, DynamicFieldDirective, FileComponent, TopicpickerComponent, KeywordsComponent,
     DynamicMultiSelectComponent,
-    DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent,
+    DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicRichtextComponent,
     DynamicDropdownComponent, DynamicMultipleDropdownComponent, DynamicCheckboxComponent, DynamicRadioComponent, DynamicDialcodeComponent,
     DynamicTimerComponent, DynamicFrameworkComponent, DynamicFrameworkCategorySelectComponent],
   exports: [DynamicFormComponent, DynamicTextboxComponent, DynamicTextareaComponent, DynamicDropdownComponent,
     DynamicMultipleDropdownComponent, DynamicCheckboxComponent, DynamicRadioComponent, CommonFormElementsComponent,
-    DynamicDialcodeComponent, DynamicFieldDirective,
+    DynamicDialcodeComponent, DynamicFieldDirective, DynamicRichtextComponent,
     CaretDownComponent, DropdownIconComponent, EmptyCircleComponent, GreenTickComponent, RedExclamationComponent, FileComponent,
     TopicpickerComponent, KeywordsComponent, DynamicMultiSelectComponent,
     DynamicTimerComponent, DynamicFrameworkComponent, DynamicFrameworkCategorySelectComponent ]

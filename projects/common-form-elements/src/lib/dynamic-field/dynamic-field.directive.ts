@@ -23,6 +23,7 @@ import { DynamicTimerComponent } from '../dynamic-timer/dynamic-timer.component'
 import { DynamicFrameworkComponent } from '../dynamic-framework/dynamic-framework.component';
 import { DynamicFrameworkCategorySelectComponent } from '../dynamic-framework-category-select/dynamic-framework-category-select.component';
 import { DynamicDialcodeComponent } from '../dynamic-dialcode/dynamic-dialcode.component';
+import { DynamicRichtextComponent } from '../dynamic-richtext/dynamic-richtext.component';
 
 const componentMapper = {
   textarea: DynamicTextareaComponent,
@@ -41,7 +42,8 @@ const componentMapper = {
   radio: DynamicRadioComponent,
   timer: DynamicTimerComponent,
   framework: DynamicFrameworkComponent,
-  frameworkCategorySelect: DynamicFrameworkCategorySelectComponent
+  frameworkCategorySelect: DynamicFrameworkCategorySelectComponent,
+  richtext: DynamicRichtextComponent
 };
 
 @Directive({
